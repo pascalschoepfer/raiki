@@ -1,0 +1,38 @@
+<svg viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">
+  <!-- Cypherpunk geometric symbol -->
+  <path
+    d="M16 4 L26 9.5 L26 22.5 L16 28 L6 22.5 L6 9.5 Z"
+    stroke="#FFFFFF"
+    strokeWidth="1.5"
+    fill="none"
+  />
+  <path
+    d="M16 8 L22 11.5 L22 20.5 L16 24 L10 20.5 L10 11.5 Z"
+    stroke="#FFFFFF"
+    strokeWidth="1"
+    fill="none"
+    opacity="0.6"
+  />
+  <circle
+    cx="16"
+    cy="16"
+    r="2.5"
+    fill="#FFFFFF"
+  />
+  <line
+    x1="16"
+    y1="4"
+    x2="16"
+    y2="8"
+    stroke="#FFFFFF"
+    strokeWidth="1"
+  />
+  <line
+    x1="16"
+    y1="24"
+    x2="16"
+    y2="28"
+    stroke="#FFFFFF"
+    strokeWidth="1"
+  />
+</svg>
