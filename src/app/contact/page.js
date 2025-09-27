@@ -63,7 +63,7 @@ export default function Contact() {
           setTurnstileToken(null);
         },
         theme: 'dark',
-        size: 'invisible' // Invisible mode for production
+        size: 'compact' // Changed from invisible to compact
       });
     }
   }, [isTurnstileLoaded]);
