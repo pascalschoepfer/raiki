@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect, useRef } from 'react';
+import Link from 'next/link';
 import RaikiLogo from '../components/RaikiLogo';
 import NeuralNetwork from '../components/MouseTrail';
 import MatrixText from '../components/MatrixText';
@@ -231,7 +232,7 @@ export default function Contact() {
         {/* Header */}
         <header className="absolute top-0 left-0 right-0 z-20 px-6 py-2 bg-transparent">
           <nav className="max-w-7xl mx-auto flex items-center justify-between">
-            <a href="/"><RaikiLogo showText={false} /></a>
+            <Link href="/"><RaikiLogo showText={false} /></Link>
             
             {/* Burger Menu */}
             <div className="relative" ref={menuRef}>
@@ -359,18 +360,18 @@ export default function Contact() {
             {/* Navigation Buttons */}
             <section>
               <div className="flex flex-col sm:flex-row gap-2 font-mono">
-                <a href="/" className="group bg-gray-900 border-2 border-gray-400 hover:border-gray-300 px-4 py-2 relative overflow-hidden transition-all duration-200 hover:scale-105 hover:shadow-lg hover:shadow-gray-400/40 cursor-pointer text-center flex-1 flex items-center justify-center">
+                <Link href="/" className="group bg-gray-900 border-2 border-gray-400 hover:border-gray-300 px-4 py-2 relative overflow-hidden transition-all duration-200 hover:scale-105 hover:shadow-lg hover:shadow-gray-400/40 cursor-pointer text-center flex-1 flex items-center justify-center">
                   <div className="absolute inset-0 bg-gray-400/20 opacity-0 group-hover:opacity-100 transition-opacity duration-200"></div>
                   <span className="relative text-gray-400 group-hover:text-white text-xs tracking-wider leading-none">{'>> home'}</span>
-                </a>
-                <a href="/services" className="group bg-gray-900 border-2 border-gray-400 hover:border-gray-300 px-4 py-2 relative overflow-hidden transition-all duration-200 hover:scale-105 hover:shadow-lg hover:shadow-gray-400/40 cursor-pointer text-center flex-1 flex items-center justify-center">
+                </Link>
+                <Link href="/services" className="group bg-gray-900 border-2 border-gray-400 hover:border-gray-300 px-4 py-2 relative overflow-hidden transition-all duration-200 hover:scale-105 hover:shadow-lg hover:shadow-gray-400/40 cursor-pointer text-center flex-1 flex items-center justify-center">
                   <div className="absolute inset-0 bg-gray-400/20 opacity-0 group-hover:opacity-100 transition-opacity duration-200"></div>
                   <span className="relative text-gray-400 group-hover:text-white text-xs tracking-wider leading-none">{'>> services'}</span>
-                </a>
-                <a href="/about" className="group bg-gray-900 border-2 border-gray-400 hover:border-gray-300 px-4 py-2 relative overflow-hidden transition-all duration-200 hover:scale-105 hover:shadow-lg hover:shadow-gray-400/40 cursor-pointer text-center flex-1 flex items-center justify-center">
+                </Link>
+                <Link href="/about" className="group bg-gray-900 border-2 border-gray-400 hover:border-gray-300 px-4 py-2 relative overflow-hidden transition-all duration-200 hover:scale-105 hover:shadow-lg hover:shadow-gray-400/40 cursor-pointer text-center flex-1 flex items-center justify-center">
                   <div className="absolute inset-0 bg-gray-400/20 opacity-0 group-hover:opacity-100 transition-opacity duration-200"></div>
                   <span className="relative text-gray-400 group-hover:text-white text-xs tracking-wider leading-none">{'>> about'}</span>
-                </a>
+                </Link>
               </div>
             </section>
             
