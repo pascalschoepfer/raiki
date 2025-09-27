@@ -38,32 +38,37 @@ function ScrambleGlitchText({ text, className }) {
   const [displayText, setDisplayText] = useState(text);
   
   useEffect(() => {
-    const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789@#$%^&*!?<>[]{}+=~';
+    const chars = 'アイウエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホマミムメモヤユヨラリルレロワヲン01';
     const originalText = text;
     
     const scramble = () => {
-      if (Math.random() < 0.25) { // 25% chance to scramble
-        let newText = '';
-        for (let i = 0; i < originalText.length; i++) {
-          if (Math.random() < 0.5) { // 50% chance per character to scramble
-            newText += chars[Math.floor(Math.random() * chars.length)];
-          } else {
-            newText += originalText[i];
-          }
-        }
-        setDisplayText(newText);
-        
-        // Reset to original after short delay
-        setTimeout(() => setDisplayText(originalText), 60 + Math.random() * 50);
+      // Glitch only 1-2 characters max (favor 1)
+      const numToGlitch = Math.random() < 0.7 ? 1 : 2;
+      let newText = originalText;
+      
+      for (let g = 0; g < numToGlitch; g++) {
+        const randomIndex = Math.floor(Math.random() * originalText.length);
+        const randomChar = chars[Math.floor(Math.random() * chars.length)];
+        newText = newText.substring(0, randomIndex) + randomChar + newText.substring(randomIndex + 1);
       }
+      
+      setDisplayText(newText);
+      
+      // Reset to original after short delay
+      setTimeout(() => setDisplayText(originalText), 100 + Math.random() * 80);
     };
     
-    const interval = setInterval(scramble, 400 + Math.random() * 500); // Moderate scrambling
+    const interval = setInterval(scramble, 4000 + Math.random() * 2000); // Every 4-6 seconds
     return () => clearInterval(interval);
   }, [text]);
   
   return (
-    <span className={`relative ${className}`}>
+    <span 
+      className={`relative ${className} transition-transform duration-100`}
+      style={{
+        transform: displayText !== text ? `skew(${Math.random() * 3 - 1.5}deg) scale(${0.99 + Math.random() * 0.02})` : 'none'
+      }}
+    >
       {/* Main text */}
       <span className="relative z-10">{displayText}</span>
       
@@ -109,7 +114,7 @@ function ScrambleGlitchText({ text, className }) {
   );
 }
 
-export default function RaikiLogo({ className = "" }) {
+export default function RaikiLogo({ className = "", showText = true }) {
   return (
     <div className={`flex items-center gap-2 ${className}`}>
       <svg
@@ -161,11 +166,13 @@ export default function RaikiLogo({ className = "" }) {
           strokeWidth="1"
         />
       </svg>
-      {/* Brand text with scramble + glitch effects */}
-      <ScrambleGlitchText 
-        text="raiki" 
-        className="text-xl font-mono font-bold text-white tracking-wider" 
-      />
+      {/* Conditionally show brand text with Japanese scramble + glitch effects */}
+      {showText && (
+        <ScrambleGlitchText 
+          text="raiki" 
+          className="text-xl font-mono font-bold text-white tracking-wider" 
+        />
+      )}
     </div>
   );
 }

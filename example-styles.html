@@ -1,0 +1,977 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About Page Style Examples</title>
+    <style>
+        body {
+            background: linear-gradient(135deg, #000 0%, #1a1a1a 50%, #2a2a2a 100%);
+            color: #d1d5db;
+            font-family: 'Courier New', monospace;
+            padding: 20px;
+            margin: 0;
+            min-height: 100vh;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 20px;
+            margin-bottom: 40px;
+        }
+        .card {
+            background: rgba(17, 24, 39, 0.6);
+            backdrop-filter: blur(8px);
+            border: 1px solid #374151;
+            border-radius: 8px;
+            padding: 20px;
+            transition: all 0.3s ease;
+        }
+        .card:hover {
+            border-color: #6b7280;
+            background: rgba(31, 41, 55, 0.6);
+        }
+        .card h3 {
+            color: white;
+            font-weight: bold;
+            margin-bottom: 15px;
+            font-size: 18px;
+        }
+        .style-example {
+            font-size: 14px;
+            line-height: 1.6;
+        }
+        .icon {
+            width: 16px;
+            height: 16px;
+            flex-shrink: 0;
+        }
+        .style-example > div {
+            margin-bottom: 8px;
+        }
+        .current {
+            border-color: #10b981 !important;
+            background: rgba(16, 185, 129, 0.1) !important;
+        }
+        .current h3::after {
+            content: " (current)";
+            color: #10b981;
+            font-size: 12px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 style="text-align: center; margin-bottom: 40px; color: white;">About Page Style Examples</h1>
+        
+        <div class="grid">
+            <!-- Current Style -->
+            <div class="card current">
+                <h3>Arrow Style</h3>
+                <div class="style-example">
+                    <div>→ 15+ years in systems architecture</div>
+                    <div>→ 15+ years in security engineering</div>
+                    <div>→ 10+ years in digital assets</div>
+                    <div>→ 5+ years in decentralized finance</div>
+                </div>
+            </div>
+
+            <!-- Code Brackets -->
+            <div class="card">
+                <h3>Code Brackets</h3>
+                <div class="style-example">
+                    <div>[systems_architecture] 15+ years</div>
+                    <div>[security_engineering] 15+ years</div>
+                    <div>[digital_assets] 10+ years</div>
+                    <div>[decentralized_finance] 5+ years</div>
+                </div>
+            </div>
+
+            <!-- Hash Style -->
+            <div class="card">
+                <h3>Hash Tags</h3>
+                <div class="style-example">
+                    <div># 15+ years in systems architecture</div>
+                    <div># 15+ years in security engineering</div>
+                    <div># 10+ years in digital assets</div>
+                    <div># 5+ years in decentralized finance</div>
+                </div>
+            </div>
+
+            <!-- Terminal Prompt -->
+            <div class="card">
+                <h3>Terminal Prompt</h3>
+                <div class="style-example">
+                    <div>$ systems_architecture --years=15+</div>
+                    <div>$ security_engineering --years=15+</div>
+                    <div>$ digital_assets --years=10+</div>
+                    <div>$ decentralized_finance --years=5+</div>
+                </div>
+            </div>
+
+            <!-- Numbers -->
+            <div class="card">
+                <h3>Numbered</h3>
+                <div class="style-example">
+                    <div>01. 15+ years in systems architecture</div>
+                    <div>02. 15+ years in security engineering</div>
+                    <div>03. 10+ years in digital assets</div>
+                    <div>04. 5+ years in decentralized finance</div>
+                </div>
+            </div>
+
+            <!-- Clean Lines -->
+            <div class="card">
+                <h3>Clean Lines</h3>
+                <div class="style-example">
+                    <div style="border-left: 2px solid #6b7280; padding-left: 10px;">15+ years in systems architecture</div>
+                    <div style="border-left: 2px solid #6b7280; padding-left: 10px;">15+ years in security engineering</div>
+                    <div style="border-left: 2px solid #6b7280; padding-left: 10px;">10+ years in digital assets</div>
+                    <div style="border-left: 2px solid #6b7280; padding-left: 10px;">5+ years in decentralized finance</div>
+                </div>
+            </div>
+
+            <!-- Dashes -->
+            <div class="card">
+                <h3>Dashes</h3>
+                <div class="style-example">
+                    <div>— 15+ years in systems architecture</div>
+                    <div>— 15+ years in security engineering</div>
+                    <div>— 10+ years in digital assets</div>
+                    <div>— 5+ years in decentralized finance</div>
+                </div>
+            </div>
+
+            <!-- Binary -->
+            <div class="card">
+                <h3>Binary Prefix</h3>
+                <div class="style-example">
+                    <div>01 → systems architecture (15+ years)</div>
+                    <div>10 → security engineering (15+ years)</div>
+                    <div>11 → digital assets (10+ years)</div>
+                    <div>00 → decentralized finance (5+ years)</div>
+                </div>
+            </div>
+
+            <!-- Raiki Logo Bullets -->
+            <div class="card">
+                <h3>Raiki Logo Bullets</h3>
+                <div class="style-example">
+                    <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 8px;">
+                        <svg viewBox="0 0 24 24" style="width: 12px; height: 12px; flex-shrink: 0;" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M12 2 L22 8 L22 16 L12 22 L2 16 L2 8 Z" stroke="#d1d5db" stroke-width="1.5" fill="none"/>
+                            <path d="M12 6 L18 9.5 L18 14.5 L12 18 L6 14.5 L6 9.5 Z" stroke="#d1d5db" stroke-width="1" fill="none" opacity="0.6"/>
+                            <circle cx="12" cy="12" r="2" fill="#d1d5db"/>
+                            <line x1="12" y1="2" x2="12" y2="6" stroke="#d1d5db" stroke-width="1"/>
+                            <line x1="12" y1="18" x2="12" y2="22" stroke="#d1d5db" stroke-width="1"/>
+                        </svg>
+                        <span>15+ years in systems architecture</span>
+                    </div>
+                    <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 8px;">
+                        <svg viewBox="0 0 24 24" style="width: 12px; height: 12px; flex-shrink: 0;" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M12 2 L22 8 L22 16 L12 22 L2 16 L2 8 Z" stroke="#d1d5db" stroke-width="1.5" fill="none"/>
+                            <path d="M12 6 L18 9.5 L18 14.5 L12 18 L6 14.5 L6 9.5 Z" stroke="#d1d5db" stroke-width="1" fill="none" opacity="0.6"/>
+                            <circle cx="12" cy="12" r="2" fill="#d1d5db"/>
+                            <line x1="12" y1="2" x2="12" y2="6" stroke="#d1d5db" stroke-width="1"/>
+                            <line x1="12" y1="18" x2="12" y2="22" stroke="#d1d5db" stroke-width="1"/>
+                        </svg>
+                        <span>15+ years in security engineering</span>
+                    </div>
+                    <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 8px;">
+                        <svg viewBox="0 0 24 24" style="width: 12px; height: 12px; flex-shrink: 0;" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M12 2 L22 8 L22 16 L12 22 L2 16 L2 8 Z" stroke="#d1d5db" stroke-width="1.5" fill="none"/>
+                            <path d="M12 6 L18 9.5 L18 14.5 L12 18 L6 14.5 L6 9.5 Z" stroke="#d1d5db" stroke-width="1" fill="none" opacity="0.6"/>
+                            <circle cx="12" cy="12" r="2" fill="#d1d5db"/>
+                            <line x1="12" y1="2" x2="12" y2="6" stroke="#d1d5db" stroke-width="1"/>
+                            <line x1="12" y1="18" x2="12" y2="22" stroke="#d1d5db" stroke-width="1"/>
+                        </svg>
+                        <span>10+ years in digital assets</span>
+                    </div>
+                    <div style="display: flex; align-items: center; gap: 8px;">
+                        <svg viewBox="0 0 24 24" style="width: 12px; height: 12px; flex-shrink: 0;" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M12 2 L22 8 L22 16 L12 22 L2 16 L2 8 Z" stroke="#d1d5db" stroke-width="1.5" fill="none"/>
+                            <path d="M12 6 L18 9.5 L18 14.5 L12 18 L6 14.5 L6 9.5 Z" stroke="#d1d5db" stroke-width="1" fill="none" opacity="0.6"/>
+                            <circle cx="12" cy="12" r="2" fill="#d1d5db"/>
+                            <line x1="12" y1="2" x2="12" y2="6" stroke="#d1d5db" stroke-width="1"/>
+                            <line x1="12" y1="18" x2="12" y2="22" stroke="#d1d5db" stroke-width="1"/>
+                        </svg>
+                        <span>5+ years in decentralized finance</span>
+                    </div>
+                </div>
+            </div>
+            <!-- Ethereum Logo Bullets -->
+            <div class="card">
+                <h3>Ethereum Logo Bullets</h3>
+                <div class="style-example">
+                    <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 8px;">
+                        <svg viewBox="0 0 256 417" style="width: 10px; height: 16px; flex-shrink: 0;" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M127.961 0L125.22 9.5L125.22 285.168L127.961 287.958L255.922 212.32L127.961 0Z" fill="#d1d5db" opacity="0.8"/>
+                            <path d="M127.96 0L0 212.32L127.96 287.959L127.96 154.158L127.96 0Z" fill="#d1d5db" opacity="0.6"/>
+                            <path d="M127.961 312.187L126.386 314.108L126.386 406.956L127.961 417L255.922 236.587L127.961 312.187Z" fill="#d1d5db" opacity="0.8"/>
+                            <path d="M127.96 417L127.96 312.187L0 236.587L127.96 417Z" fill="#d1d5db" opacity="0.6"/>
+                            <path d="M127.96 287.958L255.922 212.32L127.96 154.158L127.96 287.958Z" fill="#d1d5db" opacity="0.4"/>
+                            <path d="M0 212.32L127.96 287.958L127.96 154.158L0 212.32Z" fill="#d1d5db" opacity="0.3"/>
+                        </svg>
+                        <span>15+ years in systems architecture</span>
+                    </div>
+                    <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 8px;">
+                        <svg viewBox="0 0 256 417" style="width: 10px; height: 16px; flex-shrink: 0;" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M127.961 0L125.22 9.5L125.22 285.168L127.961 287.958L255.922 212.32L127.961 0Z" fill="#d1d5db" opacity="0.8"/>
+                            <path d="M127.96 0L0 212.32L127.96 287.959L127.96 154.158L127.96 0Z" fill="#d1d5db" opacity="0.6"/>
+                            <path d="M127.961 312.187L126.386 314.108L126.386 406.956L127.961 417L255.922 236.587L127.961 312.187Z" fill="#d1d5db" opacity="0.8"/>
+                            <path d="M127.96 417L127.96 312.187L0 236.587L127.96 417Z" fill="#d1d5db" opacity="0.6"/>
+                            <path d="M127.96 287.958L255.922 212.32L127.96 154.158L127.96 287.958Z" fill="#d1d5db" opacity="0.4"/>
+                            <path d="M0 212.32L127.96 287.958L127.96 154.158L0 212.32Z" fill="#d1d5db" opacity="0.3"/>
+                        </svg>
+                        <span>15+ years in security engineering</span>
+                    </div>
+                    <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 8px;">
+                        <svg viewBox="0 0 256 417" style="width: 10px; height: 16px; flex-shrink: 0;" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M127.961 0L125.22 9.5L125.22 285.168L127.961 287.958L255.922 212.32L127.961 0Z" fill="#d1d5db" opacity="0.8"/>
+                            <path d="M127.96 0L0 212.32L127.96 287.959L127.96 154.158L127.96 0Z" fill="#d1d5db" opacity="0.6"/>
+                            <path d="M127.961 312.187L126.386 314.108L126.386 406.956L127.961 417L255.922 236.587L127.961 312.187Z" fill="#d1d5db" opacity="0.8"/>
+                            <path d="M127.96 417L127.96 312.187L0 236.587L127.96 417Z" fill="#d1d5db" opacity="0.6"/>
+                            <path d="M127.96 287.958L255.922 212.32L127.96 154.158L127.96 287.958Z" fill="#d1d5db" opacity="0.4"/>
+                            <path d="M0 212.32L127.96 287.958L127.96 154.158L0 212.32Z" fill="#d1d5db" opacity="0.3"/>
+                        </svg>
+                        <span>10+ years in digital assets</span>
+                    </div>
+                    <div style="display: flex; align-items: center; gap: 8px;">
+                        <svg viewBox="0 0 256 417" style="width: 10px; height: 16px; flex-shrink: 0;" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M127.961 0L125.22 9.5L125.22 285.168L127.961 287.958L255.922 212.32L127.961 0Z" fill="#d1d5db" opacity="0.8"/>
+                            <path d="M127.96 0L0 212.32L127.96 287.959L127.96 154.158L127.96 0Z" fill="#d1d5db" opacity="0.6"/>
+                            <path d="M127.961 312.187L126.386 314.108L126.386 406.956L127.961 417L255.922 236.587L127.961 312.187Z" fill="#d1d5db" opacity="0.8"/>
+                            <path d="M127.96 417L127.96 312.187L0 236.587L127.96 417Z" fill="#d1d5db" opacity="0.6"/>
+                            <path d="M127.96 287.958L255.922 212.32L127.96 154.158L127.96 287.958Z" fill="#d1d5db" opacity="0.4"/>
+                            <path d="M0 212.32L127.96 287.958L127.96 154.158L0 212.32Z" fill="#d1d5db" opacity="0.3"/>
+                        </svg>
+                        <span>5+ years in decentralized finance</span>
+                    </div>
+                </div>
+            </div>
+            <!-- Category-Specific Icons: Experience -->
+            <div class="card">
+                <h3>Experience Icons</h3>
+                <div class="style-example">
+                    <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 8px;">
+                        <!-- Retro PC/Monitor for systems -->
+                        <svg viewBox="0 0 24 24" style="width: 12px; height: 12px; flex-shrink: 0;" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <rect x="2" y="4" width="20" height="12" rx="2" stroke="#d1d5db" stroke-width="1.5" fill="none"/>
+                            <rect x="4" y="6" width="16" height="8" fill="#d1d5db" opacity="0.3"/>
+                            <rect x="8" y="17" width="8" height="2" rx="1" fill="#d1d5db"/>
+                            <rect x="6" y="19" width="12" height="1" fill="#d1d5db"/>
+                            <circle cx="20" cy="6" r="0.5" fill="#d1d5db"/>
+                            <line x1="6" y1="8" x2="18" y2="8" stroke="#d1d5db" stroke-width="0.5" opacity="0.6"/>
+                            <line x1="6" y1="10" x2="14" y2="10" stroke="#d1d5db" stroke-width="0.5" opacity="0.6"/>
+                            <line x1="6" y1="12" x2="16" y2="12" stroke="#d1d5db" stroke-width="0.5" opacity="0.6"/>
+                        </svg>
+                        <span>15+ years in systems architecture</span>
+                    </div>
+                    <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 8px;">
+                        <!-- Lock for security -->
+                        <svg viewBox="0 0 24 24" style="width: 12px; height: 12px; flex-shrink: 0;" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <rect x="3" y="11" width="18" height="11" rx="2" ry="2" stroke="#d1d5db" stroke-width="1.5"/>
+                            <circle cx="12" cy="16" r="1" fill="#d1d5db"/>
+                            <path d="M7 11V7a5 5 0 0110 0v4" stroke="#d1d5db" stroke-width="1.5"/>
+                        </svg>
+                        <span>15+ years in security engineering</span>
+                    </div>
+                    <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 8px;">
+                        <!-- Bitcoin symbol for digital assets -->
+                        <svg viewBox="0 0 24 24" style="width: 12px; height: 12px; flex-shrink: 0;" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <circle cx="12" cy="12" r="10" stroke="#d1d5db" stroke-width="1.5"/>
+                            <path d="M8 12h8M12 8v8M10 8h4a2 2 0 010 4h-4M10 12h4a2 2 0 010 4h-4" stroke="#d1d5db" stroke-width="1.5"/>
+                        </svg>
+                        <span>10+ years in digital assets</span>
+                    </div>
+                    <div style="display: flex; align-items: center; gap: 8px;">
+                        <!-- Ethereum for DeFi -->
+                        <svg viewBox="0 0 256 417" style="width: 10px; height: 16px; flex-shrink: 0;" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M127.961 0L125.22 9.5L125.22 285.168L127.961 287.958L255.922 212.32L127.961 0Z" fill="#d1d5db" opacity="0.8"/>
+                            <path d="M127.96 0L0 212.32L127.96 287.959L127.96 154.158L127.96 0Z" fill="#d1d5db" opacity="0.6"/>
+                            <path d="M127.961 312.187L126.386 314.108L126.386 406.956L127.961 417L255.922 236.587L127.961 312.187Z" fill="#d1d5db" opacity="0.8"/>
+                            <path d="M127.96 417L127.96 312.187L0 236.587L127.96 417Z" fill="#d1d5db" opacity="0.6"/>
+                            <path d="M127.96 287.958L255.922 212.32L127.96 154.158L127.96 287.958Z" fill="#d1d5db" opacity="0.4"/>
+                            <path d="M0 212.32L127.96 287.958L127.96 154.158L0 212.32Z" fill="#d1d5db" opacity="0.3"/>
+                        </svg>
+                        <span>5+ years in decentralized finance</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Category-Specific Icons: Education -->
+            <div class="card">
+                <h3>Education Icons</h3>
+                <div class="style-example">
+                    <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 8px;">
+                        <!-- Graduation cap -->
+                        <svg viewBox="0 0 24 24" style="width: 12px; height: 12px; flex-shrink: 0;" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M22 10v6M6 12l-2-2v10l2-2 6 2 6-2 2 2V10l-2-2-6 2-6-2z" stroke="#d1d5db" stroke-width="1.5"/>
+                            <path d="M2 7l10-4 10 4-10 4z" stroke="#d1d5db" stroke-width="1.5"/>
+                            <path d="M6 12v7c0 1 4 2 6 2s6-1 6-2v-7" stroke="#d1d5db" stroke-width="1.5"/>
+                        </svg>
+                        <span>BSc. Information Technology</span>
+                    </div>
+                    <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 8px;">
+                        <!-- Lock for security -->
+                        <svg viewBox="0 0 24 24" style="width: 12px; height: 12px; flex-shrink: 0;" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <rect x="3" y="11" width="18" height="11" rx="2" ry="2" stroke="#d1d5db" stroke-width="1.5"/>
+                            <circle cx="12" cy="16" r="1" fill="#d1d5db"/>
+                            <path d="M7 11V7a5 5 0 0110 0v4" stroke="#d1d5db" stroke-width="1.5"/>
+                        </svg>
+                        <span>security specialization</span>
+                    </div>
+                    <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 8px;">
+                        <!-- Key for cryptography -->
+                        <svg viewBox="0 0 24 24" style="width: 12px; height: 12px; flex-shrink: 0;" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <circle cx="7" cy="7" r="3" stroke="#d1d5db" stroke-width="1.5"/>
+                            <path d="M10 10l11 11M15 15l-2-2m2 0l-2 2" stroke="#d1d5db" stroke-width="1.5"/>
+                        </svg>
+                        <span>cryptography focus</span>
+                    </div>
+                    <div style="display: flex; align-items: center; gap: 8px;">
+                        <!-- Ethereum for decentralized systems -->
+                        <svg viewBox="0 0 256 417" style="width: 10px; height: 16px; flex-shrink: 0;" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M127.961 0L125.22 9.5L125.22 285.168L127.961 287.958L255.922 212.32L127.961 0Z" fill="#d1d5db" opacity="0.8"/>
+                            <path d="M127.96 0L0 212.32L127.96 287.959L127.96 154.158L127.96 0Z" fill="#d1d5db" opacity="0.6"/>
+                            <path d="M127.961 312.187L126.386 314.108L126.386 406.956L127.961 417L255.922 236.587L127.961 312.187Z" fill="#d1d5db" opacity="0.8"/>
+                            <path d="M127.96 417L127.96 312.187L0 236.587L127.96 417Z" fill="#d1d5db" opacity="0.6"/>
+                            <path d="M127.96 287.958L255.922 212.32L127.96 154.158L127.96 287.958Z" fill="#d1d5db" opacity="0.4"/>
+                            <path d="M0 212.32L127.96 287.958L127.96 154.158L0 212.32Z" fill="#d1d5db" opacity="0.3"/>
+                        </svg>
+                        <span>decentralized systems</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Category-Specific Icons: Expertise -->
+            <div class="card">
+                <h3>Expertise Icons</h3>
+                <div class="style-example">
+                    <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 8px;">
+                        <!-- Lock for traditional security -->
+                        <svg viewBox="0 0 24 24" style="width: 12px; height: 12px; flex-shrink: 0;" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <rect x="3" y="11" width="18" height="11" rx="2" ry="2" stroke="#d1d5db" stroke-width="1.5"/>
+                            <circle cx="12" cy="16" r="1" fill="#d1d5db"/>
+                            <path d="M7 11V7a5 5 0 0110 0v4" stroke="#d1d5db" stroke-width="1.5"/>
+                        </svg>
+                        <span>traditional security practices</span>
+                    </div>
+                    <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 8px;">
+                        <!-- Web3/Cube for emerging tech -->
+                        <svg viewBox="0 0 24 24" style="width: 12px; height: 12px; flex-shrink: 0;" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M21 16V8a2 2 0 00-1-1.73l-7-4a2 2 0 00-2 0l-7 4A2 2 0 003 8v8a2 2 0 001 1.73l7 4a2 2 0 002 0l7-4A2 2 0 0021 16z" stroke="#d1d5db" stroke-width="1.5"/>
+                            <polyline points="7.5,4.21 12,6.81 16.5,4.21" stroke="#d1d5db" stroke-width="1.5"/>
+                            <polyline points="7.5,19.79 7.5,14.6 3,12" stroke="#d1d5db" stroke-width="1.5"/>
+                            <polyline points="21,12 16.5,14.6 16.5,19.79" stroke="#d1d5db" stroke-width="1.5"/>
+                            <polyline points="12,22.81 12,17" stroke="#d1d5db" stroke-width="1.5"/>
+                            <line x1="12" y1="6.81" x2="12" y2="12" stroke="#d1d5db" stroke-width="1.5"/>
+                        </svg>
+                        <span>emerging Web3 technologies</span>
+                    </div>
+                    <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 8px;">
+                        <!-- Analysis/Chart -->
+                        <svg viewBox="0 0 24 24" style="width: 12px; height: 12px; flex-shrink: 0;" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <polyline points="22,12 18,12 15,21 9,3 6,12 2,12" stroke="#d1d5db" stroke-width="1.5"/>
+                        </svg>
+                        <span>DeFi protocol analysis</span>
+                    </div>
+                    <div style="display: flex; align-items: center; gap: 8px;">
+                        <!-- Lock for security-first -->
+                        <svg viewBox="0 0 24 24" style="width: 12px; height: 12px; flex-shrink: 0;" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <rect x="3" y="11" width="18" height="11" rx="2" ry="2" stroke="#d1d5db" stroke-width="1.5"/>
+                            <circle cx="12" cy="16" r="1" fill="#d1d5db"/>
+                            <path d="M7 11V7a5 5 0 0110 0v4" stroke="#d1d5db" stroke-width="1.5"/>
+                        </svg>
+                        <span>security-first approach</span>
+                    </div>
+                </div>
+            </div>
+            <!-- Modern Artsy Style -->
+            <div class="card">
+                <h3>Modern Artsy</h3>
+                <div class="style-example">
+                    <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 8px;">
+                        <!-- Geometric diamond -->
+                        <svg viewBox="0 0 24 24" style="width: 12px; height: 12px; flex-shrink: 0;" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M12 2L17 7L12 12L7 7Z" fill="#d1d5db" opacity="0.8"/>
+                            <path d="M12 12L17 7L22 12L17 17Z" fill="#d1d5db" opacity="0.5"/>
+                            <path d="M12 12L7 17L12 22L17 17Z" fill="#d1d5db" opacity="0.6"/>
+                            <path d="M12 12L7 7L2 12L7 17Z" fill="#d1d5db" opacity="0.4"/>
+                        </svg>
+                        <span>15+ years in systems architecture</span>
+                    </div>
+                    <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 8px;">
+                        <!-- Abstract circle pattern -->
+                        <svg viewBox="0 0 24 24" style="width: 12px; height: 12px; flex-shrink: 0;" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <circle cx="12" cy="12" r="8" stroke="#d1d5db" stroke-width="1" opacity="0.3"/>
+                            <circle cx="12" cy="12" r="5" stroke="#d1d5db" stroke-width="1.5" opacity="0.6"/>
+                            <circle cx="12" cy="12" r="2" fill="#d1d5db" opacity="0.8"/>
+                            <circle cx="8" cy="8" r="1" fill="#d1d5db" opacity="0.5"/>
+                            <circle cx="16" cy="16" r="1" fill="#d1d5db" opacity="0.5"/>
+                        </svg>
+                        <span>15+ years in security engineering</span>
+                    </div>
+                    <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 8px;">
+                        <!-- Minimalist squares -->
+                        <svg viewBox="0 0 24 24" style="width: 12px; height: 12px; flex-shrink: 0;" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <rect x="6" y="6" width="4" height="4" fill="#d1d5db" opacity="0.8"/>
+                            <rect x="14" y="6" width="4" height="4" fill="#d1d5db" opacity="0.5"/>
+                            <rect x="6" y="14" width="4" height="4" fill="#d1d5db" opacity="0.4"/>
+                            <rect x="14" y="14" width="4" height="4" fill="#d1d5db" opacity="0.6"/>
+                        </svg>
+                        <span>10+ years in digital assets</span>
+                    </div>
+                    <div style="display: flex; align-items: center; gap: 8px;">
+                        <!-- Flowing lines -->
+                        <svg viewBox="0 0 24 24" style="width: 12px; height: 12px; flex-shrink: 0;" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M2 12C6 8 10 4 12 12C14 20 18 16 22 12" stroke="#d1d5db" stroke-width="1.5" opacity="0.7"/>
+                            <path d="M2 16C6 12 10 8 12 16C14 24 18 20 22 16" stroke="#d1d5db" stroke-width="1" opacity="0.4"/>
+                            <circle cx="12" cy="12" r="1.5" fill="#d1d5db" opacity="0.8"/>
+                        </svg>
+                        <span>5+ years in decentralized finance</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Cyberpunk Style -->
+            <div class="card">
+                <h3>Cyberpunk</h3>
+                <div class="style-example">
+                    <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 8px;">
+                        <!-- Hexagon with inner pattern -->
+                        <svg viewBox="0 0 24 24" style="width: 12px; height: 12px; flex-shrink: 0;" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M12 2L22 8L22 16L12 22L2 16L2 8Z" stroke="#d1d5db" stroke-width="1.5"/>
+                            <path d="M12 6L18 9.5L18 14.5L12 18L6 14.5L6 9.5Z" stroke="#d1d5db" stroke-width="1" opacity="0.6"/>
+                            <circle cx="12" cy="12" r="1" fill="#d1d5db"/>
+                            <line x1="12" y1="2" x2="12" y2="6" stroke="#d1d5db" stroke-width="1"/>
+                        </svg>
+                        <span>15+ years in systems architecture</span>
+                    </div>
+                    <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 8px;">
+                        <!-- Circuit pattern -->
+                        <svg viewBox="0 0 24 24" style="width: 12px; height: 12px; flex-shrink: 0;" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <rect x="8" y="8" width="8" height="8" stroke="#d1d5db" stroke-width="1"/>
+                            <rect x="10" y="10" width="4" height="4" fill="#d1d5db" opacity="0.6"/>
+                            <line x1="4" y1="12" x2="8" y2="12" stroke="#d1d5db" stroke-width="1"/>
+                            <line x1="16" y1="12" x2="20" y2="12" stroke="#d1d5db" stroke-width="1"/>
+                            <line x1="12" y1="4" x2="12" y2="8" stroke="#d1d5db" stroke-width="1"/>
+                            <line x1="12" y1="16" x2="12" y2="20" stroke="#d1d5db" stroke-width="1"/>
+                            <circle cx="4" cy="12" r="1" fill="#d1d5db"/>
+                            <circle cx="20" cy="12" r="1" fill="#d1d5db"/>
+                        </svg>
+                        <span>15+ years in security engineering</span>
+                    </div>
+                    <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 8px;">
+                        <!-- Digital grid -->
+                        <svg viewBox="0 0 24 24" style="width: 12px; height: 12px; flex-shrink: 0;" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <rect x="3" y="3" width="18" height="18" stroke="#d1d5db" stroke-width="1" opacity="0.4"/>
+                            <line x1="9" y1="3" x2="9" y2="21" stroke="#d1d5db" stroke-width="0.5" opacity="0.6"/>
+                            <line x1="15" y1="3" x2="15" y2="21" stroke="#d1d5db" stroke-width="0.5" opacity="0.6"/>
+                            <line x1="3" y1="9" x2="21" y2="9" stroke="#d1d5db" stroke-width="0.5" opacity="0.6"/>
+                            <line x1="3" y1="15" x2="21" y2="15" stroke="#d1d5db" stroke-width="0.5" opacity="0.6"/>
+                            <rect x="6" y="12" width="3" height="3" fill="#d1d5db" opacity="0.8"/>
+                            <rect x="15" y="6" width="3" height="3" fill="#d1d5db" opacity="0.6"/>
+                        </svg>
+                        <span>10+ years in digital assets</span>
+                    </div>
+                    <div style="display: flex; align-items: center; gap: 8px;">
+                        <!-- Neural network -->
+                        <svg viewBox="0 0 24 24" style="width: 12px; height: 12px; flex-shrink: 0;" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <circle cx="6" cy="6" r="1.5" fill="#d1d5db" opacity="0.8"/>
+                            <circle cx="18" cy="6" r="1.5" fill="#d1d5db" opacity="0.8"/>
+                            <circle cx="6" cy="18" r="1.5" fill="#d1d5db" opacity="0.8"/>
+                            <circle cx="18" cy="18" r="1.5" fill="#d1d5db" opacity="0.8"/>
+                            <circle cx="12" cy="12" r="2" fill="#d1d5db" opacity="0.9"/>
+                            <line x1="6" y1="6" x2="12" y2="12" stroke="#d1d5db" stroke-width="0.8" opacity="0.5"/>
+                            <line x1="18" y1="6" x2="12" y2="12" stroke="#d1d5db" stroke-width="0.8" opacity="0.5"/>
+                            <line x1="6" y1="18" x2="12" y2="12" stroke="#d1d5db" stroke-width="0.8" opacity="0.5"/>
+                            <line x1="18" y1="18" x2="12" y2="12" stroke="#d1d5db" stroke-width="0.8" opacity="0.5"/>
+                        </svg>
+                        <span>5+ years in decentralized finance</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Retro Nerdy Style -->
+            <div class="card">
+                <h3>Retro Nerdy</h3>
+                <div class="style-example">
+                    <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 8px;">
+                        <!-- 8-bit pixel icon -->
+                        <svg viewBox="0 0 24 24" style="width: 12px; height: 12px; flex-shrink: 0;" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <rect x="6" y="6" width="3" height="3" fill="#d1d5db" opacity="0.8"/>
+                            <rect x="9" y="6" width="3" height="3" fill="#d1d5db" opacity="0.6"/>
+                            <rect x="12" y="6" width="3" height="3" fill="#d1d5db" opacity="0.8"/>
+                            <rect x="6" y="9" width="3" height="3" fill="#d1d5db" opacity="0.6"/>
+                            <rect x="9" y="9" width="3" height="3" fill="#d1d5db" opacity="0.9"/>
+                            <rect x="12" y="9" width="3" height="3" fill="#d1d5db" opacity="0.6"/>
+                            <rect x="6" y="12" width="3" height="3" fill="#d1d5db" opacity="0.8"/>
+                            <rect x="9" y="12" width="3" height="3" fill="#d1d5db" opacity="0.6"/>
+                            <rect x="12" y="12" width="3" height="3" fill="#d1d5db" opacity="0.8"/>
+                        </svg>
+                        <span>15+ years in systems architecture</span>
+                    </div>
+                    <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 8px;">
+                        <!-- Terminal cursor -->
+                        <svg viewBox="0 0 24 24" style="width: 12px; height: 12px; flex-shrink: 0;" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <rect x="4" y="8" width="16" height="8" stroke="#d1d5db" stroke-width="1" opacity="0.5"/>
+                            <line x1="6" y1="10" x2="10" y2="10" stroke="#d1d5db" stroke-width="1"/>
+                            <line x1="6" y1="12" x2="8" y2="12" stroke="#d1d5db" stroke-width="1"/>
+                            <rect x="10" y="13" width="1" height="2" fill="#d1d5db" opacity="0.8"/>
+                            <circle cx="18" cy="12" r="1" fill="#d1d5db" opacity="0.6"/>
+                        </svg>
+                        <span>15+ years in security engineering</span>
+                    </div>
+                    <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 8px;">
+                        <!-- Floppy disk -->
+                        <svg viewBox="0 0 24 24" style="width: 12px; height: 12px; flex-shrink: 0;" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <rect x="5" y="4" width="14" height="16" rx="1" stroke="#d1d5db" stroke-width="1"/>
+                            <rect x="7" y="6" width="10" height="6" fill="#d1d5db" opacity="0.3"/>
+                            <rect x="8" y="14" width="8" height="4" fill="#d1d5db" opacity="0.6"/>
+                            <rect x="16" y="4" width="2" height="4" fill="#d1d5db" opacity="0.8"/>
+                            <circle cx="12" cy="16" r="1" fill="#d1d5db" opacity="0.8"/>
+                        </svg>
+                        <span>10+ years in digital assets</span>
+                    </div>
+                    <div style="display: flex; align-items: center; gap: 8px;">
+                        <!-- ASCII-style pattern -->
+                        <svg viewBox="0 0 24 24" style="width: 12px; height: 12px; flex-shrink: 0;" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <text x="6" y="10" font-family="monospace" font-size="4" fill="#d1d5db" opacity="0.8">∞</text>
+                            <text x="12" y="10" font-family="monospace" font-size="4" fill="#d1d5db" opacity="0.6">◊</text>
+                            <text x="6" y="16" font-family="monospace" font-size="4" fill="#d1d5db" opacity="0.6">∆</text>
+                            <text x="12" y="16" font-family="monospace" font-size="4" fill="#d1d5db" opacity="0.8">○</text>
+                        </svg>
+                        <span>5+ years in decentralized finance</span>
+                    </div>
+                </div>
+            </div>
+            <!-- Modern Sleek Card Style -->
+            <div class="card" style="background: linear-gradient(135deg, rgba(17, 24, 39, 0.8) 0%, rgba(31, 41, 55, 0.6) 100%); border: none; border-left: 3px solid #10b981;">
+                <h3 style="color: #10b981; text-transform: uppercase; letter-spacing: 2px; font-size: 14px;">Modern Sleek</h3>
+                <div class="style-example">
+                    <div style="padding: 8px 0; border-bottom: 1px solid rgba(107, 114, 128, 0.2);">→ 15+ years in systems architecture</div>
+                    <div style="padding: 8px 0; border-bottom: 1px solid rgba(107, 114, 128, 0.2);">→ 15+ years in security engineering</div>
+                    <div style="padding: 8px 0; border-bottom: 1px solid rgba(107, 114, 128, 0.2);">→ 10+ years in digital assets</div>
+                    <div style="padding: 8px 0;">→ 5+ years in decentralized finance</div>
+                </div>
+            </div>
+
+            <!-- Cyberpunk Neon Style -->
+            <div class="card" style="background: rgba(0, 0, 0, 0.8); border: 1px solid #ff0080; box-shadow: 0 0 20px rgba(255, 0, 128, 0.3);">
+                <h3 style="color: #00ffff; text-shadow: 0 0 10px #00ffff; font-family: 'Courier New', monospace; text-transform: uppercase;">Cyberpunk Neon</h3>
+                <div class="style-example" style="color: #00ff80;">
+                    <div style="margin: 6px 0; text-shadow: 0 0 5px #00ff80;">&gt; 15+ years in systems architecture</div>
+                    <div style="margin: 6px 0; text-shadow: 0 0 5px #00ff80;">&gt; 15+ years in security engineering</div>
+                    <div style="margin: 6px 0; text-shadow: 0 0 5px #00ff80;">&gt; 10+ years in digital assets</div>
+                    <div style="margin: 6px 0; text-shadow: 0 0 5px #00ff80;">&gt; 5+ years in decentralized finance</div>
+                </div>
+            </div>
+
+            <!-- Terminal/Console Style -->
+            <div class="card" style="background: #000; border: 2px solid #00ff00; font-family: 'Courier New', monospace;">
+                <h3 style="color: #00ff00; margin: 0 0 10px 0;">user@raiki:~$ cat experience.txt</h3>
+                <div class="style-example" style="color: #00ff00; font-size: 12px; line-height: 1.4;">
+                    <div style="margin: 2px 0;">systems_architecture: 15+ years</div>
+                    <div style="margin: 2px 0;">security_engineering: 15+ years</div>
+                    <div style="margin: 2px 0;">digital_assets: 10+ years</div>
+                    <div style="margin: 2px 0;">defi: 5+ years</div>
+                    <div style="margin: 10px 0 0 0; opacity: 0.7;">user@raiki:~$ █</div>
+                </div>
+            </div>
+
+            <!-- Minimalist Card Style -->
+            <div class="card" style="background: rgba(255, 255, 255, 0.02); border: none; border-radius: 0; box-shadow: none;">
+                <h3 style="color: #ffffff; font-weight: 300; font-size: 16px; margin-bottom: 20px; border-bottom: 1px solid rgba(255, 255, 255, 0.1); padding-bottom: 8px;">minimalist</h3>
+                <div class="style-example" style="color: rgba(255, 255, 255, 0.8); font-weight: 300;">
+                    <div style="margin: 12px 0; padding-left: 20px; position: relative;">
+                        <span style="position: absolute; left: 0; color: rgba(255, 255, 255, 0.4);">—</span>
+                        15+ years in systems architecture
+                    </div>
+                    <div style="margin: 12px 0; padding-left: 20px; position: relative;">
+                        <span style="position: absolute; left: 0; color: rgba(255, 255, 255, 0.4);">—</span>
+                        15+ years in security engineering
+                    </div>
+                    <div style="margin: 12px 0; padding-left: 20px; position: relative;">
+                        <span style="position: absolute; left: 0; color: rgba(255, 255, 255, 0.4);">—</span>
+                        10+ years in digital assets
+                    </div>
+                    <div style="margin: 12px 0; padding-left: 20px; position: relative;">
+                        <span style="position: absolute; left: 0; color: rgba(255, 255, 255, 0.4);">—</span>
+                        5+ years in decentralized finance
+                    </div>
+                </div>
+            </div>
+
+            <!-- Matrix Code Style -->
+            <div class="card" style="background: rgba(0, 20, 0, 0.9); border: 1px solid #00ff00; font-family: 'Courier New', monospace;">
+                <h3 style="color: #00ff00; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 15px;">[ EXPERIENCE.DAT ]</h3>
+                <div class="style-example" style="color: #00ff00; font-size: 13px;">
+                    <div style="margin: 4px 0; opacity: 0.9;">[01] systems_architecture.exe :: 15+ years</div>
+                    <div style="margin: 4px 0; opacity: 0.8;">[02] security_protocol.exe :: 15+ years</div>
+                    <div style="margin: 4px 0; opacity: 0.7;">[03] digital_assets.dll :: 10+ years</div>
+                    <div style="margin: 4px 0; opacity: 0.6;">[04] defi_network.sys :: 5+ years</div>
+                    <div style="margin: 10px 0 0 0; color: rgba(0, 255, 0, 0.4); font-size: 11px;">STATUS: LOADED ✓</div>
+                </div>
+            </div>
+
+            <!-- Retro 80s Style -->
+            <div class="card" style="background: linear-gradient(45deg, #ff006e, #8338ec, #3a86ff); padding: 2px;">
+                <div style="background: rgba(0, 0, 0, 0.8); padding: 18px; height: 100%; box-sizing: border-box;">
+                    <h3 style="color: #ff006e; text-transform: uppercase; font-weight: bold; text-shadow: 2px 2px 0px #8338ec; margin-bottom: 15px;">RETRO 80s</h3>
+                    <div class="style-example" style="color: #00f5ff;">
+                        <div style="margin: 6px 0; text-shadow: 1px 1px 0px #ff006e;">▶ 15+ years in systems architecture</div>
+                        <div style="margin: 6px 0; text-shadow: 1px 1px 0px #ff006e;">▶ 15+ years in security engineering</div>
+                        <div style="margin: 6px 0; text-shadow: 1px 1px 0px #ff006e;">▶ 10+ years in digital assets</div>
+                        <div style="margin: 6px 0; text-shadow: 1px 1px 0px #ff006e;">▶ 5+ years in decentralized finance</div>
+                    </div>
+                </div>
+            </div>
+            <!-- Clean Minimal White -->
+            <div class="card" style="background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.1); backdrop-filter: blur(10px);">
+                <h3 style="color: #ffffff; font-weight: 200; font-size: 18px; margin-bottom: 24px; letter-spacing: 3px;">CLEAN</h3>
+                <div class="style-example" style="color: rgba(255, 255, 255, 0.9); font-weight: 300; line-height: 2;">
+                    <div style="margin: 16px 0;">15+ years in systems architecture</div>
+                    <div style="margin: 16px 0;">15+ years in security engineering</div>
+                    <div style="margin: 16px 0;">10+ years in digital assets</div>
+                    <div style="margin: 16px 0;">5+ years in decentralized finance</div>
+                </div>
+            </div>
+
+            <!-- Cool Modern Geeky -->
+            <div class="card" style="background: linear-gradient(145deg, #1e293b, #334155); border: 1px solid #64748b; position: relative; overflow: hidden;">
+                <div style="position: absolute; top: -50%; right: -50%; width: 100%; height: 100%; background: radial-gradient(circle, rgba(59, 130, 246, 0.1) 0%, transparent 70%);"></div>
+                <h3 style="color: #60a5fa; font-family: 'Courier New', monospace; font-size: 16px; margin-bottom: 16px; position: relative; z-index: 1;">// SKILLS.JSON</h3>
+                <div class="style-example" style="color: #e2e8f0; font-family: 'Courier New', monospace; font-size: 13px; position: relative; z-index: 1;">
+                    <div style="margin: 6px 0;">  "systems": { "years": 15, "level": "expert" }</div>
+                    <div style="margin: 6px 0;">  "security": { "years": 15, "level": "expert" }</div>
+                    <div style="margin: 6px 0;">  "digital_assets": { "years": 10, "level": "advanced" }</div>
+                    <div style="margin: 6px 0;">  "defi": { "years": 5, "level": "proficient" }</div>
+                </div>
+            </div>
+
+            <!-- Nerdy ASCII -->
+            <div class="card" style="background: #0d1117; border: 2px solid #21262d; font-family: 'Courier New', monospace;">
+                <h3 style="color: #58a6ff; margin-bottom: 16px; font-size: 14px;">╔══════ PROFILE.DAT ══════╗</h3>
+                <div class="style-example" style="color: #8b949e; font-size: 12px; line-height: 1.6;">
+                    <div style="margin: 4px 0;">├─ systems_arch......15y ████████████████ 100%</div>
+                    <div style="margin: 4px 0;">├─ security_eng......15y ████████████████ 100%</div>
+                    <div style="margin: 4px 0;">├─ digital_assets....10y ████████████░░░░  75%</div>
+                    <div style="margin: 4px 0;">└─ defi_protocols.....5y ████████░░░░░░░░  50%</div>
+                    <div style="margin: 8px 0 0 0; color: #58a6ff;">╚═══════════════════════╝</div>
+                </div>
+            </div>
+
+            <!-- Techy Matrix Green -->
+            <div class="card" style="background: linear-gradient(0deg, #001100, #003300); border: 1px solid #00ff41; position: relative;">
+                <div style="position: absolute; inset: 0; background: repeating-linear-gradient(90deg, transparent, transparent 1px, rgba(0, 255, 65, 0.03) 1px, rgba(0, 255, 65, 0.03) 2px); pointer-events: none;"></div>
+                <h3 style="color: #00ff41; font-family: 'Courier New', monospace; text-transform: uppercase; margin-bottom: 16px; text-shadow: 0 0 5px #00ff41; position: relative;">NEURAL.LINK</h3>
+                <div class="style-example" style="color: #00ff41; font-family: 'Courier New', monospace; font-size: 13px; position: relative;">
+                    <div style="margin: 5px 0; text-shadow: 0 0 3px #00ff41; opacity: 0.9;">&gt;&gt; architecture.core :: ONLINE [15y]</div>
+                    <div style="margin: 5px 0; text-shadow: 0 0 3px #00ff41; opacity: 0.8;">&gt;&gt; security.shield :: ONLINE [15y]</div>
+                    <div style="margin: 5px 0; text-shadow: 0 0 3px #00ff41; opacity: 0.7;">&gt;&gt; assets.wallet :: ACTIVE [10y]</div>
+                    <div style="margin: 5px 0; text-shadow: 0 0 3px #00ff41; opacity: 0.6;">&gt;&gt; defi.protocol :: SYNC [5y]</div>
+                </div>
+            </div>
+
+            <!-- Glitch Style -->
+            <div class="card" style="background: #000; border: 2px solid #ff0040; position: relative; animation: glitch-border 2s infinite;">
+                <h3 style="color: #00ffff; font-family: 'Courier New', monospace; text-transform: uppercase; margin-bottom: 16px; position: relative; animation: glitch-text 3s infinite;">ERR0R_C0DE</h3>
+                <div class="style-example" style="color: #ff0040; font-family: 'Courier New', monospace; font-size: 13px;">
+                    <div style="margin: 6px 0; position: relative; animation: glitch-line 4s infinite 0.5s;">▰▰▰ SYSTEMS: 15 YEARS</div>
+                    <div style="margin: 6px 0; position: relative; animation: glitch-line 4s infinite 1s;">▰▰▰ SECURITY: 15 YEARS</div>
+                    <div style="margin: 6px 0; position: relative; animation: glitch-line 4s infinite 1.5s;">▰▰▰ DIGITAL: 10 YEARS</div>
+                    <div style="margin: 6px 0; position: relative; animation: glitch-line 4s infinite 2s;">▰▰▰ DEFI: 5 YEARS</div>
+                </div>
+                <style>
+                    @keyframes glitch-border { 0%, 100% { border-color: #ff0040; } 50% { border-color: #00ffff; } }
+                    @keyframes glitch-text { 0%, 90%, 100% { transform: translate(0); } 95% { transform: translate(2px, -1px); } }
+                    @keyframes glitch-line { 0%, 95%, 100% { transform: translate(0); } 97% { transform: translate(-1px, 1px); } }
+                </style>
+            </div>
+
+            <!-- Corporate Clean -->
+            <div class="card" style="background: linear-gradient(135deg, rgba(248, 250, 252, 0.05), rgba(241, 245, 249, 0.03)); border: 1px solid rgba(148, 163, 184, 0.3);">
+                <h3 style="color: #cbd5e1; font-weight: 600; font-size: 16px; margin-bottom: 20px; text-transform: uppercase; letter-spacing: 1px;">Experience Overview</h3>
+                <div class="style-example" style="color: #e2e8f0; line-height: 1.8;">
+                    <div style="margin: 12px 0; padding: 8px 0; border-left: 3px solid #3b82f6; padding-left: 12px;">Systems Architecture • 15+ Years</div>
+                    <div style="margin: 12px 0; padding: 8px 0; border-left: 3px solid #10b981; padding-left: 12px;">Security Engineering • 15+ Years</div>
+                    <div style="margin: 12px 0; padding: 8px 0; border-left: 3px solid #f59e0b; padding-left: 12px;">Digital Assets • 10+ Years</div>
+                    <div style="margin: 12px 0; padding: 8px 0; border-left: 3px solid #8b5cf6; padding-left: 12px;">Decentralized Finance • 5+ Years</div>
+                </div>
+            </div>
+
+            <!-- Pixel Art Retro -->
+            <div class="card" style="background: #2d2d2d; border: 3px solid #00ff00; image-rendering: pixelated;">
+                <h3 style="color: #00ff00; font-family: 'Courier New', monospace; font-size: 14px; margin-bottom: 16px;">PLAYER_STATS.DAT</h3>
+                <div class="style-example" style="color: #ffffff; font-family: 'Courier New', monospace; font-size: 12px;">
+                    <div style="margin: 6px 0;">STR: ██████████████████████ 15 LVL</div>
+                    <div style="margin: 6px 0;">DEF: ██████████████████████ 15 LVL</div>
+                    <div style="margin: 6px 0;">INT: ████████████████░░░░░░ 10 LVL</div>
+                    <div style="margin: 6px 0;">AGI: ██████████░░░░░░░░░░░░  5 LVL</div>
+                    <div style="margin: 10px 0 0 0; color: #ffff00; font-size: 10px;">EXP: 12,847,293 / ∞</div>
+                </div>
+            </div>
+
+            <!-- Holographic -->
+            <div class="card" style="background: linear-gradient(45deg, rgba(147, 51, 234, 0.1), rgba(59, 130, 246, 0.1), rgba(16, 185, 129, 0.1)); border: 1px solid transparent; background-clip: padding-box; position: relative;">
+                <div style="position: absolute; inset: 0; padding: 1px; background: linear-gradient(45deg, #9333ea, #3b82f6, #10b981); border-radius: inherit; mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0); mask-composite: exclude; -webkit-mask-composite: xor;"></div>
+                <h3 style="color: transparent; background: linear-gradient(45deg, #9333ea, #3b82f6, #10b981); background-clip: text; -webkit-background-clip: text; font-weight: bold; margin-bottom: 16px; position: relative;">HOLOGRAPHIC</h3>
+                <div class="style-example" style="color: #e5e7eb; position: relative;">
+                    <div style="margin: 10px 0; background: linear-gradient(90deg, rgba(147, 51, 234, 0.1), transparent); padding: 6px 0;">◊ 15+ years in systems architecture</div>
+                    <div style="margin: 10px 0; background: linear-gradient(90deg, rgba(59, 130, 246, 0.1), transparent); padding: 6px 0;">◊ 15+ years in security engineering</div>
+                    <div style="margin: 10px 0; background: linear-gradient(90deg, rgba(16, 185, 129, 0.1), transparent); padding: 6px 0;">◊ 10+ years in digital assets</div>
+                    <div style="margin: 10px 0; background: linear-gradient(90deg, rgba(251, 191, 36, 0.1), transparent); padding: 6px 0;">◊ 5+ years in decentralized finance</div>
+                </div>
+            </div>
+
+            <!-- Dark Academia -->
+            <div class="card" style="background: linear-gradient(135deg, #1c1917, #292524); border: 2px solid #a8a29e; box-shadow: inset 0 2px 4px rgba(0,0,0,0.3);">
+                <h3 style="color: #d6d3d1; font-family: serif; font-style: italic; font-size: 18px; margin-bottom: 18px; border-bottom: 1px solid #57534e; padding-bottom: 8px;">Scholarly Pursuits</h3>
+                <div class="style-example" style="color: #a8a29e; font-family: serif; line-height: 1.7;">
+                    <div style="margin: 12px 0; position: relative; padding-left: 16px;">
+                        <span style="position: absolute; left: 0; color: #78716c;">‡</span>
+                        Fifteen years devoted to systems architecture
+                    </div>
+                    <div style="margin: 12px 0; position: relative; padding-left: 16px;">
+                        <span style="position: absolute; left: 0; color: #78716c;">‡</span>
+                        Fifteen years mastering security engineering
+                    </div>
+                    <div style="margin: 12px 0; position: relative; padding-left: 16px;">
+                        <span style="position: absolute; left: 0; color: #78716c;">‡</span>
+                        A decade exploring digital assets
+                    </div>
+                    <div style="margin: 12px 0; position: relative; padding-left: 16px;">
+                        <span style="position: absolute; left: 0; color: #78716c;">‡</span>
+                        Five years in decentralized finance
+                    </div>
+                </div>
+            </div>
+
+            <!-- Brutalist -->
+            <div class="card" style="background: #000; border: 4px solid #fff; box-shadow: 8px 8px 0px #ff0000;">
+                <h3 style="color: #fff; font-weight: 900; font-size: 20px; margin-bottom: 16px; text-transform: uppercase; letter-spacing: 2px; background: #ff0000; padding: 4px 8px; margin: -6px -6px 16px -6px;">BRUTAL</h3>
+                <div class="style-example" style="color: #fff; font-weight: bold; font-size: 14px;">
+                    <div style="margin: 8px 0; background: #333; padding: 8px; border-left: 4px solid #ff0000;">SYSTEMS: 15 YEARS</div>
+                    <div style="margin: 8px 0; background: #333; padding: 8px; border-left: 4px solid #00ff00;">SECURITY: 15 YEARS</div>
+                    <div style="margin: 8px 0; background: #333; padding: 8px; border-left: 4px solid #0066ff;">DIGITAL: 10 YEARS</div>
+                    <div style="margin: 8px 0; background: #333; padding: 8px; border-left: 4px solid #ffff00;">DEFI: 5 YEARS</div>
+                </div>
+            </div>
+
+            <!-- Vaporwave -->
+            <div class="card" style="background: linear-gradient(180deg, #ff006e, #8338ec, #3a86ff); position: relative;">
+                <div style="position: absolute; inset: 0; background: repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0,0,0,0.1) 2px, rgba(0,0,0,0.1) 4px);"></div>
+                <h3 style="color: #00f5ff; font-family: 'Courier New', monospace; text-transform: uppercase; font-weight: bold; margin-bottom: 16px; text-shadow: 2px 2px 0px #ff006e, 4px 4px 0px #8338ec; position: relative; letter-spacing: 3px;">VAPOR</h3>
+                <div class="style-example" style="color: #ffffff; font-family: 'Courier New', monospace; position: relative;">
+                    <div style="margin: 8px 0; text-shadow: 1px 1px 0px #ff006e;">▲ systems 15+ years</div>
+                    <div style="margin: 8px 0; text-shadow: 1px 1px 0px #8338ec;">▲ security 15+ years</div>
+                    <div style="margin: 8px 0; text-shadow: 1px 1px 0px #3a86ff;">▲ digital 10+ years</div>
+                    <div style="margin: 8px 0; text-shadow: 1px 1px 0px #ff006e;">▲ defi 5+ years</div>
+                </div>
+            </div>
+
+            <!-- Steampunk -->
+            <div class="card" style="background: radial-gradient(circle, #8b4513, #654321); border: 3px solid #cd853f; position: relative;">
+                <div style="position: absolute; top: 8px; right: 8px; width: 16px; height: 16px; border: 2px solid #cd853f; border-radius: 50%; background: radial-gradient(circle, #ffd700, #b8860b);"></div>
+                <h3 style="color: #ffd700; font-family: serif; font-style: italic; margin-bottom: 16px; text-shadow: 1px 1px 2px #000;">⚙ Mechanical Expertise ⚙</h3>
+                <div class="style-example" style="color: #deb887; font-family: serif;">
+                    <div style="margin: 10px 0; position: relative; padding-left: 20px;">
+                        <span style="position: absolute; left: 0; color: #cd853f;">⚙</span>
+                        Systems Architecture: XV Years
+                    </div>
+                    <div style="margin: 10px 0; position: relative; padding-left: 20px;">
+                        <span style="position: absolute; left: 0; color: #cd853f;">⚡</span>
+                        Security Engineering: XV Years
+                    </div>
+                    <div style="margin: 10px 0; position: relative; padding-left: 20px;">
+                        <span style="position: absolute; left: 0; color: #cd853f;">💰</span>
+                        Digital Assets: X Years
+                    </div>
+                    <div style="margin: 10px 0; position: relative; padding-left: 20px;">
+                        <span style="position: absolute; left: 0; color: #cd853f;">🔗</span>
+                        Decentralized Finance: V Years
+                    </div>
+                </div>
+            </div>
+
+            <!-- Arctic Minimal -->
+            <div class="card" style="background: linear-gradient(135deg, rgba(219, 234, 254, 0.03), rgba(147, 197, 253, 0.02)); border: 1px solid rgba(147, 197, 253, 0.2);">
+                <h3 style="color: #bfdbfe; font-weight: 100; font-size: 24px; margin-bottom: 32px; letter-spacing: 4px;">arctic</h3>
+                <div class="style-example" style="color: rgba(191, 219, 254, 0.8); font-weight: 200; line-height: 2.5; font-size: 15px;">
+                    <div style="margin: 20px 0;">systems architecture</div>
+                    <div style="margin: 20px 0;">security engineering</div>
+                    <div style="margin: 20px 0;">digital assets</div>
+                    <div style="margin: 20px 0;">decentralized finance</div>
+                </div>
+            </div>
+
+            <!-- Code Editor -->
+            <div class="card" style="background: #1e1e1e; border: 1px solid #3c3c3c; font-family: 'Courier New', monospace;">
+                <div style="background: #2d2d30; padding: 8px; margin: -20px -20px 16px -20px; border-bottom: 1px solid #3c3c3c; color: #cccccc; font-size: 12px;">
+                    <span style="color: #569cd6;">experience</span><span style="color: #d4d4d4;">.ts</span>
+                </div>
+                <div class="style-example" style="color: #d4d4d4; font-size: 13px; line-height: 1.5;">
+                    <div style="margin: 4px 0;"><span style="color: #569cd6;">interface</span> <span style="color: #4ec9b0;">Experience</span> {</div>
+                    <div style="margin: 4px 0; padding-left: 16px;">systems: <span style="color: #b5cea8;">15</span>; <span style="color: #6a9955;">// years</span></div>
+                    <div style="margin: 4px 0; padding-left: 16px;">security: <span style="color: #b5cea8;">15</span>; <span style="color: #6a9955;">// years</span></div>
+                    <div style="margin: 4px 0; padding-left: 16px;">digital: <span style="color: #b5cea8;">10</span>; <span style="color: #6a9955;">// years</span></div>
+                    <div style="margin: 4px 0; padding-left: 16px;">defi: <span style="color: #b5cea8;">5</span>; <span style="color: #6a9955;">// years</span></div>
+                    <div style="margin: 4px 0;">}</div>
+                </div>
+            </div>
+
+            <!-- Quantum -->
+            <div class="card" style="background: radial-gradient(ellipse at center, rgba(99, 102, 241, 0.1) 0%, rgba(0, 0, 0, 0.9) 70%); border: 1px solid rgba(99, 102, 241, 0.3); position: relative; overflow: hidden;">
+                <div style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: repeating-conic-gradient(from 0deg at 50% 50%, transparent 0deg, rgba(99, 102, 241, 0.05) 45deg, transparent 90deg); animation: quantum-rotate 20s linear infinite; pointer-events: none;"></div>
+                <h3 style="color: #a5b4fc; font-family: 'Courier New', monospace; margin-bottom: 16px; position: relative; text-shadow: 0 0 10px rgba(165, 180, 252, 0.5);">QUANTUM.STATE</h3>
+                <div class="style-example" style="color: #c7d2fe; font-family: 'Courier New', monospace; font-size: 13px; position: relative;">
+                    <div style="margin: 8px 0; opacity: 0.9; text-shadow: 0 0 5px rgba(199, 210, 254, 0.3);">⟨systems|15⟩ → |expert⟩</div>
+                    <div style="margin: 8px 0; opacity: 0.8; text-shadow: 0 0 5px rgba(199, 210, 254, 0.3);">⟨security|15⟩ → |expert⟩</div>
+                    <div style="margin: 8px 0; opacity: 0.7; text-shadow: 0 0 5px rgba(199, 210, 254, 0.3);">⟨digital|10⟩ → |advanced⟩</div>
+                    <div style="margin: 8px 0; opacity: 0.6; text-shadow: 0 0 5px rgba(199, 210, 254, 0.3);">⟨defi|5⟩ → |proficient⟩</div>
+                </div>
+                <style>
+                    @keyframes quantum-rotate { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+                </style>
+            </div>
+
+            <!-- Noir Film -->
+            <div class="card" style="background: linear-gradient(45deg, #000, #1a1a1a); border: 2px solid #404040; box-shadow: inset 0 0 20px rgba(0,0,0,0.8);">
+                <h3 style="color: #f5f5f5; font-family: serif; font-style: italic; font-size: 18px; margin-bottom: 18px; text-shadow: 2px 2px 4px #000;">Case Files</h3>
+                <div class="style-example" style="color: #d3d3d3; font-family: serif; font-style: italic; line-height: 1.6;">
+                    <div style="margin: 12px 0; border-left: 3px solid #808080; padding-left: 12px; opacity: 0.9;">Systems Architecture... 15 years on the beat</div>
+                    <div style="margin: 12px 0; border-left: 3px solid #808080; padding-left: 12px; opacity: 0.8;">Security Engineering... 15 years solving cases</div>
+                    <div style="margin: 12px 0; border-left: 3px solid #808080; padding-left: 12px; opacity: 0.7;">Digital Assets... 10 years following leads</div>
+                    <div style="margin: 12px 0; border-left: 3px solid #808080; padding-left: 12px; opacity: 0.6;">DeFi Protocols... 5 years new territory</div>
+                </div>
+            </div>
+
+            <!-- Neon Circuit -->
+            <div class="card" style="background: #000510; border: 1px solid #00d4aa; position: relative; overflow: hidden;">
+                <div style="position: absolute; top: 0; left: 0; right: 0; height: 2px; background: linear-gradient(90deg, transparent, #00d4aa, transparent); animation: circuit-scan 3s ease-in-out infinite;"></div>
+                <h3 style="color: #00d4aa; font-family: 'Courier New', monospace; text-transform: uppercase; margin-bottom: 16px; text-shadow: 0 0 10px #00d4aa; position: relative;">CIRCUIT.BOARD</h3>
+                <div class="style-example" style="color: #4ade80; font-family: 'Courier New', monospace; font-size: 13px; position: relative;">
+                    <div style="margin: 8px 0; background: linear-gradient(90deg, rgba(0, 212, 170, 0.1), transparent 30%); padding: 4px 8px; border-left: 2px solid #00d4aa;">◤ ARCH_SYS.exe [15.0.0] ◢</div>
+                    <div style="margin: 8px 0; background: linear-gradient(90deg, rgba(0, 212, 170, 0.1), transparent 30%); padding: 4px 8px; border-left: 2px solid #00d4aa;">◤ SEC_ENG.dll [15.0.0] ◢</div>
+                    <div style="margin: 8px 0; background: linear-gradient(90deg, rgba(0, 212, 170, 0.1), transparent 30%); padding: 4px 8px; border-left: 2px solid #00d4aa;">◤ DIG_AST.sys [10.0.0] ◢</div>
+                    <div style="margin: 8px 0; background: linear-gradient(90deg, rgba(0, 212, 170, 0.1), transparent 30%); padding: 4px 8px; border-left: 2px solid #00d4aa;">◤ DEFI_NET.bin [5.0.0] ◢</div>
+                </div>
+                <style>
+                    @keyframes circuit-scan { 0%, 100% { transform: translateX(-100%); } 50% { transform: translateX(100vw); } }
+                </style>
+            </div>
+
+            <!-- Soft Pastel -->
+            <div class="card" style="background: linear-gradient(135deg, rgba(252, 231, 243, 0.05), rgba(233, 213, 255, 0.05)); border: 1px solid rgba(196, 181, 253, 0.2);">
+                <h3 style="color: #e9d5ff; font-weight: 300; font-size: 20px; margin-bottom: 24px; letter-spacing: 2px;">experience</h3>
+                <div class="style-example" style="color: rgba(233, 213, 255, 0.8); font-weight: 300; line-height: 2;">
+                    <div style="margin: 16px 0; padding: 12px; background: rgba(252, 231, 243, 0.05); border-radius: 8px;">systems architecture • fifteen years</div>
+                    <div style="margin: 16px 0; padding: 12px; background: rgba(233, 213, 255, 0.05); border-radius: 8px;">security engineering • fifteen years</div>
+                    <div style="margin: 16px 0; padding: 12px; background: rgba(220, 252, 231, 0.05); border-radius: 8px;">digital assets • ten years</div>
+                    <div style="margin: 16px 0; padding: 12px; background: rgba(254, 249, 195, 0.05); border-radius: 8px;">decentralized finance • five years</div>
+                </div>
+            </div>
+            <!-- Vaporwave Subtle -->
+            <div class="card" style="background: linear-gradient(180deg, #22d3ee, #06b6d4, #0891b2); position: relative;">
+                <div style="position: absolute; inset: 0; background: repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0,0,0,0.1) 2px, rgba(0,0,0,0.1) 4px);"></div>
+                <h3 style="color: #00f5ff; font-family: 'Courier New', monospace; text-transform: uppercase; font-weight: bold; margin-bottom: 16px; text-shadow: 2px 2px 0px #0891b2, 4px 4px 0px #0369a1; position: relative; letter-spacing: 3px;">VAPOR SUBTLE</h3>
+                <div class="style-example" style="color: #ffffff; font-family: 'Courier New', monospace; position: relative;">
+                    <div style="margin: 8px 0; text-shadow: 1px 1px 0px #0891b2;">▲ systems architecture 15+ years</div>
+                    <div style="margin: 8px 0; text-shadow: 1px 1px 0px #0891b2;">▲ security engineering 15+ years</div>
+                    <div style="margin: 8px 0; text-shadow: 1px 1px 0px #0891b2;">▲ digital assets 10+ years</div>
+                    <div style="margin: 8px 0; text-shadow: 1px 1px 0px #0891b2;">▲ defi protocols 5+ years</div>
+                </div>
+            </div>
+
+            <!-- Vaporwave Dark Cyan -->
+            <div class="card" style="background: linear-gradient(180deg, rgba(34, 211, 238, 0.08), rgba(14, 165, 233, 0.12), rgba(2, 132, 199, 0.08)); position: relative; border: 1px solid rgba(34, 211, 238, 0.2);">
+                <div style="position: absolute; inset: 0; background: repeating-linear-gradient(0deg, transparent, transparent 3px, rgba(0,0,0,0.03) 3px, rgba(0,0,0,0.03) 5px);"></div>
+                <h3 style="color: #22d3ee; font-family: 'Courier New', monospace; text-transform: uppercase; font-weight: bold; margin-bottom: 16px; text-shadow: 1px 1px 0px rgba(14, 165, 233, 0.6); position: relative; letter-spacing: 3px;">CYAN WAVE</h3>
+                <div class="style-example" style="color: #cffafe; font-family: 'Courier New', monospace; position: relative;">
+                    <div style="margin: 8px 0; text-shadow: 0.5px 0.5px 0px rgba(14, 165, 233, 0.4);">▲ systems 15+ years</div>
+                    <div style="margin: 8px 0; text-shadow: 0.5px 0.5px 0px rgba(14, 165, 233, 0.4);">▲ security 15+ years</div>
+                    <div style="margin: 8px 0; text-shadow: 0.5px 0.5px 0px rgba(14, 165, 233, 0.4);">▲ digital 10+ years</div>
+                    <div style="margin: 8px 0; text-shadow: 0.5px 0.5px 0px rgba(14, 165, 233, 0.4);">▲ defi 5+ years</div>
+                </div>
+            </div>
+
+            <!-- Vaporwave Purple Raiki -->
+            <div class="card" style="background: linear-gradient(180deg, #a855f7, #9333ea, #7c3aed); position: relative;">
+                <div style="position: absolute; inset: 0; background: repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0,0,0,0.1) 2px, rgba(0,0,0,0.1) 4px);"></div>
+                <h3 style="color: #e879f9; font-family: 'Courier New', monospace; text-transform: uppercase; font-weight: bold; margin-bottom: 16px; text-shadow: 2px 2px 0px #7c3aed, 4px 4px 0px #6d28d9; position: relative; letter-spacing: 3px;">PURPLE WAVE</h3>
+                <div class="style-example" style="color: #ffffff; font-family: 'Courier New', monospace; position: relative;">
+                    <div style="margin: 8px 0; text-shadow: 1px 1px 0px #7c3aed;">▲ systems architecture 15+ years</div>
+                    <div style="margin: 8px 0; text-shadow: 1px 1px 0px #7c3aed;">▲ security engineering 15+ years</div>
+                    <div style="margin: 8px 0; text-shadow: 1px 1px 0px #7c3aed;">▲ digital assets 10+ years</div>
+                    <div style="margin: 8px 0; text-shadow: 1px 1px 0px #7c3aed;">▲ defi protocols 5+ years</div>
+                </div>
+            </div>
+
+            <!-- Vaporwave Monochrome Grey -->
+            <div class="card" style="background: linear-gradient(180deg, #9ca3af, #6b7280, #4b5563); position: relative;">
+                <div style="position: absolute; inset: 0; background: repeating-linear-gradient(0deg, transparent, transparent 3px, rgba(0,0,0,0.1) 3px, rgba(0,0,0,0.1) 5px);"></div>
+                <h3 style="color: #f3f4f6; font-family: 'Courier New', monospace; text-transform: uppercase; font-weight: bold; margin-bottom: 16px; text-shadow: 2px 2px 0px #4b5563, 4px 4px 0px #374151; position: relative; letter-spacing: 3px;">GREY WAVE</h3>
+                <div class="style-example" style="color: #ffffff; font-family: 'Courier New', monospace; position: relative;">
+                    <div style="margin: 8px 0; text-shadow: 1px 1px 0px #4b5563;">▲ systems architecture 15+ years</div>
+                    <div style="margin: 8px 0; text-shadow: 1px 1px 0px #4b5563;">▲ security engineering 15+ years</div>
+                    <div style="margin: 8px 0; text-shadow: 1px 1px 0px #4b5563;">▲ digital assets 10+ years</div>
+                    <div style="margin: 8px 0; text-shadow: 1px 1px 0px #4b5563;">▲ defi protocols 5+ years</div>
+                </div>
+            </div>
+
+            <!-- Vaporwave Pink Raiki Theme -->
+            <div class="card" style="background: linear-gradient(180deg, #ff0080, #db2777, #be185d); position: relative;">
+                <div style="position: absolute; inset: 0; background: repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0,0,0,0.1) 2px, rgba(0,0,0,0.1) 4px);"></div>
+                <h3 style="color: #fbbf24; font-family: 'Courier New', monospace; text-transform: uppercase; font-weight: bold; margin-bottom: 16px; text-shadow: 2px 2px 0px #be185d, 4px 4px 0px #9f1239; position: relative; letter-spacing: 3px;">PINK GLITCH</h3>
+                <div class="style-example" style="color: #ffffff; font-family: 'Courier New', monospace; position: relative;">
+                    <div style="margin: 8px 0; text-shadow: 1px 1px 0px #be185d;">▲ systems 15+ years</div>
+                    <div style="margin: 8px 0; text-shadow: 1px 1px 0px #be185d;">▲ security 15+ years</div>
+                    <div style="margin: 8px 0; text-shadow: 1px 1px 0px #be185d;">▲ digital 10+ years</div>
+                    <div style="margin: 8px 0; text-shadow: 1px 1px 0px #be185d;">▲ defi 5+ years</div>
+                </div>
+            </div>
+
+            <!-- Vaporwave Dark Matrix -->
+            <div class="card" style="background: linear-gradient(180deg, rgba(0, 255, 65, 0.04), rgba(0, 200, 50, 0.08), rgba(0, 150, 35, 0.04)); position: relative; border: 1px solid rgba(0, 255, 65, 0.2);">
+                <div style="position: absolute; inset: 0; background: repeating-linear-gradient(0deg, transparent, transparent 4px, rgba(0,0,0,0.06) 4px, rgba(0,0,0,0.06) 6px);"></div>
+                <h3 style="color: #00ff41; font-family: 'Courier New', monospace; text-transform: uppercase; font-weight: bold; margin-bottom: 16px; text-shadow: 1px 1px 0px rgba(0, 200, 50, 0.6); position: relative; letter-spacing: 3px;">MATRIX WAVE</h3>
+                <div class="style-example" style="color: #dcfce7; font-family: 'Courier New', monospace; position: relative;">
+                    <div style="margin: 8px 0; text-shadow: 0.5px 0.5px 0px rgba(0, 200, 50, 0.3);">▲ systems architecture 15+ years</div>
+                    <div style="margin: 8px 0; text-shadow: 0.5px 0.5px 0px rgba(0, 200, 50, 0.3);">▲ security engineering 15+ years</div>
+                    <div style="margin: 8px 0; text-shadow: 0.5px 0.5px 0px rgba(0, 200, 50, 0.3);">▲ digital assets 10+ years</div>
+                    <div style="margin: 8px 0; text-shadow: 0.5px 0.5px 0px rgba(0, 200, 50, 0.3);">▲ defi protocols 5+ years</div>
+                </div>
+            </div>
+
+            <!-- Vaporwave Minimal Grey Scale -->
+            <div class="card" style="background: linear-gradient(180deg, rgba(229, 231, 235, 0.03), rgba(209, 213, 219, 0.05), rgba(156, 163, 175, 0.03)); position: relative; border: 1px solid rgba(209, 213, 219, 0.15);">
+                <div style="position: absolute; inset: 0; background: repeating-linear-gradient(0deg, transparent, transparent 5px, rgba(0,0,0,0.02) 5px, rgba(0,0,0,0.02) 7px);"></div>
+                <h3 style="color: #d1d5db; font-family: 'Courier New', monospace; text-transform: uppercase; font-weight: bold; margin-bottom: 16px; text-shadow: 0.5px 0.5px 0px rgba(156, 163, 175, 0.5); position: relative; letter-spacing: 3px;">MINIMAL GREY</h3>
+                <div class="style-example" style="color: #f9fafb; font-family: 'Courier New', monospace; position: relative;">
+                    <div style="margin: 8px 0; text-shadow: 0.3px 0.3px 0px rgba(156, 163, 175, 0.3);">▲ systems architecture 15+ years</div>
+                    <div style="margin: 8px 0; text-shadow: 0.3px 0.3px 0px rgba(156, 163, 175, 0.3);">▲ security engineering 15+ years</div>
+                    <div style="margin: 8px 0; text-shadow: 0.3px 0.3px 0px rgba(156, 163, 175, 0.3);">▲ digital assets 10+ years</div>
+                    <div style="margin: 8px 0; text-shadow: 0.3px 0.3px 0px rgba(156, 163, 175, 0.3);">▲ defi protocols 5+ years</div>
+                </div>
+            </div>
+
+            <!-- Vaporwave Slate -->
+            <div class="card" style="background: linear-gradient(180deg, rgba(100, 116, 139, 0.06), rgba(71, 85, 105, 0.1), rgba(51, 65, 85, 0.06)); position: relative; border: 1px solid rgba(100, 116, 139, 0.25);">
+                <div style="position: absolute; inset: 0; background: repeating-linear-gradient(0deg, transparent, transparent 3px, rgba(0,0,0,0.04) 3px, rgba(0,0,0,0.04) 5px);"></div>
+                <h3 style="color: #64748b; font-family: 'Courier New', monospace; text-transform: uppercase; font-weight: bold; margin-bottom: 16px; text-shadow: 1px 1px 0px rgba(71, 85, 105, 0.6); position: relative; letter-spacing: 3px;">SLATE WAVE</h3>
+                <div class="style-example" style="color: #f1f5f9; font-family: 'Courier New', monospace; position: relative;">
+                    <div style="margin: 8px 0; text-shadow: 0.5px 0.5px 0px rgba(71, 85, 105, 0.4);">▲ systems 15+ years</div>
+                    <div style="margin: 8px 0; text-shadow: 0.5px 0.5px 0px rgba(71, 85, 105, 0.4);">▲ security 15+ years</div>
+                    <div style="margin: 8px 0; text-shadow: 0.5px 0.5px 0px rgba(71, 85, 105, 0.4);">▲ digital 10+ years</div>
+                    <div style="margin: 8px 0; text-shadow: 0.5px 0.5px 0px rgba(71, 85, 105, 0.4);">▲ defi 5+ years</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

@@ -3,19 +3,61 @@
 import { useState, useEffect, useRef } from 'react';
 import RaikiLogo from '../components/RaikiLogo';
 import NeuralNetwork from '../components/MouseTrail';
+import MatrixText from '../components/MatrixText';
 
 export default function Contact() {
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [formData, setFormData] = useState({
     name: '',
     email: '',
     company: '',
     message: ''
   });
-
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [submitStatus, setSubmitStatus] = useState('');
+  const [submitStatus, setSubmitStatus] = useState(null); // 'success', 'error', or null
+  const [statusMessage, setStatusMessage] = useState('');
+  const [turnstileToken, setTurnstileToken] = useState(null);
+  const [isTurnstileLoaded, setIsTurnstileLoaded] = useState(false);
   const menuRef = useRef(null);
+  const turnstileRef = useRef(null);
+
+  // Load Turnstile script
+  useEffect(() => {
+    const script = document.createElement('script');
+    script.src = 'https://challenges.cloudflare.com/turnstile/v0/api.js';
+    script.async = true;
+    script.defer = true;
+    script.onload = () => {
+      setIsTurnstileLoaded(true);
+    };
+    document.head.appendChild(script);
+
+    return () => {
+      if (script.parentNode) {
+        script.parentNode.removeChild(script);
+      }
+    };
+  }, []);
+
+  // Initialize Turnstile widget when script is loaded
+  useEffect(() => {
+    if (isTurnstileLoaded && window.turnstile && turnstileRef.current) {
+      window.turnstile.render(turnstileRef.current, {
+        sitekey: process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY,
+        callback: (token) => {
+          setTurnstileToken(token);
+        },
+        'error-callback': () => {
+          setTurnstileToken(null);
+        },
+        'expired-callback': () => {
+          setTurnstileToken(null);
+        },
+        theme: 'dark',
+        size: 'invisible' // Invisible mode for production
+      });
+    }
+  }, [isTurnstileLoaded]);
 
   // Close menu when clicking outside
   useEffect(() => {
@@ -31,7 +73,6 @@ export default function Contact() {
     };
   }, []);
 
-
   const handleInputChange = (e) => {
     setFormData({
       ...formData,
@@ -39,44 +80,174 @@ export default function Contact() {
     });
   };
 
+  const resetStatusMessage = () => {
+    setTimeout(() => {
+      setSubmitStatus(null);
+      setStatusMessage('');
+    }, 5000);
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setIsSubmitting(true);
     
-    // Simulate form submission
-    setTimeout(() => {
-      setIsSubmitting(false);
-      setSubmitStatus('success');
-      // Reset form after successful submission
-      setFormData({
-        name: '',
-        email: '',
-        company: '',
-        message: ''
+    if (isSubmitting) return;
+
+    // Basic client-side validation
+    if (!formData.name.trim() || !formData.email.trim() || !formData.message.trim()) {
+      setSubmitStatus('error');
+      setStatusMessage('Please fill in all required fields.');
+      resetStatusMessage();
+      return;
+    }
+
+    if (formData.name.length > 100) {
+      setSubmitStatus('error');
+      setStatusMessage('Name must be less than 100 characters.');
+      resetStatusMessage();
+      return;
+    }
+
+    if (formData.message.length > 2000) {
+      setSubmitStatus('error');
+      setStatusMessage('Message must be less than 2000 characters.');
+      resetStatusMessage();
+      return;
+    }
+
+    setIsSubmitting(true);
+    setSubmitStatus(null);
+    setStatusMessage('');
+
+    try {
+      let finalToken = turnstileToken;
+
+      // Execute Turnstile challenge
+      if (window.turnstile && !turnstileToken) {
+        try {
+          window.turnstile.execute();
+          
+          // Wait for token with timeout
+          const waitForToken = new Promise((resolve, reject) => {
+            const checkToken = () => {
+              if (turnstileToken) {
+                resolve(turnstileToken);
+              } else {
+                setTimeout(checkToken, 100);
+              }
+            };
+            checkToken();
+            
+            // 10 second timeout
+            setTimeout(() => reject(new Error('Turnstile timeout')), 10000);
+          });
+
+          try {
+            finalToken = await waitForToken;
+          } catch (error) {
+            // In development, use bypass token if Turnstile fails
+            if (process.env.NODE_ENV === 'development') {
+              console.warn('Turnstile failed in development, using bypass token');
+              finalToken = 'dev-bypass';
+            } else {
+              setSubmitStatus('error');
+              setStatusMessage('Security verification failed. Please try again.');
+              setIsSubmitting(false);
+              resetStatusMessage();
+              return;
+            }
+          }
+        } catch (error) {
+          // In development, use bypass token if Turnstile fails
+          if (process.env.NODE_ENV === 'development') {
+            console.warn('Turnstile failed in development, using bypass token');
+            finalToken = 'dev-bypass';
+          } else {
+            setSubmitStatus('error');
+            setStatusMessage('Security verification failed. Please try again.');
+            setIsSubmitting(false);
+            resetStatusMessage();
+            return;
+          }
+        }
+      }
+
+      // In development, use bypass token if no token available
+      if (!finalToken && process.env.NODE_ENV === 'development') {
+        finalToken = 'dev-bypass';
+      }
+
+      if (!finalToken) {
+        setSubmitStatus('error');
+        setStatusMessage('Security verification required. Please try again.');
+        setIsSubmitting(false);
+        resetStatusMessage();
+        return;
+      }
+
+      const response = await fetch('/api/contact', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          name: formData.name,
+          email: formData.email,
+          message: formData.message,
+          turnstileToken: finalToken
+        }),
       });
-    }, 2000);
+
+      const data = await response.json();
+
+      if (response.ok) {
+        setSubmitStatus('success');
+        setStatusMessage('Message sent successfully!');
+        setFormData({ name: '', email: '', company: '', message: '' });
+        setTurnstileToken(null);
+        
+        // Reset Turnstile widget
+        if (window.turnstile) {
+          window.turnstile.reset();
+        }
+      } else {
+        setSubmitStatus('error');
+        setStatusMessage(data.error || 'An error occurred. Please try again.');
+      }
+    } catch (error) {
+      console.error('Form submission error:', error);
+      setSubmitStatus('error');
+      setStatusMessage('Network error. Please check your connection and try again.');
+    } finally {
+      setIsSubmitting(false);
+      resetStatusMessage();
+    }
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-black via-gray-900 to-gray-800">
-      {/* Hero Section with Neural Network */}
-      <div className="relative overflow-hidden">
+    <div className="h-screen overflow-hidden bg-gradient-to-br from-black via-gray-900 to-gray-800">
+        <div className="relative overflow-hidden h-full">
         <NeuralNetwork />
         
-        {/* Header - positioned over neural network */}
-        <header className="absolute top-0 left-0 right-0 z-20 px-6 py-4 bg-transparent">
+        {/* Header */}
+        <header className="absolute top-0 left-0 right-0 z-20 px-6 py-2 bg-transparent">
           <nav className="max-w-7xl mx-auto flex items-center justify-between">
-            <a href="/"><RaikiLogo /></a>
+            <a href="/"><RaikiLogo showText={false} /></a>
             
             {/* Burger Menu */}
             <div className="relative" ref={menuRef}>
               <button
                 onClick={() => setIsMenuOpen(!isMenuOpen)}
-                className="flex flex-col justify-center items-center w-8 h-8 bg-transparent border-0 cursor-pointer"
+                className="flex flex-col justify-center items-center w-8 h-8 bg-gray-900 border border-gray-400 hover:border-gray-300 cursor-pointer group transition-all duration-200 hover:shadow-lg hover:shadow-gray-400/25"
               >
-                <span className={`block w-6 h-0.5 bg-white transition-all duration-300 ${isMenuOpen ? 'rotate-45 translate-y-1.5' : ''}`}></span>
-                <span className={`block w-6 h-0.5 bg-white mt-1 transition-all duration-300 ${isMenuOpen ? 'opacity-0' : ''}`}></span>
-                <span className={`block w-6 h-0.5 bg-white mt-1 transition-all duration-300 ${isMenuOpen ? '-rotate-45 -translate-y-1.5' : ''}`}></span>
+                {!isMenuOpen ? (
+                  <div className="flex flex-col gap-1">
+                    <div className="w-4 h-px bg-gray-400 group-hover:bg-white transition-colors duration-200"></div>
+                    <div className="w-4 h-px bg-gray-400 group-hover:bg-white transition-colors duration-200"></div>
+                    <div className="w-4 h-px bg-gray-400 group-hover:bg-white transition-colors duration-200"></div>
+                  </div>
+                ) : (
+                  <span className="text-white text-xs">×</span>
+                )}
               </button>
               
               {/* Dropdown Menu */}
@@ -98,109 +269,120 @@ export default function Contact() {
             </div>
           </nav>
         </header>
-        <section className="relative px-6 py-12 z-10">
-          <div className="relative max-w-4xl mx-auto text-center">
-            <h1 className="text-4xl md:text-6xl font-bold text-white mb-6 animate-fade-in">
-              get in touch
-            </h1>
-            <p className="text-lg md:text-xl text-gray-300 mb-12 max-w-2xl mx-auto">
-              ready to start your project? let's discuss how we can help bring your vision to life
-            </p>
+
+        {/* Content - Centered */}
+        <div className="absolute inset-0 flex flex-col justify-center items-center z-10 px-6">
+          <div className="max-w-md mx-auto w-full text-center space-y-8">
+            
+            {/* Title */}
+            <section>
+              <MatrixText 
+                text="contact" 
+                className="text-4xl md:text-5xl font-mono font-bold text-white tracking-wider"
+              />
+            </section>
+            
+            {/* Compact Form */}
+            <section>
+              <form onSubmit={handleSubmit} className="space-y-4">
+                <input
+                  type="text"
+                  name="name"
+                  value={formData.name}
+                  onChange={handleInputChange}
+                  className="w-full px-3 py-2 bg-gray-900/50 border border-gray-600 text-white placeholder-gray-400 focus:outline-none focus:border-gray-400 transition-colors font-mono text-sm"
+                  placeholder="name"
+                  required
+                  disabled={isSubmitting}
+                />
+                <input
+                  type="email"
+                  name="email"
+                  value={formData.email}
+                  onChange={handleInputChange}
+                  className="w-full px-3 py-2 bg-gray-900/50 border border-gray-600 text-white placeholder-gray-400 focus:outline-none focus:border-gray-400 transition-colors font-mono text-sm"
+                  placeholder="email"
+                  required
+                  disabled={isSubmitting}
+                />
+                <input
+                  type="text"
+                  name="company"
+                  value={formData.company}
+                  onChange={handleInputChange}
+                  className="w-full px-3 py-2 bg-gray-900/50 border border-gray-600 text-white placeholder-gray-400 focus:outline-none focus:border-gray-400 transition-colors font-mono text-sm"
+                  placeholder="company (optional)"
+                  disabled={isSubmitting}
+                />
+                <textarea
+                  name="message"
+                  value={formData.message}
+                  onChange={handleInputChange}
+                  rows={3}
+                  className="w-full px-3 py-2 bg-gray-900/50 border border-gray-600 text-white placeholder-gray-400 focus:outline-none focus:border-gray-400 transition-colors resize-none font-mono text-sm"
+                  placeholder="message"
+                  required
+                  disabled={isSubmitting}
+                />
+                
+                {/* Status Message */}
+                {statusMessage && (
+                  <div className={`text-center py-2 px-3 rounded font-mono text-sm ${
+                    submitStatus === 'success' 
+                      ? 'bg-green-900/50 border border-green-600 text-green-300' 
+                      : 'bg-red-900/50 border border-red-600 text-red-300'
+                  }`}>
+                    {statusMessage}
+                  </div>
+                )}
+                
+                {/* Invisible Turnstile widget */}
+                <div ref={turnstileRef} className="hidden"></div>
+                
+                <button
+                  type="submit"
+                  disabled={isSubmitting}
+                  className={`group w-full bg-gray-800 border-2 px-5 py-3 relative overflow-hidden transition-all duration-200 flex items-center justify-center ${
+                    isSubmitting 
+                      ? 'border-gray-600 cursor-not-allowed opacity-70' 
+                      : 'border-white/30 hover:border-white/60 hover:scale-105 hover:shadow-lg hover:shadow-white/20 cursor-pointer'
+                  }`}
+                >
+                  <div className="absolute inset-0 bg-white/10 opacity-0 group-hover:opacity-100 transition-opacity duration-200"></div>
+                  <span className="relative text-white group-hover:text-white text-sm tracking-wider leading-none font-mono font-bold">
+                    {isSubmitting ? '>> sending...' : '>> send'}
+                  </span>
+                </button>
+              </form>
+            </section>
+            
+            {/* Navigation Buttons */}
+            <section>
+              <div className="flex flex-col sm:flex-row gap-2 font-mono">
+                <a href="/" className="group bg-gray-900 border-2 border-gray-400 hover:border-gray-300 px-4 py-2 relative overflow-hidden transition-all duration-200 hover:scale-105 hover:shadow-lg hover:shadow-gray-400/40 cursor-pointer text-center flex-1 flex items-center justify-center">
+                  <div className="absolute inset-0 bg-gray-400/20 opacity-0 group-hover:opacity-100 transition-opacity duration-200"></div>
+                  <span className="relative text-gray-400 group-hover:text-white text-xs tracking-wider leading-none">{'>> home'}</span>
+                </a>
+                <a href="/services" className="group bg-gray-900 border-2 border-gray-400 hover:border-gray-300 px-4 py-2 relative overflow-hidden transition-all duration-200 hover:scale-105 hover:shadow-lg hover:shadow-gray-400/40 cursor-pointer text-center flex-1 flex items-center justify-center">
+                  <div className="absolute inset-0 bg-gray-400/20 opacity-0 group-hover:opacity-100 transition-opacity duration-200"></div>
+                  <span className="relative text-gray-400 group-hover:text-white text-xs tracking-wider leading-none">{'>> services'}</span>
+                </a>
+                <a href="/about" className="group bg-gray-900 border-2 border-gray-400 hover:border-gray-300 px-4 py-2 relative overflow-hidden transition-all duration-200 hover:scale-105 hover:shadow-lg hover:shadow-gray-400/40 cursor-pointer text-center flex-1 flex items-center justify-center">
+                  <div className="absolute inset-0 bg-gray-400/20 opacity-0 group-hover:opacity-100 transition-opacity duration-200"></div>
+                  <span className="relative text-gray-400 group-hover:text-white text-xs tracking-wider leading-none">{'>> about'}</span>
+                </a>
+              </div>
+            </section>
+            
           </div>
-        </section>
-      </div>
-
-      {/* Visual Break */}
-      <div className="h-px bg-gradient-to-r from-transparent via-gray-600 to-transparent"></div>
-
-      {/* Contact Form Section */}
-      <section className="py-20 px-6 relative z-10">
-        <div className="max-w-2xl mx-auto">
-          {submitStatus === 'success' && (
-            <div className="mb-8 p-4 bg-green-500/20 border border-green-500/30 rounded-lg text-green-300 text-center">
-              message sent successfully
-            </div>
-          )}
-          
-          <form onSubmit={handleSubmit} className="space-y-6">
-            <div>
-              <input
-                type="text"
-                name="name"
-                value={formData.name}
-                onChange={handleInputChange}
-                className="w-full px-0 py-4 bg-transparent border-0 border-b border-white/20 text-white placeholder-gray-400 focus:outline-none focus:border-white/60 transition-all duration-300"
-                placeholder="name"
-                required
-              />
-            </div>
-
-            <div>
-              <input
-                type="email"
-                name="email"
-                value={formData.email}
-                onChange={handleInputChange}
-                className="w-full px-0 py-4 bg-transparent border-0 border-b border-white/20 text-white placeholder-gray-400 focus:outline-none focus:border-white/60 transition-all duration-300"
-                placeholder="email"
-                required
-              />
-            </div>
-
-            <div>
-              <input
-                type="text"
-                name="company"
-                value={formData.company}
-                onChange={handleInputChange}
-                className="w-full px-0 py-4 bg-transparent border-0 border-b border-white/20 text-white placeholder-gray-400 focus:outline-none focus:border-white/60 transition-all duration-300"
-                placeholder="company (optional)"
-              />
-            </div>
-
-            <div>
-              <textarea
-                name="message"
-                value={formData.message}
-                onChange={handleInputChange}
-                rows={4}
-                className="w-full px-0 py-4 bg-transparent border-0 border-b border-white/20 text-white placeholder-gray-400 focus:outline-none focus:border-white/60 transition-all duration-300 resize-none"
-                placeholder="message"
-                required
-              ></textarea>
-            </div>
-
-            <div className="pt-8">
-              <button
-                type="submit"
-                disabled={isSubmitting}
-                className={`w-full bg-gradient-to-r from-gray-700 to-gray-600 hover:from-gray-600 hover:to-gray-500 text-white px-8 py-4 rounded-lg font-medium transition-all duration-300 ${
-                  isSubmitting ? 'opacity-50 cursor-not-allowed' : 'hover:shadow-lg'
-                }`}
-              >
-                {isSubmitting ? 'sending...' : 'send'}
-              </button>
-            </div>
-          </form>
         </div>
-      </section>
 
-      <style jsx>{`
-        @keyframes fade-in {
-          from {
-            opacity: 0;
-            transform: translateY(30px);
+        <style jsx global>{`
+          html {
+            scroll-behavior: smooth;
           }
-          to {
-            opacity: 1;
-            transform: translateY(0);
-          }
-        }
-        
-        .animate-fade-in {
-          animation: fade-in 1s ease-out;
-        }
-      `}</style>
+        `}</style>
+        </div>
     </div>
   );
 }

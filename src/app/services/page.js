@@ -3,6 +3,7 @@
 import { useState, useEffect, useRef } from 'react';
 import RaikiLogo from '../components/RaikiLogo';
 import NeuralNetwork from '../components/MouseTrail';
+import MatrixText from '../components/MatrixText';
 
 /**
  * Services Page Component
@@ -30,8 +31,8 @@ export default function Services() {
 
   return (
     <div className="h-screen overflow-hidden bg-gradient-to-br from-black via-gray-900 to-gray-800">
-      {/* Services Section with Neural Network */}
-      <div className="relative overflow-hidden h-full">
+        {/* Services Section with Neural Network */}
+        <div className="relative overflow-hidden h-full">
         <NeuralNetwork />
         
         {/* Header - positioned over neural network */}
@@ -71,14 +72,12 @@ export default function Services() {
         </header>
 
         {/* Page Title */}
-        <div className="absolute top-20 left-0 right-0 z-10 px-6">
-          <div className="max-w-4xl mx-auto text-center">
-            <h1 className="text-4xl md:text-5xl font-bold text-white mb-4 font-mono">
-              ~/services
-            </h1>
-            <p className="text-lg text-gray-300">
-              comprehensive digital security and web3 solutions
-            </p>
+        <div className="absolute left-0 right-0 z-10 px-6" style={{ top: 'calc(80px + 5vh)' }}>
+          <div className="flex justify-center scale-[240%]">
+            <MatrixText 
+              text="services" 
+              className="text-xl font-mono font-bold text-gray-300 tracking-wider"
+            />
           </div>
         </div>
 
@@ -86,42 +85,36 @@ export default function Services() {
         <div className="absolute inset-0 flex items-center justify-center z-10 px-6 mt-8">
           <div className="max-w-6xl mx-auto grid md:grid-cols-3 gap-8">
             
-            {/* Cybersecurity */}
+            {/* System Engineering - Available but Passive */}
             <div className="bg-gray-900/60 backdrop-blur-sm border border-gray-700 hover:border-gray-500 rounded-lg p-6 hover:bg-gray-800/60 transition-all duration-300 hover:scale-105">
-              <div className="text-yellow-400 text-2xl mb-4 font-mono">🔒</div>
-              <h3 className="text-xl font-bold text-white mb-3 font-mono">cybersecurity</h3>
+              <h3 className="text-xl font-bold text-white mb-3 font-mono">systems</h3>
               <ul className="text-gray-300 space-y-2 text-sm">
-                <li>• penetration testing</li>
-                <li>• vulnerability assessments</li>
-                <li>• security audits</li>
-                <li>• incident response</li>
-                <li>• compliance consulting</li>
+                <li>• architecture and engineering</li>
+                <li>• security assessments</li>
+                <li>• cloud guidance</li>
+                <li>• infrastructure consulting</li>
               </ul>
             </div>
 
-            {/* Digital Experiences */}
+            {/* Digital Experiences - Main Focus */}
             <div className="bg-gray-900/60 backdrop-blur-sm border border-gray-700 hover:border-gray-500 rounded-lg p-6 hover:bg-gray-800/60 transition-all duration-300 hover:scale-105">
-              <div className="text-green-400 text-2xl mb-4 font-mono">💻</div>
               <h3 className="text-xl font-bold text-white mb-3 font-mono">digital experiences</h3>
               <ul className="text-gray-300 space-y-2 text-sm">
-                <li>• modern web applications</li>
-                <li>• responsive design</li>
-                <li>• performance optimization</li>
-                <li>• user experience design</li>
-                <li>• progressive web apps</li>
+                <li>• cutting edge web apps</li>
+                <li>• site modernization</li>
+                <li>• dashboard solutions</li>
+                <li>• data visualization</li>
               </ul>
             </div>
 
-            {/* Web3 */}
+            {/* Web3 - Main Focus */}
             <div className="bg-gray-900/60 backdrop-blur-sm border border-gray-700 hover:border-gray-500 rounded-lg p-6 hover:bg-gray-800/60 transition-all duration-300 hover:scale-105">
-              <div className="text-blue-400 text-2xl mb-4 font-mono">⛓️</div>
               <h3 className="text-xl font-bold text-white mb-3 font-mono">web3</h3>
               <ul className="text-gray-300 space-y-2 text-sm">
-                <li>• smart contract development</li>
-                <li>• DeFi protocols</li>
-                <li>• NFT marketplaces</li>
-                <li>• blockchain integration</li>
-                <li>• tokenomics design</li>
+                <li>• DeFi onboarding and guidance</li>
+                <li>• yield optimization strategies</li>
+                <li>• security and risk education</li>
+                <li>• basic to advanced technical advisory</li>
               </ul>
             </div>
 
@@ -131,24 +124,24 @@ export default function Services() {
         {/* Bottom Navigation */}
         <section className="absolute bottom-0 left-0 right-0 z-15 pb-16 px-6 bg-gradient-to-t from-black/60 to-transparent pt-6">
           <div className="max-w-4xl mx-auto text-center">
-            <p className="text-sm text-gray-400 mb-6">
-              ready to secure your digital future?
-            </p>
             
-            <div className="flex flex-col sm:flex-row gap-6 justify-center items-center">
-              <a href="/" className="group font-mono text-gray-400 hover:text-white transition-all duration-300 text-lg border border-gray-700 hover:border-gray-500 px-4 py-2 rounded-lg hover:bg-gray-800/50 hover:shadow-lg hover:scale-105">
-                <span className="text-gray-600 group-hover:text-gray-300 transition-colors duration-300">~/</span>home
+            <div className="flex flex-col sm:flex-row gap-3 font-mono max-w-sm mx-auto sm:max-w-none sm:justify-center">
+              <a href="/" className="group bg-gray-900 border-2 border-gray-400 hover:border-gray-300 px-5 py-3 relative overflow-hidden transition-all duration-200 hover:scale-105 hover:shadow-lg hover:shadow-gray-400/40 cursor-pointer text-center sm:w-36 flex items-center justify-center">
+                <div className="absolute inset-0 bg-gray-400/20 opacity-0 group-hover:opacity-100 transition-opacity duration-200"></div>
+                <span className="relative text-gray-400 group-hover:text-white text-sm tracking-wider leading-none">&gt;&gt; home</span>
               </a>
-              <a href="/about" className="group font-mono text-gray-400 hover:text-white transition-all duration-300 text-lg border border-gray-700 hover:border-gray-500 px-4 py-2 rounded-lg hover:bg-gray-800/50 hover:shadow-lg hover:scale-105">
-                <span className="text-gray-600 group-hover:text-gray-300 transition-colors duration-300">~/</span>about
+              <a href="/about" className="group bg-gray-900 border-2 border-gray-400 hover:border-gray-300 px-5 py-3 relative overflow-hidden transition-all duration-200 hover:scale-105 hover:shadow-lg hover:shadow-gray-400/40 cursor-pointer text-center sm:w-36 flex items-center justify-center">
+                <div className="absolute inset-0 bg-gray-400/20 opacity-0 group-hover:opacity-100 transition-opacity duration-200"></div>
+                <span className="relative text-gray-400 group-hover:text-white text-sm tracking-wider leading-none">&gt;&gt; about</span>
               </a>
-              <a href="/contact" className="group font-mono text-gray-400 hover:text-white transition-all duration-300 text-lg border border-gray-700 hover:border-yellow-400 px-6 py-3 rounded-lg hover:bg-yellow-400/10 hover:text-yellow-400 hover:shadow-lg hover:scale-105 font-bold">
-                get started
+              <a href="/contact" className="group bg-gray-900 border-2 border-gray-400 hover:border-gray-300 px-5 py-3 relative overflow-hidden transition-all duration-200 hover:scale-105 hover:shadow-lg hover:shadow-gray-400/40 cursor-pointer text-center sm:w-36 flex items-center justify-center">
+                <div className="absolute inset-0 bg-gray-400/20 opacity-0 group-hover:opacity-100 transition-opacity duration-200"></div>
+                <span className="relative text-gray-400 group-hover:text-white text-sm tracking-wider leading-none">&gt;&gt; contact</span>
               </a>
             </div>
           </div>
         </section>
-      </div>
+        </div>
     </div>
   );
 }

@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 /**
  * NeuralNetwork (MouseTrail) Component
@@ -39,6 +39,7 @@ import { useEffect, useRef } from 'react';
  * - Responsive canvas that adapts to container size
  */
 export default function NeuralNetwork() {
+  const [isMounted, setIsMounted] = useState(false);
   const canvasRef = useRef(null);
   const particlesRef = useRef([]);
   const animationRef = useRef();
@@ -46,6 +47,12 @@ export default function NeuralNetwork() {
   const colorCycleRef = useRef(0);
 
   useEffect(() => {
+    setIsMounted(true);
+  }, []);
+
+  useEffect(() => {
+    if (!isMounted) return;
+    
     const canvas = canvasRef.current;
     if (!canvas) return;
 
@@ -79,12 +86,12 @@ export default function NeuralNetwork() {
       constructor(x, y) {
         this.x = x;                                      // Current X position
         this.y = y;                                      // Current Y position
-        this.vx = (Math.random() - 0.5) * 1;            // X velocity (-0.5 to 0.5)
-        this.vy = (Math.random() - 0.5) * 1;            // Y velocity (-0.5 to 0.5)
+        this.vx = (Math.random() - 0.5) * 1.5;          // X velocity - slightly faster
+        this.vy = (Math.random() - 0.5) * 1.5;          // Y velocity - slightly faster
         this.life = 1;                                   // Life span (1.0 = fully alive, 0 = dead)
-        this.decay = 0.0017 + Math.random() * 0.0017;   // Life decay rate per frame
-        this.size = Math.random() * 4 + 2;              // Particle radius (2-6px)
-        this.intensity = Math.random() * 0.6 + 0.6;     // Brightness multiplier (0.6-1.2)
+        this.decay = 0.0012 + Math.random() * 0.0008;   // Slower decay for longer-lasting particles
+        this.size = Math.random() * 3 + 1.5;            // Smaller, sharper particles (1.5-4.5px)
+        this.intensity = Math.random() * 0.4 + 0.8;     // Higher intensity (0.8-1.2)
         this.cracklePhase = Math.random() * Math.PI * 2; // Phase for electrical crackling
       }
 
@@ -104,10 +111,10 @@ export default function NeuralNetwork() {
         this.vx *= 0.99;
         this.vy *= 0.99;
         
-        // Generate electrical crackling effect
-        // Creates realistic electrical jitter/movement
-        this.cracklePhase += 0.25;
-        const crackleIntensity = 1.5 + Math.sin(this.cracklePhase) * 0.7;
+        // Generate gentle electrical crackling effect
+        // Creates subtle electrical movement
+        this.cracklePhase += 0.15;
+        const crackleIntensity = 0.8 + Math.sin(this.cracklePhase) * 0.4;
         this.x += (Math.random() - 0.5) * crackleIntensity;
         this.y += (Math.random() - 0.5) * crackleIntensity;
       }
@@ -133,18 +140,18 @@ export default function NeuralNetwork() {
         ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
         ctx.fill();
         
-        // Generate electrical sparks around main particle
-        // 22% chance per frame creates balanced spark density
-        if (Math.random() < 0.22) {
+        // Generate subtle electrical sparks around main particle
+        // 15% chance per frame creates calm spark density
+        if (Math.random() < 0.15) {
           for (let i = 0; i < 2; i++) {
-            // Position sparks randomly around particle (18px radius)
-            const sparkX = this.x + (Math.random() - 0.5) * 18;
-            const sparkY = this.y + (Math.random() - 0.5) * 18;
+            // Position sparks randomly around particle (20px radius for looser grouping)
+            const sparkX = this.x + (Math.random() - 0.5) * 20;
+            const sparkY = this.y + (Math.random() - 0.5) * 20;
             
-            // Draw spark with reduced opacity
-            ctx.fillStyle = `rgba(${color.r}, ${color.g}, ${color.b}, ${flickerAlpha * 0.7})`;
+            // Draw gentle spark
+            ctx.fillStyle = `rgba(${color.r}, ${color.g}, ${color.b}, ${flickerAlpha * 0.6})`;
             ctx.beginPath();
-            ctx.arc(sparkX, sparkY, 0.4 + Math.random() * 0.6, 0, Math.PI * 2);
+            ctx.arc(sparkX, sparkY, 0.4 + Math.random() * 0.5, 0, Math.PI * 2);
             ctx.fill();
           }
         }
@@ -163,27 +170,37 @@ export default function NeuralNetwork() {
      */
     const handleMouseMove = (e) => {
       const now = Date.now();
-      if (now - lastMouseMoveTime < throttleDelay) return;
-      lastMouseMoveTime = now;
-
       const rect = canvas.getBoundingClientRect();
       const x = e.clientX - rect.left;
       const y = e.clientY - rect.top;
       
+      // Calculate mouse speed
+      const deltaX = x - mouseRef.current.x;
+      const deltaY = y - mouseRef.current.y;
+      const speed = Math.sqrt(deltaX * deltaX + deltaY * deltaY);
+      
       mouseRef.current.x = x;
       mouseRef.current.y = y;
 
-      // Create electrical particles
-      for (let i = 0; i < 2; i++) {
+      // Dynamic throttling based on speed
+      const dynamicThrottle = Math.max(30, throttleDelay - speed * 2);
+      if (now - lastMouseMoveTime < dynamicThrottle) return;
+      lastMouseMoveTime = now;
+
+      // Create more particles when moving fast, fewer when slow
+      const numParticles = Math.min(4, Math.max(1, Math.floor(speed / 15)));
+      
+      for (let i = 0; i < numParticles; i++) {
         particles.push(new ElectricalParticle(
-          x + (Math.random() - 0.5) * 25,
-          y + (Math.random() - 0.5) * 25
+          x + (Math.random() - 0.5) * 20,
+          y + (Math.random() - 0.5) * 20
         ));
       }
 
-      // Limit particle count for performance
-      if (particles.length > 45) {
-        particles.splice(0, particles.length - 45);
+      // Dynamic particle limit based on speed
+      const maxParticles = Math.min(40, 20 + speed);
+      if (particles.length > maxParticles) {
+        particles.splice(0, particles.length - maxParticles);
       }
     };
 
@@ -208,15 +225,15 @@ export default function NeuralNetwork() {
           const dy = p1.y - p2.y;
           const distance = Math.sqrt(dx * dx + dy * dy);
           
-          if (distance < 90 && Math.random() < 0.6) {
-            const baseAlpha = (1 - distance / 90) * p1.life * p2.life * 0.4;
-            const flickerAlpha = baseAlpha * (0.75 + Math.random() * 0.4);
+          if (distance < 110 && Math.random() < 0.8) {
+            const baseAlpha = (1 - distance / 110) * p1.life * p2.life * 0.7;
+            const flickerAlpha = baseAlpha * (0.9 + Math.random() * 0.1);
             
             if (flickerAlpha > 0.08) {
               ctx.save();
               ctx.globalAlpha = flickerAlpha;
-              ctx.strokeStyle = `rgba(${color.r}, ${color.g}, ${color.b}, ${0.75 + Math.random() * 0.3})`;
-              ctx.lineWidth = 1 + Math.random() * 0.6;
+              ctx.strokeStyle = `rgba(${color.r}, ${color.g}, ${color.b}, ${1.0})`;
+              ctx.lineWidth = 1.2;
               
               // Draw balanced crackling electrical connection
               ctx.beginPath();
@@ -229,9 +246,9 @@ export default function NeuralNetwork() {
                 const midX = p1.x + (p2.x - p1.x) * t;
                 const midY = p1.y + (p2.y - p1.y) * t;
                 
-                // Add moderate random electrical deviation
-                const crackleX = midX + (Math.random() - 0.5) * 6;
-                const crackleY = midY + (Math.random() - 0.5) * 6;
+                // Add minimal electrical deviation for clearer lines
+                const crackleX = midX + (Math.random() - 0.5) * 2;
+                const crackleY = midY + (Math.random() - 0.5) * 2;
                 
                 if (step === steps) {
                   ctx.lineTo(p2.x, p2.y);
@@ -258,17 +275,17 @@ export default function NeuralNetwork() {
      * @returns {Object} RGB color object {r, g, b}
      */
     const getColorAtTime = () => {
-      // 10 second cycle (10000ms)
+      // 8 second cycle (8000ms) - faster transitions
       colorCycleRef.current += 16; // ~60fps
-      const cycleTime = (colorCycleRef.current % 10000) / 10000; // 0 to 1
+      const cycleTime = (colorCycleRef.current % 8000) / 8000; // 0 to 1
       
-      // Create smooth transition: yellow -> green -> yellow
+      // Create sharp transition: pink -> green -> pink (glitch colors)
       const colorPhase = Math.sin(cycleTime * Math.PI * 2) * 0.5 + 0.5; // 0 to 1
       
-      // Yellow: (255, 193, 7), Green: (76, 175, 80)
-      const r = Math.round(255 - (255 - 76) * colorPhase);
-      const g = Math.round(193 + (175 - 193) * colorPhase);
-      const b = Math.round(7 + (80 - 7) * colorPhase);
+      // Glitch Pink: (255, 0, 128), Glitch Green: (0, 255, 128)
+      const r = Math.round(255 - 255 * colorPhase);
+      const g = Math.round(0 + 255 * colorPhase);
+      const b = 128; // Keep blue constant for consistency
       
       return { r, g, b };
     };
@@ -315,7 +332,9 @@ export default function NeuralNetwork() {
         cancelAnimationFrame(animationRef.current);
       }
     };
-  }, []);
+  }, [isMounted]);
+
+  if (!isMounted) return null;
 
   return (
     <canvas

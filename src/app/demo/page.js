@@ -1,200 +1,223 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import RaikiLogo from '../components/RaikiLogo';
 import NeuralNetwork from '../components/MouseTrail';
 
 /**
- * Demo Page - Showcasing Different Link Design Styles
+ * Loader Demo Page
  * 
- * This page demonstrates various design approaches for navigation links
- * so you can see them in action and choose your preferred style.
+ * Showcasing different loading transitions to solve the text flash issue
+ * when navigating between pages with MatrixText components.
  */
-export default function Demo() {
-  const [currentStyle, setCurrentStyle] = useState('cyberpunk');
+export default function LoaderDemo() {
+  const [currentLoader, setCurrentLoader] = useState('hexagon');
+  const [isLoading, setIsLoading] = useState(false);
 
-  const styles = {
-    // Modern Artsy
-    artsy: (
-      <div className="flex flex-col sm:flex-row gap-8 justify-center items-center">
-        <a href="/services" className="group relative text-2xl font-light text-gray-300 hover:text-white transition-all duration-500 overflow-hidden">
-          <span className="relative z-10 px-8 py-4 block">Services</span>
-          <div className="absolute inset-0 bg-gradient-to-r from-purple-600 via-pink-500 to-orange-400 opacity-0 group-hover:opacity-20 transition-opacity duration-500"></div>
-          <div className="absolute bottom-0 left-0 w-full h-1 bg-gradient-to-r from-purple-600 via-pink-500 to-orange-400 scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-left"></div>
-        </a>
-        <a href="/about" className="group relative text-2xl font-light text-gray-300 hover:text-white transition-all duration-500 overflow-hidden">
-          <span className="relative z-10 px-8 py-4 block">About</span>
-          <div className="absolute inset-0 bg-gradient-to-r from-blue-500 via-teal-400 to-green-400 opacity-0 group-hover:opacity-20 transition-opacity duration-500"></div>
-          <div className="absolute bottom-0 left-0 w-full h-1 bg-gradient-to-r from-blue-500 via-teal-400 to-green-400 scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-left"></div>
-        </a>
-        <a href="/contact" className="group relative text-2xl font-light text-gray-300 hover:text-white transition-all duration-500 overflow-hidden">
-          <span className="relative z-10 px-8 py-4 block">Contact</span>
-          <div className="absolute inset-0 bg-gradient-to-r from-red-500 via-yellow-400 to-pink-400 opacity-0 group-hover:opacity-20 transition-opacity duration-500"></div>
-          <div className="absolute bottom-0 left-0 w-full h-1 bg-gradient-to-r from-red-500 via-yellow-400 to-pink-400 scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-left"></div>
-        </a>
+  const loaders = {
+    // Spinning Hexagon v1 - Large White
+    hexagon: (
+      <div className="flex flex-col items-center justify-center h-48">
+        <div className="relative w-20 h-20 mb-6">
+          <div className="absolute inset-0 border-4 border-gray-700 border-t-white animate-spin" 
+               style={{ 
+                 clipPath: 'polygon(50% 0%, 93% 25%, 93% 75%, 50% 100%, 7% 75%, 7% 25%)',
+                 animationDuration: '1s'
+               }}>
+          </div>
+        </div>
+        <p className="text-white font-mono text-lg tracking-wider">INITIALIZING...</p>
       </div>
     ),
 
-    // Cyberpunk Hardcore
-    cyberpunk: (
-      <div className="flex flex-col sm:flex-row gap-6 justify-center items-center">
-        <a href="/services" className="group font-mono text-green-400 hover:text-green-300 transition-all duration-300 text-lg relative">
-          <div className="absolute inset-0 bg-green-400/20 blur-md opacity-0 group-hover:opacity-100 transition-all duration-300 animate-pulse"></div>
-          <div className="relative px-6 py-3 border-2 border-green-400/50 hover:border-green-400 bg-black/80 hover:bg-black/90 transform hover:skew-x-[-5deg] transition-all duration-300">
-            <span className="text-green-500 animate-pulse mr-2">&gt;&gt;</span>
-            <span className="tracking-widest">SERVICES.EXE</span>
-            <span className="absolute top-0 right-0 text-xs text-green-600 opacity-60">[READY]</span>
+    // Spinning Hexagon v2 - Glowing Blue
+    hexagonGlow: (
+      <div className="flex flex-col items-center justify-center h-48">
+        <div className="relative w-24 h-24 mb-6">
+          <div className="absolute inset-0 border-4 border-blue-800 border-t-blue-400 animate-spin shadow-lg shadow-blue-400/50" 
+               style={{ 
+                 clipPath: 'polygon(50% 0%, 93% 25%, 93% 75%, 50% 100%, 7% 75%, 7% 25%)',
+                 animationDuration: '1.2s'
+               }}>
           </div>
-        </a>
-        <a href="/about" className="group font-mono text-cyan-400 hover:text-cyan-300 transition-all duration-300 text-lg relative">
-          <div className="absolute inset-0 bg-cyan-400/20 blur-md opacity-0 group-hover:opacity-100 transition-all duration-300 animate-pulse"></div>
-          <div className="relative px-6 py-3 border-2 border-cyan-400/50 hover:border-cyan-400 bg-black/80 hover:bg-black/90 transform hover:skew-x-[-5deg] transition-all duration-300">
-            <span className="text-cyan-500 animate-pulse mr-2">&gt;&gt;</span>
-            <span className="tracking-widest">ABOUT.SYS</span>
-            <span className="absolute top-0 right-0 text-xs text-cyan-600 opacity-60">[READY]</span>
+          <div className="absolute inset-2 border-2 border-blue-600 border-t-blue-200 animate-spin" 
+               style={{ 
+                 clipPath: 'polygon(50% 0%, 93% 25%, 93% 75%, 50% 100%, 7% 75%, 7% 25%)',
+                 animationDuration: '2s',
+                 animationDirection: 'reverse'
+               }}>
           </div>
-        </a>
-        <a href="/contact" className="group font-mono text-red-400 hover:text-red-300 transition-all duration-300 text-lg relative">
-          <div className="absolute inset-0 bg-red-400/20 blur-md opacity-0 group-hover:opacity-100 transition-all duration-300 animate-pulse"></div>
-          <div className="relative px-6 py-3 border-2 border-red-400/50 hover:border-red-400 bg-black/80 hover:bg-black/90 transform hover:skew-x-[-5deg] transition-all duration-300">
-            <span className="text-red-500 animate-pulse mr-2">&gt;&gt;</span>
-            <span className="tracking-widest">CONTACT.BAT</span>
-            <span className="absolute top-0 right-0 text-xs text-red-600 opacity-60">[READY]</span>
-          </div>
-        </a>
+        </div>
+        <p className="text-blue-300 font-mono text-lg tracking-wider">CONNECTING...</p>
       </div>
     ),
 
-    // Cool/Sleek
-    sleek: (
-      <div className="flex flex-col sm:flex-row gap-6 justify-center items-center">
-        <a href="/services" className="group relative overflow-hidden text-white hover:text-white transition-all duration-500">
-          <div className="relative px-8 py-4 bg-gradient-to-r from-gray-800 to-gray-700 hover:from-gray-700 hover:to-gray-600 rounded-full border border-gray-600 hover:border-white/30 shadow-lg hover:shadow-xl transition-all duration-500 transform hover:scale-110">
-            <span className="relative z-10 font-medium tracking-wide">Services</span>
-            <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700"></div>
+    // Spinning Hexagon v3 - Double Ring
+    hexagonDouble: (
+      <div className="flex flex-col items-center justify-center h-48">
+        <div className="relative w-20 h-20 mb-6">
+          <div className="absolute inset-0 border-3 border-gray-600 border-t-gray-300 animate-spin" 
+               style={{ 
+                 clipPath: 'polygon(50% 0%, 93% 25%, 93% 75%, 50% 100%, 7% 75%, 7% 25%)',
+                 animationDuration: '1.5s'
+               }}>
           </div>
-        </a>
-        <a href="/about" className="group relative overflow-hidden text-white hover:text-white transition-all duration-500">
-          <div className="relative px-8 py-4 bg-gradient-to-r from-gray-800 to-gray-700 hover:from-gray-700 hover:to-gray-600 rounded-full border border-gray-600 hover:border-white/30 shadow-lg hover:shadow-xl transition-all duration-500 transform hover:scale-110">
-            <span className="relative z-10 font-medium tracking-wide">About</span>
-            <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700"></div>
+          <div className="absolute inset-4 border-2 border-gray-700 border-t-white animate-spin" 
+               style={{ 
+                 clipPath: 'polygon(50% 0%, 93% 25%, 93% 75%, 50% 100%, 7% 75%, 7% 25%)',
+                 animationDuration: '1s',
+                 animationDirection: 'reverse'
+               }}>
           </div>
-        </a>
-        <a href="/contact" className="group relative overflow-hidden text-white hover:text-white transition-all duration-500">
-          <div className="relative px-8 py-4 bg-gradient-to-r from-blue-600 to-blue-500 hover:from-blue-500 hover:to-blue-400 rounded-full border border-blue-400 hover:border-blue-300 shadow-lg hover:shadow-blue-500/25 transition-all duration-500 transform hover:scale-110">
-            <span className="relative z-10 font-medium tracking-wide">Contact</span>
-            <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700"></div>
-          </div>
-        </a>
+        </div>
+        <p className="text-gray-300 font-mono text-lg tracking-wider">LOADING...</p>
       </div>
     ),
 
-    // Nerdy/Geeky
-    nerdy: (
-      <div className="flex flex-col sm:flex-row gap-4 justify-center items-center font-mono text-sm">
-        <a href="/services" className="group bg-gray-900 border-l-4 border-blue-400 hover:border-blue-300 px-4 py-3 min-w-[200px] hover:bg-gray-800 transition-all duration-300 rounded-r-md">
-          <div className="flex items-center justify-between">
-            <span className="text-blue-400 hover:text-blue-300">01</span>
-            <span className="text-gray-300 hover:text-white mx-4 flex-grow text-left">services()</span>
-            <span className="text-green-400 text-xs">.js</span>
-          </div>
-          <div className="text-xs text-gray-500 mt-1 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-            // Our digital solutions
-          </div>
-        </a>
-        <a href="/about" className="group bg-gray-900 border-l-4 border-yellow-400 hover:border-yellow-300 px-4 py-3 min-w-[200px] hover:bg-gray-800 transition-all duration-300 rounded-r-md">
-          <div className="flex items-center justify-between">
-            <span className="text-yellow-400 hover:text-yellow-300">02</span>
-            <span className="text-gray-300 hover:text-white mx-4 flex-grow text-left">about()</span>
-            <span className="text-green-400 text-xs">.ts</span>
-          </div>
-          <div className="text-xs text-gray-500 mt-1 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-            // Who we are
-          </div>
-        </a>
-        <a href="/contact" className="group bg-gray-900 border-l-4 border-red-400 hover:border-red-300 px-4 py-3 min-w-[200px] hover:bg-gray-800 transition-all duration-300 rounded-r-md">
-          <div className="flex items-center justify-between">
-            <span className="text-red-400 hover:text-red-300">03</span>
-            <span className="text-gray-300 hover:text-white mx-4 flex-grow text-left">contact()</span>
-            <span className="text-green-400 text-xs">.jsx</span>
-          </div>
-          <div className="text-xs text-gray-500 mt-1 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-            // Let's connect
-          </div>
-        </a>
+    // Glitch Effect
+    glitch: (
+      <div className="flex flex-col items-center justify-center h-48">
+        <div className="text-2xl font-mono text-white mb-4 animate-pulse">
+          <span className="inline-block animate-bounce delay-0">L</span>
+          <span className="inline-block animate-bounce delay-100">O</span>
+          <span className="inline-block animate-bounce delay-200">A</span>
+          <span className="inline-block animate-bounce delay-300">D</span>
+          <span className="inline-block animate-bounce delay-400">I</span>
+          <span className="inline-block animate-bounce delay-500">N</span>
+          <span className="inline-block animate-bounce delay-600">G</span>
+        </div>
+        <div className="w-32 h-1 bg-gray-800 rounded-full overflow-hidden">
+          <div className="h-full bg-gradient-to-r from-gray-600 to-white animate-pulse"></div>
+        </div>
       </div>
     ),
 
-    // Clean Minimal
-    clean: (
-      <div className="flex flex-col sm:flex-row gap-8 justify-center items-center">
-        <a href="/services" className="group text-gray-400 hover:text-white transition-all duration-300 text-lg relative">
-          <span className="relative px-2 py-1">Services</span>
-          <div className="absolute bottom-0 left-0 w-full h-px bg-white scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left"></div>
-        </a>
-        <a href="/about" className="group text-gray-400 hover:text-white transition-all duration-300 text-lg relative">
-          <span className="relative px-2 py-1">About</span>
-          <div className="absolute bottom-0 left-0 w-full h-px bg-white scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left"></div>
-        </a>
-        <a href="/contact" className="bg-white text-black hover:bg-gray-200 transition-all duration-300 text-lg px-6 py-3 rounded-full font-medium hover:scale-105">
-          Contact
-        </a>
+    // Minimal Dots
+    dots: (
+      <div className="flex flex-col items-center justify-center h-48">
+        <div className="flex space-x-1 mb-4">
+          <div className="w-2 h-2 bg-white rounded-full animate-bounce delay-0"></div>
+          <div className="w-2 h-2 bg-white rounded-full animate-bounce delay-150"></div>
+          <div className="w-2 h-2 bg-white rounded-full animate-bounce delay-300"></div>
+        </div>
+        <p className="text-gray-500 font-mono text-xs">loading</p>
       </div>
     ),
 
-    // Retro Gaming - Original Colors
-    retro: (
-      <div className="flex flex-col sm:flex-row gap-6 justify-center items-center font-mono">
-        <a href="/services" className="group bg-black border-4 border-green-400 hover:border-green-300 px-6 py-4 relative overflow-hidden transition-all duration-200 hover:scale-105">
-          <div className="absolute inset-0 bg-green-400/20 opacity-0 group-hover:opacity-100 transition-opacity duration-200"></div>
-          <span className="relative text-green-400 hover:text-green-300 text-xl tracking-wider">▶ SERVICES</span>
-          <div className="absolute -top-2 -right-2 bg-green-400 text-black text-xs px-2 py-1 opacity-0 group-hover:opacity-100 transition-opacity duration-200">
-            NEW!
-          </div>
-        </a>
-        <a href="/about" className="group bg-black border-4 border-yellow-400 hover:border-yellow-300 px-6 py-4 relative overflow-hidden transition-all duration-200 hover:scale-105">
-          <div className="absolute inset-0 bg-yellow-400/20 opacity-0 group-hover:opacity-100 transition-opacity duration-200"></div>
-          <span className="relative text-yellow-400 hover:text-yellow-300 text-xl tracking-wider">▶ ABOUT</span>
-        </a>
-        <a href="/contact" className="group bg-black border-4 border-red-400 hover:border-red-300 px-6 py-4 relative overflow-hidden transition-all duration-200 hover:scale-105 animate-pulse">
-          <div className="absolute inset-0 bg-red-400/20 opacity-0 group-hover:opacity-100 transition-opacity duration-200"></div>
-          <span className="relative text-red-400 hover:text-red-300 text-xl tracking-wider">▶ CONTACT</span>
-          <div className="absolute -top-2 -right-2 bg-red-400 text-black text-xs px-2 py-1 animate-bounce">
-            START
-          </div>
-        </a>
+    // Typing Effect
+    typing: (
+      <div className="flex flex-col items-center justify-center h-48">
+        <div className="text-lg font-mono text-gray-300 mb-4">
+          <span className="animate-pulse">&gt; preparing interface</span>
+          <span className="animate-pulse ml-1">_</span>
+        </div>
+        <div className="flex space-x-1">
+          <div className="w-1 h-4 bg-gray-600 animate-pulse delay-0"></div>
+          <div className="w-1 h-4 bg-gray-600 animate-pulse delay-200"></div>
+          <div className="w-1 h-4 bg-gray-600 animate-pulse delay-400"></div>
+        </div>
       </div>
     ),
 
-    // Retro Gaming - Grey Shades
-    retroGrey: (
-      <div className="flex flex-col sm:flex-row gap-6 justify-center items-center font-mono">
-        <a href="/services" className="group bg-gray-900 border-4 border-gray-400 hover:border-gray-300 px-6 py-4 relative overflow-hidden transition-all duration-200 hover:scale-105">
-          <div className="absolute inset-0 bg-gray-400/20 opacity-0 group-hover:opacity-100 transition-opacity duration-200"></div>
-          <span className="relative text-gray-300 hover:text-white text-xl tracking-wider">▶ SERVICES</span>
-          <div className="absolute -top-2 -right-2 bg-gray-400 text-black text-xs px-2 py-1 opacity-0 group-hover:opacity-100 transition-opacity duration-200">
-            NEW!
+    // Matrix Rain - White/Gray
+    matrix: (
+      <div className="flex flex-col items-center justify-center h-48 relative overflow-hidden">
+        <div className="absolute inset-0 opacity-50">
+          {[...Array(12)].map((_, i) => (
+            <div key={i} 
+                 className="absolute top-0 text-white font-mono text-xl animate-pulse"
+                 style={{ 
+                   left: `${i * 8.33}%`, 
+                   animationDelay: `${i * 0.15}s`,
+                   animationDuration: '1.8s' 
+                 }}>
+              {['ア', 'イ', 'ウ', 'エ', 'オ', 'カ', 'キ', 'ク', '01', '10'][Math.floor(Math.random() * 10)]}
+            </div>
+          ))}
+        </div>
+        <div className="relative z-10 text-white font-mono text-lg tracking-wider">
+          <span className="animate-pulse">MATRIX LOADING...</span>
+        </div>
+      </div>
+    ),
+
+    // Cyberpunk Terminal
+    terminal: (
+      <div className="flex flex-col items-center justify-center h-48">
+        <div className="bg-black border-2 border-gray-400 p-6 font-mono text-sm w-80">
+          <div className="text-green-400 mb-2">raiki@system:~$</div>
+          <div className="text-white mb-1">
+            <span className="animate-pulse">loading interface...</span>
           </div>
-        </a>
-        <a href="/about" className="group bg-gray-900 border-4 border-gray-500 hover:border-gray-400 px-6 py-4 relative overflow-hidden transition-all duration-200 hover:scale-105">
-          <div className="absolute inset-0 bg-gray-500/20 opacity-0 group-hover:opacity-100 transition-opacity duration-200"></div>
-          <span className="relative text-gray-400 hover:text-gray-200 text-xl tracking-wider">▶ ABOUT</span>
-        </a>
-        <a href="/contact" className="group bg-gray-900 border-4 border-white hover:border-gray-200 px-6 py-4 relative overflow-hidden transition-all duration-200 hover:scale-105 animate-pulse">
-          <div className="absolute inset-0 bg-white/20 opacity-0 group-hover:opacity-100 transition-opacity duration-200"></div>
-          <span className="relative text-white hover:text-gray-100 text-xl tracking-wider">▶ CONTACT</span>
-          <div className="absolute -top-2 -right-2 bg-white text-black text-xs px-2 py-1 animate-bounce">
-            START
+          <div className="text-gray-400 mb-2">
+            [████████████████████] 100%
           </div>
-        </a>
+          <div className="text-cyan-400">
+            <span className="animate-pulse">&gt; ready_</span>
+          </div>
+        </div>
+      </div>
+    ),
+
+    // Binary Code Rain
+    binary: (
+      <div className="flex flex-col items-center justify-center h-48 relative overflow-hidden">
+        <div className="absolute inset-0 opacity-40">
+          {[...Array(20)].map((_, i) => (
+            <div key={i} 
+                 className="absolute top-0 text-gray-300 font-mono text-lg animate-pulse"
+                 style={{ 
+                   left: `${i * 5}%`, 
+                   animationDelay: `${i * 0.1}s`,
+                   animationDuration: '1.5s' 
+                 }}>
+              {Math.random() > 0.5 ? '1' : '0'}
+            </div>
+          ))}
+        </div>
+        <div className="relative z-10 bg-black/60 px-6 py-3 border border-gray-500">
+          <div className="text-white font-mono text-lg tracking-wider">
+            <span className="animate-pulse">DECRYPTING DATA...</span>
+          </div>
+        </div>
+      </div>
+    ),
+
+    // Sliding Bars
+    bars: (
+      <div className="flex flex-col items-center justify-center h-48">
+        <div className="flex space-x-1 mb-4">
+          {[...Array(5)].map((_, i) => (
+            <div key={i} 
+                 className="w-1 bg-gray-600 animate-pulse"
+                 style={{ 
+                   height: `${20 + (i % 3) * 10}px`,
+                   animationDelay: `${i * 0.1}s` 
+                 }}>
+            </div>
+          ))}
+        </div>
+        <p className="text-gray-400 font-mono text-sm">PROCESSING</p>
       </div>
     )
+  };
+
+  const simulateLoading = (duration = 2000) => {
+    setIsLoading(true);
+    setTimeout(() => setIsLoading(false), duration);
   };
 
   return (
     <div className="h-screen overflow-hidden bg-gradient-to-br from-black via-gray-900 to-gray-800">
       <div className="relative overflow-hidden h-full">
         <NeuralNetwork />
+        
+        {/* Loading Overlay */}
+        {isLoading && (
+          <div className="absolute inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center">
+            {loaders[currentLoader]}
+          </div>
+        )}
         
         {/* Header */}
         <header className="absolute top-0 left-0 right-0 z-20 px-6 py-2 bg-transparent">
@@ -204,29 +227,32 @@ export default function Demo() {
           </nav>
         </header>
 
-        {/* Main Content Area */}
+        {/* Main Content */}
         <div className="absolute inset-0 flex flex-col justify-center z-10 px-6 pt-16 pb-16">
-          <div className="max-w-6xl mx-auto">
+          <div className="max-w-4xl mx-auto">
             
             {/* Title */}
             <div className="text-center mb-8">
               <h1 className="text-3xl md:text-4xl font-bold text-white mb-4 font-mono">
-                Design Styles Demo
+                Loader Options
               </h1>
+              <p className="text-gray-400 mb-6">
+                Different loading transitions to prevent text flash when switching pages
+              </p>
               
-              {/* Style Buttons */}
-              <div className="flex flex-wrap gap-2 justify-center mb-6">
-                {Object.keys(styles).map((style) => (
+              {/* Loader Selection */}
+              <div className="flex flex-wrap gap-2 justify-center mb-8">
+                {Object.keys(loaders).map((loader) => (
                   <button
-                    key={style}
-                    onClick={() => setCurrentStyle(style)}
-                    className={`px-3 py-1 rounded font-mono text-xs transition-all duration-300 ${
-                      currentStyle === style
+                    key={loader}
+                    onClick={() => setCurrentLoader(loader)}
+                    className={`px-4 py-2 rounded font-mono text-sm transition-all duration-300 ${
+                      currentLoader === loader
                         ? 'bg-white text-black'
                         : 'bg-gray-800 text-gray-300 hover:bg-gray-700 hover:text-white'
                     }`}
                   >
-                    {style}
+                    {loader}
                   </button>
                 ))}
               </div>
@@ -234,23 +260,49 @@ export default function Demo() {
 
             {/* Demo Area */}
             <div className="text-center">
-              <div className="bg-gray-900/60 backdrop-blur-sm border border-gray-700 rounded-lg p-6 mb-4">
-                <h2 className="text-lg text-white mb-6 font-mono capitalize">{currentStyle} Style</h2>
-                {styles[currentStyle]}
+              <div className="bg-gray-900/60 backdrop-blur-sm border border-gray-700 rounded-lg p-8 mb-6">
+                <h2 className="text-lg text-white mb-4 font-mono capitalize">{currentLoader} Loader</h2>
+                {loaders[currentLoader]}
+                
+                <button
+                  onClick={() => simulateLoading()}
+                  disabled={isLoading}
+                  className="mt-6 group bg-gray-800 border-2 border-gray-400 hover:border-gray-300 px-6 py-3 relative overflow-hidden transition-all duration-200 hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed"
+                >
+                  <div className="absolute inset-0 bg-gray-400/20 opacity-0 group-hover:opacity-100 transition-opacity duration-200"></div>
+                  <span className="relative text-gray-300 group-hover:text-white font-mono tracking-wider">
+                    {isLoading ? 'LOADING...' : '>> TEST LOADER'}
+                  </span>
+                </button>
               </div>
-              <p className="text-gray-400 text-sm">
-                Hover over the links to see the interactive effects
-              </p>
+              
+              {/* Implementation Notes */}
+              <div className="bg-gray-800/60 backdrop-blur-sm border border-gray-600 rounded-lg p-6">
+                <h3 className="text-white font-mono mb-3">Implementation</h3>
+                <div className="text-left text-gray-300 font-mono text-sm space-y-2">
+                  <p>• Show loader for ~200-500ms during page transitions</p>
+                  <p>• Hide MatrixText until loader completes</p>
+                  <p>• Prevents text flash by covering initial render</p>
+                  <p>• Maintains cyberpunk aesthetic</p>
+                </div>
+              </div>
             </div>
           </div>
         </div>
 
-        {/* Bottom Info */}
+        {/* Bottom Navigation */}
         <div className="absolute bottom-0 left-0 right-0 z-10 pb-8 px-6 bg-gradient-to-t from-black/60 to-transparent pt-6">
           <div className="max-w-4xl mx-auto text-center">
-            <p className="text-sm text-gray-400">
-              Choose your preferred style and we'll implement it on your site
-            </p>
+            <div className="flex flex-col sm:flex-row gap-3 font-mono max-w-sm mx-auto sm:max-w-none sm:justify-center">
+              <a href="/" className="group bg-gray-900 border-2 border-gray-400 hover:border-gray-300 px-5 py-3 relative overflow-hidden transition-all duration-200 hover:scale-105 hover:shadow-lg hover:shadow-gray-400/40 cursor-pointer text-center sm:w-36 flex items-center justify-center">
+                <div className="absolute inset-0 bg-gray-400/20 opacity-0 group-hover:opacity-100 transition-opacity duration-200"></div>
+                <span className="relative text-gray-400 group-hover:text-white text-sm tracking-wider leading-none">&gt;&gt; home</span>
+              </a>
+              <a href="/services" className="group bg-gray-900 border-2 border-gray-400 hover:border-gray-300 px-5 py-3 relative overflow-hidden transition-all duration-200 hover:scale-105 hover:shadow-lg hover:shadow-gray-400/40 cursor-pointer text-center sm:w-36 flex items-center justify-center">
+                <div className="absolute inset-0 bg-gray-400/20 opacity-0 group-hover:opacity-100 transition-opacity duration-200"></div>
+                <span className="relative text-gray-400 group-hover:text-white text-sm tracking-wider leading-none">&gt;&gt; services</span>
+              </a>
+            </div>
           </div>
         </div>
       </div>
