@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useCallback } from 'react';
 
 /**
  * MatrixText Component
@@ -15,19 +15,19 @@ export default function MatrixText({ text, className }) {
   const intervalRef = React.useRef(null);
 
   // Start with Japanese characters instead of actual text to prevent flash
-  const getInitialText = () => {
+  const getInitialText = useCallback(() => {
     const japaneseChars = 'アイウエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホマミムメモヤユヨラリルレロワヲン';
     let initialText = '';
     for (let i = 0; i < text.length; i++) {
       initialText += japaneseChars[Math.floor(Math.random() * japaneseChars.length)];
     }
     return initialText;
-  };
+  }, [text]);
 
   React.useEffect(() => {
     setIsMounted(true);
     setDisplayText(getInitialText());
-  }, []);
+  }, [getInitialText]);
   
   React.useEffect(() => {
     if (!isMounted) return;
