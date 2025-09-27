@@ -43,8 +43,16 @@ export default function Contact() {
   // Initialize Turnstile widget when script is loaded
   useEffect(() => {
     if (isTurnstileLoaded && window.turnstile && turnstileRef.current) {
+      const sitekey = process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY;
+      
+      // Skip Turnstile setup if no site key available
+      if (!sitekey) {
+        console.warn('Turnstile site key not available');
+        return;
+      }
+      
       window.turnstile.render(turnstileRef.current, {
-        sitekey: process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY,
+        sitekey: sitekey,
         callback: (token) => {
           setTurnstileToken(token);
         },
