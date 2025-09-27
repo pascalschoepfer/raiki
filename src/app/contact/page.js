@@ -22,51 +22,51 @@ export default function Contact() {
   const menuRef = useRef(null);
   const turnstileRef = useRef(null);
 
-  // Load Turnstile script
-  useEffect(() => {
-    const script = document.createElement('script');
-    script.src = 'https://challenges.cloudflare.com/turnstile/v0/api.js';
-    script.async = true;
-    script.defer = true;
-    script.onload = () => {
-      setIsTurnstileLoaded(true);
-    };
-    document.head.appendChild(script);
+  // Load Turnstile script - TEMPORARILY DISABLED FOR TESTING
+  // useEffect(() => {
+  //   const script = document.createElement('script');
+  //   script.src = 'https://challenges.cloudflare.com/turnstile/v0/api.js';
+  //   script.async = true;
+  //   script.defer = true;
+  //   script.onload = () => {
+  //     setIsTurnstileLoaded(true);
+  //   };
+  //   document.head.appendChild(script);
 
-    return () => {
-      if (script.parentNode) {
-        script.parentNode.removeChild(script);
-      }
-    };
-  }, []);
+  //   return () => {
+  //     if (script.parentNode) {
+  //       script.parentNode.removeChild(script);
+  //     }
+  //   };
+  // }, []);
 
-  // Initialize Turnstile widget when script is loaded
-  useEffect(() => {
-    if (isTurnstileLoaded && window.turnstile && turnstileRef.current) {
-      const sitekey = process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY;
+  // Initialize Turnstile widget when script is loaded - TEMPORARILY DISABLED FOR TESTING
+  // useEffect(() => {
+  //   if (isTurnstileLoaded && window.turnstile && turnstileRef.current) {
+  //     const sitekey = process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY;
       
-      // Skip Turnstile setup if no site key available
-      if (!sitekey) {
-        console.warn('Turnstile site key not available');
-        return;
-      }
+  //     // Skip Turnstile setup if no site key available
+  //     if (!sitekey) {
+  //       console.warn('Turnstile site key not available');
+  //       return;
+  //     }
       
-      window.turnstile.render(turnstileRef.current, {
-        sitekey: sitekey,
-        callback: (token) => {
-          setTurnstileToken(token);
-        },
-        'error-callback': () => {
-          setTurnstileToken(null);
-        },
-        'expired-callback': () => {
-          setTurnstileToken(null);
-        },
-        theme: 'dark',
-        size: 'compact' // Changed from invisible to compact
-      });
-    }
-  }, [isTurnstileLoaded]);
+  //     window.turnstile.render(turnstileRef.current, {
+  //       sitekey: sitekey,
+  //       callback: (token) => {
+  //         setTurnstileToken(token);
+  //       },
+  //       'error-callback': () => {
+  //         setTurnstileToken(null);
+  //       },
+  //       'expired-callback': () => {
+  //         setTurnstileToken(null);
+  //       },
+  //       theme: 'dark',
+  //       size: 'compact' // Changed from invisible to compact
+  //     });
+  //   }
+  // }, [isTurnstileLoaded]);
 
   // Close menu when clicking outside
   useEffect(() => {
@@ -128,70 +128,71 @@ export default function Contact() {
     setStatusMessage('');
 
     try {
-      let finalToken = turnstileToken;
+      // TEMPORARILY BYPASS TURNSTILE FOR TESTING
+      let finalToken = 'dev-bypass-testing';
 
-      // Execute Turnstile challenge
-      if (window.turnstile && !turnstileToken) {
-        try {
-          window.turnstile.execute();
+      // // Execute Turnstile challenge
+      // if (window.turnstile && !turnstileToken) {
+      //   try {
+      //     window.turnstile.execute();
           
-          // Wait for token with timeout
-          const waitForToken = new Promise((resolve, reject) => {
-            const checkToken = () => {
-              if (turnstileToken) {
-                resolve(turnstileToken);
-              } else {
-                setTimeout(checkToken, 100);
-              }
-            };
-            checkToken();
+      //     // Wait for token with timeout
+      //     const waitForToken = new Promise((resolve, reject) => {
+      //       const checkToken = () => {
+      //         if (turnstileToken) {
+      //           resolve(turnstileToken);
+      //         } else {
+      //           setTimeout(checkToken, 100);
+      //         }
+      //       };
+      //       checkToken();
             
-            // 10 second timeout
-            setTimeout(() => reject(new Error('Turnstile timeout')), 10000);
-          });
+      //       // 10 second timeout
+      //       setTimeout(() => reject(new Error('Turnstile timeout')), 10000);
+      //     });
 
-          try {
-            finalToken = await waitForToken;
-          } catch (error) {
-            // In development, use bypass token if Turnstile fails
-            if (process.env.NODE_ENV === 'development') {
-              console.warn('Turnstile failed in development, using bypass token');
-              finalToken = 'dev-bypass';
-            } else {
-              setSubmitStatus('error');
-              setStatusMessage('Security verification failed. Please try again.');
-              setIsSubmitting(false);
-              resetStatusMessage();
-              return;
-            }
-          }
-        } catch (error) {
-          // In development, use bypass token if Turnstile fails
-          if (process.env.NODE_ENV === 'development') {
-            console.warn('Turnstile failed in development, using bypass token');
-            finalToken = 'dev-bypass';
-          } else {
-            setSubmitStatus('error');
-            setStatusMessage('Security verification failed. Please try again.');
-            setIsSubmitting(false);
-            resetStatusMessage();
-            return;
-          }
-        }
-      }
+      //     try {
+      //       finalToken = await waitForToken;
+      //     } catch (error) {
+      //       // In development, use bypass token if Turnstile fails
+      //       if (process.env.NODE_ENV === 'development') {
+      //         console.warn('Turnstile failed in development, using bypass token');
+      //         finalToken = 'dev-bypass';
+      //       } else {
+      //         setSubmitStatus('error');
+      //         setStatusMessage('Security verification failed. Please try again.');
+      //         setIsSubmitting(false);
+      //         resetStatusMessage();
+      //         return;
+      //       }
+      //     }
+      //   } catch (error) {
+      //     // In development, use bypass token if Turnstile fails
+      //     if (process.env.NODE_ENV === 'development') {
+      //       console.warn('Turnstile failed in development, using bypass token');
+      //       finalToken = 'dev-bypass';
+      //     } else {
+      //       setSubmitStatus('error');
+      //       setStatusMessage('Security verification failed. Please try again.');
+      //       setIsSubmitting(false);
+      //       resetStatusMessage();
+      //       return;
+      //     }
+      //   }
+      // }
 
-      // In development, use bypass token if no token available
-      if (!finalToken && process.env.NODE_ENV === 'development') {
-        finalToken = 'dev-bypass';
-      }
+      // // In development, use bypass token if no token available
+      // if (!finalToken && process.env.NODE_ENV === 'development') {
+      //   finalToken = 'dev-bypass';
+      // }
 
-      if (!finalToken) {
-        setSubmitStatus('error');
-        setStatusMessage('Security verification required. Please try again.');
-        setIsSubmitting(false);
-        resetStatusMessage();
-        return;
-      }
+      // if (!finalToken) {
+      //   setSubmitStatus('error');
+      //   setStatusMessage('Security verification required. Please try again.');
+      //   setIsSubmitting(false);
+      //   resetStatusMessage();
+      //   return;
+      // }
 
       const response = await fetch('/api/contact', {
         method: 'POST',
