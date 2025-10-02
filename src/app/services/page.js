@@ -82,8 +82,8 @@ export default function Services() {
         </div>
 
         {/* Services Content */}
-        <div className="absolute inset-0 flex items-center justify-center z-10 px-4 sm:px-6">
-          <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-6 md:gap-8 mt-16 sm:mt-8">
+        <div className="absolute inset-0 flex items-center justify-center z-10 px-4 sm:px-6 pt-24 sm:pt-16 md:pt-8">
+          <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-6 md:gap-8 w-full">
             
             {/* System Engineering - Available but Passive */}
             <div className="bg-gray-900/60 backdrop-blur-sm border border-gray-700 hover:border-gray-500 rounded-lg p-4 sm:p-6 hover:bg-gray-800/60 transition-all duration-300 hover:scale-105">
@@ -121,22 +121,22 @@ export default function Services() {
           </div>
         </div>
 
-        {/* Bottom Navigation */}
-        <section className="absolute bottom-0 left-0 right-0 z-15 pb-4 sm:pb-16 px-4 sm:px-6 bg-gradient-to-t from-black/60 to-transparent pt-6">
+        {/* Bottom Navigation - Hidden on mobile, shown on desktop */}
+        <section className="absolute bottom-0 left-0 right-0 z-15 pb-16 px-6 bg-gradient-to-t from-black/60 to-transparent pt-6 hidden sm:block">
           <div className="max-w-4xl mx-auto text-center">
             
-            <div className="flex flex-col sm:flex-row gap-2 sm:gap-3 font-mono max-w-sm mx-auto sm:max-w-none sm:justify-center">
-              <a href="/" className="group bg-gray-900 border-2 border-gray-400 hover:border-gray-300 px-4 sm:px-5 py-2 sm:py-3 relative overflow-hidden transition-all duration-200 hover:scale-105 hover:shadow-lg hover:shadow-gray-400/40 cursor-pointer text-center sm:w-36 flex items-center justify-center">
+            <div className="flex flex-row gap-3 font-mono justify-center">
+              <a href="/" className="group bg-gray-900 border-2 border-gray-400 hover:border-gray-300 px-5 py-3 relative overflow-hidden transition-all duration-200 hover:scale-105 hover:shadow-lg hover:shadow-gray-400/40 cursor-pointer text-center w-36 flex items-center justify-center">
                 <div className="absolute inset-0 bg-gray-400/20 opacity-0 group-hover:opacity-100 transition-opacity duration-200"></div>
-                <span className="relative text-gray-400 group-hover:text-white text-xs sm:text-sm tracking-wider leading-none">&gt;&gt; home</span>
+                <span className="relative text-gray-400 group-hover:text-white text-sm tracking-wider leading-none">&gt;&gt; home</span>
               </a>
-              <a href="/about" className="group bg-gray-900 border-2 border-gray-400 hover:border-gray-300 px-4 sm:px-5 py-2 sm:py-3 relative overflow-hidden transition-all duration-200 hover:scale-105 hover:shadow-lg hover:shadow-gray-400/40 cursor-pointer text-center sm:w-36 flex items-center justify-center">
+              <a href="/about" className="group bg-gray-900 border-2 border-gray-400 hover:border-gray-300 px-5 py-3 relative overflow-hidden transition-all duration-200 hover:scale-105 hover:shadow-lg hover:shadow-gray-400/40 cursor-pointer text-center w-36 flex items-center justify-center">
                 <div className="absolute inset-0 bg-gray-400/20 opacity-0 group-hover:opacity-100 transition-opacity duration-200"></div>
-                <span className="relative text-gray-400 group-hover:text-white text-xs sm:text-sm tracking-wider leading-none">&gt;&gt; about</span>
+                <span className="relative text-gray-400 group-hover:text-white text-sm tracking-wider leading-none">&gt;&gt; about</span>
               </a>
-              <a href="/contact" className="group bg-gray-900 border-2 border-gray-400 hover:border-gray-300 px-4 sm:px-5 py-2 sm:py-3 relative overflow-hidden transition-all duration-200 hover:scale-105 hover:shadow-lg hover:shadow-gray-400/40 cursor-pointer text-center sm:w-36 flex items-center justify-center">
+              <a href="/contact" className="group bg-gray-900 border-2 border-gray-400 hover:border-gray-300 px-5 py-3 relative overflow-hidden transition-all duration-200 hover:scale-105 hover:shadow-lg hover:shadow-gray-400/40 cursor-pointer text-center w-36 flex items-center justify-center">
                 <div className="absolute inset-0 bg-gray-400/20 opacity-0 group-hover:opacity-100 transition-opacity duration-200"></div>
-                <span className="relative text-gray-400 group-hover:text-white text-xs sm:text-sm tracking-wider leading-none">&gt;&gt; contact</span>
+                <span className="relative text-gray-400 group-hover:text-white text-sm tracking-wider leading-none">&gt;&gt; contact</span>
               </a>
             </div>
           </div>
