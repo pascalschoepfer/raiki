@@ -34,13 +34,8 @@ function isRateLimited(ip) {
 }
 
 async function verifyTurnstileToken(token, ip) {
-  // In development, allow bypass with special tokens
-  if (process.env.NODE_ENV === 'development' && (token === 'dev-bypass' || token === 'dev-bypass-testing')) {
-    return true;
-  }
-  
-  // TEMPORARILY ALLOW TESTING TOKEN IN PRODUCTION
-  if (token === 'dev-bypass-testing') {
+  // In development, allow bypass with special token
+  if (process.env.NODE_ENV === 'development' && token === 'dev-bypass') {
     return true;
   }
 

@@ -65,21 +65,21 @@ export default function About() {
         </header>
 
         {/* Page Title */}
-        <div className="absolute left-0 right-0 z-10 px-6 top-16 sm:top-20 md:top-24">
+        <div className="absolute left-0 right-0 z-10 px-6 top-[12vh] sm:top-20 md:top-24">
           <div className="flex justify-center">
-            <MatrixText 
-              text="about" 
-              className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-mono font-bold text-gray-300 tracking-wider"
+            <MatrixText
+              text="about"
+              className="text-[2.75rem] sm:text-3xl md:text-4xl lg:text-5xl font-mono font-bold text-gray-300 tracking-wider whitespace-nowrap"
             />
           </div>
         </div>
 
         {/* About Content */}
-        <div className="absolute inset-0 flex items-center justify-center z-10 px-4 sm:px-6 pt-24 sm:pt-16 md:pt-8">
-          <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-6 md:gap-8 w-full">
+        <div className="absolute z-10 px-4 sm:px-6 top-[30vh] bottom-[10vh] left-0 right-0 sm:inset-0 flex items-center justify-center sm:pt-16 md:pt-8">
+          <div className="max-w-4xl sm:max-w-5xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-6 md:gap-8 w-full">
             
             {/* Experience */}
-            <div className="bg-gray-900/60 backdrop-blur-sm border border-gray-700 hover:border-gray-500 rounded-lg p-4 sm:p-6 hover:bg-gray-800/60 transition-all duration-300 hover:scale-105">
+            <div className="bg-gray-900/60 backdrop-blur-sm border border-gray-700 hover:border-gray-500 rounded-lg p-4 sm:py-6 sm:px-5 hover:bg-gray-800/60 transition-all duration-300 hover:scale-105">
               <h3 className="text-lg sm:text-xl font-bold text-white mb-3 font-mono">experience</h3>
               <div className="text-gray-300 space-y-2 text-sm font-normal">
                 <div className="flex items-center">
@@ -124,7 +124,7 @@ export default function About() {
             </div>
 
             {/* Education & Specialization */}
-            <div className="bg-gray-900/60 backdrop-blur-sm border border-gray-700 hover:border-gray-500 rounded-lg p-4 sm:p-6 hover:bg-gray-800/60 transition-all duration-300 hover:scale-105">
+            <div className="bg-gray-900/60 backdrop-blur-sm border border-gray-700 hover:border-gray-500 rounded-lg p-4 sm:py-6 sm:px-5 hover:bg-gray-800/60 transition-all duration-300 hover:scale-105">
               <h3 className="text-lg sm:text-xl font-bold text-white mb-3 font-mono">education</h3>
               <div className="text-gray-300 space-y-2 text-sm font-normal">
                 <div className="flex items-center">
@@ -187,7 +187,7 @@ export default function About() {
             </div>
 
             {/* Expertise */}
-            <div className="bg-gray-900/60 backdrop-blur-sm border border-gray-700 hover:border-gray-500 rounded-lg p-4 sm:p-6 hover:bg-gray-800/60 transition-all duration-300 hover:scale-105">
+            <div className="bg-gray-900/60 backdrop-blur-sm border border-gray-700 hover:border-gray-500 rounded-lg p-4 sm:py-6 sm:px-5 hover:bg-gray-800/60 transition-all duration-300 hover:scale-105">
               <h3 className="text-lg sm:text-xl font-bold text-white mb-3 font-mono">expertise</h3>
               <div className="text-gray-300 space-y-2 text-sm font-normal">
                 <div className="flex items-center">

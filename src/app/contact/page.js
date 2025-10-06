@@ -22,51 +22,51 @@ export default function Contact() {
   const menuRef = useRef(null);
   const turnstileRef = useRef(null);
 
-  // Load Turnstile script - TEMPORARILY DISABLED FOR TESTING
-  // useEffect(() => {
-  //   const script = document.createElement('script');
-  //   script.src = 'https://challenges.cloudflare.com/turnstile/v0/api.js';
-  //   script.async = true;
-  //   script.defer = true;
-  //   script.onload = () => {
-  //     setIsTurnstileLoaded(true);
-  //   };
-  //   document.head.appendChild(script);
+  // Load Turnstile script
+  useEffect(() => {
+    const script = document.createElement('script');
+    script.src = 'https://challenges.cloudflare.com/turnstile/v0/api.js';
+    script.async = true;
+    script.defer = true;
+    script.onload = () => {
+      setIsTurnstileLoaded(true);
+    };
+    document.head.appendChild(script);
 
-  //   return () => {
-  //     if (script.parentNode) {
-  //       script.parentNode.removeChild(script);
-  //     }
-  //   };
-  // }, []);
+    return () => {
+      if (script.parentNode) {
+        script.parentNode.removeChild(script);
+      }
+    };
+  }, []);
 
-  // Initialize Turnstile widget when script is loaded - TEMPORARILY DISABLED FOR TESTING
-  // useEffect(() => {
-  //   if (isTurnstileLoaded && window.turnstile && turnstileRef.current) {
-  //     const sitekey = process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY;
-      
-  //     // Skip Turnstile setup if no site key available
-  //     if (!sitekey) {
-  //       console.warn('Turnstile site key not available');
-  //       return;
-  //     }
-      
-  //     window.turnstile.render(turnstileRef.current, {
-  //       sitekey: sitekey,
-  //       callback: (token) => {
-  //         setTurnstileToken(token);
-  //       },
-  //       'error-callback': () => {
-  //         setTurnstileToken(null);
-  //       },
-  //       'expired-callback': () => {
-  //         setTurnstileToken(null);
-  //       },
-  //       theme: 'dark',
-  //       size: 'compact' // Changed from invisible to compact
-  //     });
-  //   }
-  // }, [isTurnstileLoaded]);
+  // Initialize Turnstile widget when script is loaded
+  useEffect(() => {
+    if (isTurnstileLoaded && window.turnstile && turnstileRef.current) {
+      const sitekey = process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY;
+
+      // Skip Turnstile setup if no site key available
+      if (!sitekey) {
+        console.warn('Turnstile site key not available');
+        return;
+      }
+
+      window.turnstile.render(turnstileRef.current, {
+        sitekey: sitekey,
+        callback: (token) => {
+          setTurnstileToken(token);
+        },
+        'error-callback': () => {
+          setTurnstileToken(null);
+        },
+        'expired-callback': () => {
+          setTurnstileToken(null);
+        },
+        theme: 'dark',
+        size: 'normal'
+      });
+    }
+  }, [isTurnstileLoaded]);
 
   // Close menu when clicking outside
   useEffect(() => {
@@ -128,71 +128,70 @@ export default function Contact() {
     setStatusMessage('');
 
     try {
-      // TEMPORARILY BYPASS TURNSTILE FOR TESTING
-      let finalToken = 'dev-bypass-testing';
+      let finalToken = turnstileToken;
 
-      // // Execute Turnstile challenge
-      // if (window.turnstile && !turnstileToken) {
-      //   try {
-      //     window.turnstile.execute();
-          
-      //     // Wait for token with timeout
-      //     const waitForToken = new Promise((resolve, reject) => {
-      //       const checkToken = () => {
-      //         if (turnstileToken) {
-      //           resolve(turnstileToken);
-      //         } else {
-      //           setTimeout(checkToken, 100);
-      //         }
-      //       };
-      //       checkToken();
-            
-      //       // 10 second timeout
-      //       setTimeout(() => reject(new Error('Turnstile timeout')), 10000);
-      //     });
+      // Execute Turnstile challenge if no token yet
+      if (window.turnstile && !turnstileToken) {
+        try {
+          window.turnstile.execute();
 
-      //     try {
-      //       finalToken = await waitForToken;
-      //     } catch (error) {
-      //       // In development, use bypass token if Turnstile fails
-      //       if (process.env.NODE_ENV === 'development') {
-      //         console.warn('Turnstile failed in development, using bypass token');
-      //         finalToken = 'dev-bypass';
-      //       } else {
-      //         setSubmitStatus('error');
-      //         setStatusMessage('Security verification failed. Please try again.');
-      //         setIsSubmitting(false);
-      //         resetStatusMessage();
-      //         return;
-      //       }
-      //     }
-      //   } catch (error) {
-      //     // In development, use bypass token if Turnstile fails
-      //     if (process.env.NODE_ENV === 'development') {
-      //       console.warn('Turnstile failed in development, using bypass token');
-      //       finalToken = 'dev-bypass';
-      //     } else {
-      //       setSubmitStatus('error');
-      //       setStatusMessage('Security verification failed. Please try again.');
-      //       setIsSubmitting(false);
-      //       resetStatusMessage();
-      //       return;
-      //     }
-      //   }
-      // }
+          // Wait for token with timeout
+          const waitForToken = new Promise((resolve, reject) => {
+            const checkToken = () => {
+              if (turnstileToken) {
+                resolve(turnstileToken);
+              } else {
+                setTimeout(checkToken, 100);
+              }
+            };
+            checkToken();
 
-      // // In development, use bypass token if no token available
-      // if (!finalToken && process.env.NODE_ENV === 'development') {
-      //   finalToken = 'dev-bypass';
-      // }
+            // 10 second timeout
+            setTimeout(() => reject(new Error('Turnstile timeout')), 10000);
+          });
 
-      // if (!finalToken) {
-      //   setSubmitStatus('error');
-      //   setStatusMessage('Security verification required. Please try again.');
-      //   setIsSubmitting(false);
-      //   resetStatusMessage();
-      //   return;
-      // }
+          try {
+            finalToken = await waitForToken;
+          } catch (error) {
+            // In development, use bypass token if Turnstile fails
+            if (process.env.NODE_ENV === 'development') {
+              console.warn('Turnstile failed in development, using bypass token');
+              finalToken = 'dev-bypass';
+            } else {
+              setSubmitStatus('error');
+              setStatusMessage('Security verification failed. Please try again.');
+              setIsSubmitting(false);
+              resetStatusMessage();
+              return;
+            }
+          }
+        } catch (error) {
+          // In development, use bypass token if Turnstile fails
+          if (process.env.NODE_ENV === 'development') {
+            console.warn('Turnstile failed in development, using bypass token');
+            finalToken = 'dev-bypass';
+          } else {
+            setSubmitStatus('error');
+            setStatusMessage('Security verification failed. Please try again.');
+            setIsSubmitting(false);
+            resetStatusMessage();
+            return;
+          }
+        }
+      }
+
+      // In development, use bypass token if no token available
+      if (!finalToken && process.env.NODE_ENV === 'development') {
+        finalToken = 'dev-bypass';
+      }
+
+      if (!finalToken) {
+        setSubmitStatus('error');
+        setStatusMessage('Security verification required. Please try again.');
+        setIsSubmitting(false);
+        resetStatusMessage();
+        return;
+      }
 
       const response = await fetch('/api/contact', {
         method: 'POST',
@@ -247,17 +246,11 @@ export default function Contact() {
             <div className="relative" ref={menuRef}>
               <button
                 onClick={() => setIsMenuOpen(!isMenuOpen)}
-                className="flex flex-col justify-center items-center w-8 h-8 bg-gray-900 border border-gray-400 hover:border-gray-300 cursor-pointer group transition-all duration-200 hover:shadow-lg hover:shadow-gray-400/25"
+                className="flex flex-col justify-center items-center w-8 h-8 bg-transparent border-0 cursor-pointer"
               >
-                {!isMenuOpen ? (
-                  <div className="flex flex-col gap-1">
-                    <div className="w-4 h-px bg-gray-400 group-hover:bg-white transition-colors duration-200"></div>
-                    <div className="w-4 h-px bg-gray-400 group-hover:bg-white transition-colors duration-200"></div>
-                    <div className="w-4 h-px bg-gray-400 group-hover:bg-white transition-colors duration-200"></div>
-                  </div>
-                ) : (
-                  <span className="text-white text-xs">×</span>
-                )}
+                <span className={`block w-6 h-0.5 bg-white transition-all duration-300 ${isMenuOpen ? 'rotate-45 translate-y-1.5' : ''}`}></span>
+                <span className={`block w-6 h-0.5 bg-white mt-1 transition-all duration-300 ${isMenuOpen ? 'opacity-0' : ''}`}></span>
+                <span className={`block w-6 h-0.5 bg-white mt-1 transition-all duration-300 ${isMenuOpen ? '-rotate-45 -translate-y-1.5' : ''}`}></span>
               </button>
               
               {/* Dropdown Menu */}
@@ -346,9 +339,9 @@ export default function Contact() {
                   </div>
                 )}
                 
-                {/* Invisible Turnstile widget */}
-                <div ref={turnstileRef} className="hidden"></div>
-                
+                {/* Turnstile widget */}
+                <div ref={turnstileRef} className="flex justify-center scale-[0.85] -my-4 mb-2"></div>
+
                 <button
                   type="submit"
                   disabled={isSubmitting}
@@ -366,8 +359,8 @@ export default function Contact() {
               </form>
             </section>
             
-            {/* Navigation Buttons */}
-            <section>
+            {/* Navigation Buttons - Hidden on mobile */}
+            <section className="hidden sm:block">
               <div className="flex flex-col sm:flex-row gap-2 font-mono">
                 <Link href="/" className="group bg-gray-900 border-2 border-gray-400 hover:border-gray-300 px-4 py-2 relative overflow-hidden transition-all duration-200 hover:scale-105 hover:shadow-lg hover:shadow-gray-400/40 cursor-pointer text-center flex-1 flex items-center justify-center">
                   <div className="absolute inset-0 bg-gray-400/20 opacity-0 group-hover:opacity-100 transition-opacity duration-200"></div>
