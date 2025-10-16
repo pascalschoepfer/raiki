@@ -80,7 +80,7 @@ export default function About() {
             
             {/* Experience */}
             <div className="bg-gray-900/60 backdrop-blur-sm border border-gray-700 hover:border-gray-500 rounded-lg py-3 px-3 pr-1 min-[400px]:pr-2 sm:py-6 sm:px-5 hover:bg-gray-800/60 transition-all duration-300 hover:scale-105">
-              <h3 className="text-lg min-[400px]:text-xl sm:text-lg md:text-xl font-bold text-white mb-2 sm:mb-3 font-mono">experience</h3>
+              <h3 className="text-base min-[400px]:text-xl sm:text-lg md:text-xl font-bold text-white mb-2 sm:mb-3 font-mono whitespace-nowrap overflow-hidden text-ellipsis">experience</h3>
               <div className="text-gray-300 space-y-1 min-[400px]:space-y-1.5 sm:space-y-2 text-sm min-[400px]:text-base sm:text-sm font-normal">
                 <div className="flex items-center">
                   <div className="w-4 h-4 flex items-center justify-center mr-2">
@@ -125,7 +125,7 @@ export default function About() {
 
             {/* Education & Specialization */}
             <div className="bg-gray-900/60 backdrop-blur-sm border border-gray-700 hover:border-gray-500 rounded-lg py-3 px-3 pr-1 min-[400px]:pr-2 sm:py-6 sm:px-5 hover:bg-gray-800/60 transition-all duration-300 hover:scale-105">
-              <h3 className="text-lg min-[400px]:text-xl sm:text-lg md:text-xl font-bold text-white mb-2 sm:mb-3 font-mono">education</h3>
+              <h3 className="text-base min-[400px]:text-xl sm:text-lg md:text-xl font-bold text-white mb-2 sm:mb-3 font-mono whitespace-nowrap overflow-hidden text-ellipsis">education</h3>
               <div className="text-gray-300 space-y-1 min-[400px]:space-y-1.5 sm:space-y-2 text-sm min-[400px]:text-base sm:text-sm font-normal">
                 <div className="flex items-center">
                   <div className="w-4 h-4 flex items-center justify-center mr-2">
@@ -188,7 +188,7 @@ export default function About() {
 
             {/* Expertise */}
             <div className="bg-gray-900/60 backdrop-blur-sm border border-gray-700 hover:border-gray-500 rounded-lg py-3 px-3 pr-1 min-[400px]:pr-2 sm:py-6 sm:px-5 hover:bg-gray-800/60 transition-all duration-300 hover:scale-105">
-              <h3 className="text-lg min-[400px]:text-xl sm:text-lg md:text-xl font-bold text-white mb-2 sm:mb-3 font-mono">expertise</h3>
+              <h3 className="text-base min-[400px]:text-xl sm:text-lg md:text-xl font-bold text-white mb-2 sm:mb-3 font-mono whitespace-nowrap overflow-hidden text-ellipsis">expertise</h3>
               <div className="text-gray-300 space-y-1 min-[400px]:space-y-1.5 sm:space-y-2 text-sm min-[400px]:text-base sm:text-sm font-normal">
                 <div className="flex items-center">
                   <div className="w-4 h-4 flex items-center justify-center mr-2">
@@ -246,15 +246,15 @@ export default function About() {
             <div className="flex flex-row gap-3 font-mono justify-center">
               <a href="/" className="group bg-gray-900 border-2 border-gray-400 hover:border-gray-300 px-5 py-3 relative overflow-hidden transition-all duration-200 hover:scale-105 hover:shadow-lg hover:shadow-gray-400/40 cursor-pointer text-center w-36 flex items-center justify-center">
                 <div className="absolute inset-0 bg-gray-400/20 opacity-0 group-hover:opacity-100 transition-opacity duration-200"></div>
-                <span className="relative text-gray-400 group-hover:text-white text-sm tracking-wider leading-none">&gt;&gt; home</span>
+                <span className="relative text-gray-400 group-hover:text-white text-sm tracking-wider leading-none whitespace-nowrap">&gt;&gt; home</span>
               </a>
               <a href="/services" className="group bg-gray-900 border-2 border-gray-400 hover:border-gray-300 px-5 py-3 relative overflow-hidden transition-all duration-200 hover:scale-105 hover:shadow-lg hover:shadow-gray-400/40 cursor-pointer text-center w-36 flex items-center justify-center">
                 <div className="absolute inset-0 bg-gray-400/20 opacity-0 group-hover:opacity-100 transition-opacity duration-200"></div>
-                <span className="relative text-gray-400 group-hover:text-white text-sm tracking-wider leading-none">&gt;&gt; services</span>
+                <span className="relative text-gray-400 group-hover:text-white text-sm tracking-wider leading-none whitespace-nowrap">&gt;&gt; services</span>
               </a>
               <a href="/contact" className="group bg-gray-900 border-2 border-gray-400 hover:border-gray-300 px-5 py-3 relative overflow-hidden transition-all duration-200 hover:scale-105 hover:shadow-lg hover:shadow-gray-400/40 cursor-pointer text-center w-36 flex items-center justify-center">
                 <div className="absolute inset-0 bg-gray-400/20 opacity-0 group-hover:opacity-100 transition-opacity duration-200"></div>
-                <span className="relative text-gray-400 group-hover:text-white text-sm tracking-wider leading-none">&gt;&gt; contact</span>
+                <span className="relative text-gray-400 group-hover:text-white text-sm tracking-wider leading-none whitespace-nowrap">&gt;&gt; contact</span>
               </a>
             </div>
           </div>

@@ -127,15 +127,15 @@ export default function Home() {
             <div className="flex flex-col sm:flex-row gap-2 sm:gap-3 font-mono max-w-sm mx-auto sm:max-w-none sm:justify-center">
               <a href="/services" className="group bg-gray-900 border-2 border-gray-400 hover:border-gray-300 px-5 py-3 relative overflow-hidden transition-all duration-200 hover:scale-105 hover:shadow-lg hover:shadow-gray-400/40 cursor-pointer text-center sm:w-36 flex items-center justify-center">
                 <div className="absolute inset-0 bg-gray-400/20 opacity-0 group-hover:opacity-100 transition-opacity duration-200"></div>
-                <span className="relative text-gray-400 group-hover:text-white text-sm tracking-wider leading-none">&gt;&gt; services</span>
+                <span className="relative text-gray-400 group-hover:text-white text-sm tracking-wider leading-none whitespace-nowrap">&gt;&gt; services</span>
               </a>
               <a href="/about" className="group bg-gray-900 border-2 border-gray-400 hover:border-gray-300 px-5 py-3 relative overflow-hidden transition-all duration-200 hover:scale-105 hover:shadow-lg hover:shadow-gray-400/40 cursor-pointer text-center sm:w-36 flex items-center justify-center">
                 <div className="absolute inset-0 bg-gray-400/20 opacity-0 group-hover:opacity-100 transition-opacity duration-200"></div>
-                <span className="relative text-gray-400 group-hover:text-white text-sm tracking-wider leading-none">&gt;&gt; about</span>
+                <span className="relative text-gray-400 group-hover:text-white text-sm tracking-wider leading-none whitespace-nowrap">&gt;&gt; about</span>
               </a>
               <a href="/contact" className="group bg-gray-900 border-2 border-gray-400 hover:border-gray-300 px-5 py-3 relative overflow-hidden transition-all duration-200 hover:scale-105 hover:shadow-lg hover:shadow-gray-400/40 cursor-pointer text-center sm:w-36 flex items-center justify-center">
                 <div className="absolute inset-0 bg-gray-400/20 opacity-0 group-hover:opacity-100 transition-opacity duration-200"></div>
-                <span className="relative text-gray-400 group-hover:text-white text-sm tracking-wider leading-none">&gt;&gt; contact</span>
+                <span className="relative text-gray-400 group-hover:text-white text-sm tracking-wider leading-none whitespace-nowrap">&gt;&gt; contact</span>
               </a>
             </div>
           </div>
