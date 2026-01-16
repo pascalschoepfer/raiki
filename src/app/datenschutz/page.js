@@ -168,10 +168,9 @@ export default function Datenschutz() {
         {/* Page Title */}
         <div className="pt-[10.8vh] sm:pt-[13.5vh] px-6 flex items-center justify-center">
           <div className="flex justify-center">
-            <MatrixText
-              text={t.title}
-              className="text-[2rem] sm:text-3xl md:text-4xl lg:text-5xl font-mono font-bold text-[#c0b8a8] tracking-wider whitespace-nowrap"
-            />
+            <span className="text-[2rem] sm:text-3xl md:text-4xl lg:text-5xl font-mono font-bold text-[#c0b8a8] tracking-wider whitespace-nowrap">
+              {t.title}
+            </span>
           </div>
         </div>
 

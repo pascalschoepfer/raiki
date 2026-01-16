@@ -9,7 +9,7 @@ import Footer from '../components/Footer';
 
 const content = {
   de: {
-    title: 'kontakt',
+    title: 'contact',
     name: 'name',
     email: 'e-mail',
     company: 'firma (optional)',
