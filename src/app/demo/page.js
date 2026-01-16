@@ -56,7 +56,7 @@ export default function LoaderDemo() {
     hexagonDouble: (
       <div className="flex flex-col items-center justify-center h-48">
         <div className="relative w-20 h-20 mb-6">
-          <div className="absolute inset-0 border-3 border-gray-600 border-t-gray-300 animate-spin" 
+          <div className="absolute inset-0 border-3 border-[#4a4035] border-t-gray-300 animate-spin" 
                style={{ 
                  clipPath: 'polygon(50% 0%, 93% 25%, 93% 75%, 50% 100%, 7% 75%, 7% 25%)',
                  animationDuration: '1.5s'
@@ -96,9 +96,9 @@ export default function LoaderDemo() {
     dots: (
       <div className="flex flex-col items-center justify-center h-48">
         <div className="flex space-x-1 mb-4">
-          <div className="w-2 h-2 bg-white rounded-full animate-bounce delay-0"></div>
-          <div className="w-2 h-2 bg-white rounded-full animate-bounce delay-150"></div>
-          <div className="w-2 h-2 bg-white rounded-full animate-bounce delay-300"></div>
+          <div className="w-2 h-2 bg-[#F0E8D8] rounded-full animate-bounce delay-0"></div>
+          <div className="w-2 h-2 bg-[#F0E8D8] rounded-full animate-bounce delay-150"></div>
+          <div className="w-2 h-2 bg-[#F0E8D8] rounded-full animate-bounce delay-300"></div>
         </div>
         <p className="text-[#8a8070] font-mono text-xs">loading</p>
       </div>
@@ -248,7 +248,7 @@ export default function LoaderDemo() {
                     onClick={() => setCurrentLoader(loader)}
                     className={`px-4 py-2 rounded font-mono text-sm transition-all duration-300 ${
                       currentLoader === loader
-                        ? 'bg-white text-black'
+                        ? 'bg-[#F0E8D8] text-black'
                         : 'bg-[#1a1815] text-[#c0b8a8] hover:bg-[#2a2520] hover:text-[#e8e0d5]'
                     }`}
                   >
@@ -277,7 +277,7 @@ export default function LoaderDemo() {
               </div>
               
               {/* Implementation Notes */}
-              <div className="bg-[#1a1815]/60 backdrop-blur-sm border border-gray-600 rounded-lg p-6">
+              <div className="bg-[#1a1815]/60 backdrop-blur-sm border border-[#4a4035] rounded-lg p-6">
                 <h3 className="text-[#e8e0d5] font-mono mb-3">Implementation</h3>
                 <div className="text-left text-[#c0b8a8] font-mono text-sm space-y-2">
                   <p>• Show loader for ~200-500ms during page transitions</p>

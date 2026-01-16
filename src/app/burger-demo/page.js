@@ -81,8 +81,8 @@ export default function BurgerDemo() {
       open: (
         <button className="flex flex-col justify-center items-center w-8 h-8 bg-transparent border-0 cursor-pointer group">
           <div className="relative">
-            <div className="w-5 h-1 bg-white transform rotate-45 absolute"></div>
-            <div className="w-5 h-1 bg-white transform -rotate-45"></div>
+            <div className="w-5 h-1 bg-[#F0E8D8] transform rotate-45 absolute"></div>
+            <div className="w-5 h-1 bg-[#F0E8D8] transform -rotate-45"></div>
           </div>
         </button>
       )
@@ -128,8 +128,8 @@ export default function BurgerDemo() {
       open: (
         <button className="flex flex-col justify-center items-center w-8 h-8 bg-transparent border-0 cursor-pointer group">
           <div className="relative">
-            <div className="w-6 h-0.5 bg-white transform rotate-45 absolute"></div>
-            <div className="w-6 h-0.5 bg-white transform -rotate-45"></div>
+            <div className="w-6 h-0.5 bg-[#F0E8D8] transform rotate-45 absolute"></div>
+            <div className="w-6 h-0.5 bg-[#F0E8D8] transform -rotate-45"></div>
           </div>
         </button>
       )
@@ -158,7 +158,7 @@ export default function BurgerDemo() {
       name: 'Neon Box Style',
       description: 'Outlined square with glow',
       closed: (
-        <button className="flex flex-col justify-center items-center w-8 h-8 bg-transparent border-2 border-[#6b6055] hover:border-white transition-all duration-300 cursor-pointer group hover:shadow-lg hover:shadow-[#8a8070]/25">
+        <button className="flex flex-col justify-center items-center w-8 h-8 bg-transparent border-2 border-[#6b6055] hover:border-[#F0E8D8] transition-all duration-300 cursor-pointer group hover:shadow-lg hover:shadow-[#8a8070]/25">
           <div className="flex flex-col gap-0.5">
             <div className="w-3 h-px bg-[#a09080] group-hover:bg-[#F0E8D8] transition-colors duration-300"></div>
             <div className="w-3 h-px bg-[#a09080] group-hover:bg-[#F0E8D8] transition-colors duration-300"></div>
@@ -167,7 +167,7 @@ export default function BurgerDemo() {
         </button>
       ),
       open: (
-        <button className="flex flex-col justify-center items-center w-8 h-8 bg-transparent border-2 border-white transition-all duration-300 cursor-pointer group shadow-lg shadow-white/25">
+        <button className="flex flex-col justify-center items-center w-8 h-8 bg-transparent border-2 border-[#F0E8D8] transition-all duration-300 cursor-pointer group shadow-lg shadow-[#F0E8D8]/25">
           <span className="text-[#e8e0d5] text-sm">×</span>
         </button>
       )
@@ -205,7 +205,7 @@ export default function BurgerDemo() {
         </button>
       ),
       open: (
-        <button className="flex flex-col justify-center items-center w-8 h-8 bg-[#151210] border border-white cursor-pointer group transition-all duration-200 shadow-lg shadow-white/25">
+        <button className="flex flex-col justify-center items-center w-8 h-8 bg-[#151210] border border-[#F0E8D8] cursor-pointer group transition-all duration-200 shadow-lg shadow-[#F0E8D8]/25">
           <span className="text-[#e8e0d5] text-xs">×</span>
         </button>
       )

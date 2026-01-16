@@ -231,7 +231,7 @@ export default function LogoDemo() {
                     onClick={() => setCurrentEffect(effect)}
                     className={`px-3 py-1 rounded font-mono text-xs transition-all duration-300 ${
                       currentEffect === effect
-                        ? 'bg-white text-black'
+                        ? 'bg-[#F0E8D8] text-black'
                         : 'bg-[#1a1815] text-[#c0b8a8] hover:bg-[#2a2520] hover:text-[#e8e0d5]'
                     }`}
                   >

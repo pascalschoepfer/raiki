@@ -242,9 +242,9 @@ export default function Contact() {
                 onClick={() => setIsMenuOpen(!isMenuOpen)}
                 className="flex flex-col justify-center items-center w-8 h-8 bg-transparent border-0 cursor-pointer"
               >
-                <span className={`block w-6 h-0.5 bg-white transition-all duration-300 ${isMenuOpen ? 'rotate-45 translate-y-1.5' : ''}`}></span>
-                <span className={`block w-6 h-0.5 bg-white mt-1 transition-all duration-300 ${isMenuOpen ? 'opacity-0' : ''}`}></span>
-                <span className={`block w-6 h-0.5 bg-white mt-1 transition-all duration-300 ${isMenuOpen ? '-rotate-45 -translate-y-1.5' : ''}`}></span>
+                <span className={`block w-6 h-0.5 bg-[#F0E8D8] transition-all duration-300 ${isMenuOpen ? 'rotate-45 translate-y-1.5' : ''}`}></span>
+                <span className={`block w-6 h-0.5 bg-[#F0E8D8] mt-1 transition-all duration-300 ${isMenuOpen ? 'opacity-0' : ''}`}></span>
+                <span className={`block w-6 h-0.5 bg-[#F0E8D8] mt-1 transition-all duration-300 ${isMenuOpen ? '-rotate-45 -translate-y-1.5' : ''}`}></span>
               </button>
               
               {/* Dropdown Menu */}
@@ -289,7 +289,7 @@ export default function Contact() {
                   autoComplete="name"
                   value={formData.name}
                   onChange={handleInputChange}
-                  className="w-full px-3 py-2 bg-[#151210]/50 border border-gray-600 text-[#e8e0d5] placeholder-gray-400 focus:outline-none focus:border-[#6b6055] transition-colors font-mono text-sm"
+                  className="w-full px-3 py-2 bg-[#151210]/50 border border-[#4a4035] text-[#e8e0d5] placeholder-[#8a8070] focus:outline-none focus:border-[#6b6055] transition-colors font-mono text-sm"
                   placeholder="name"
                   required
                   disabled={isSubmitting}
@@ -301,7 +301,7 @@ export default function Contact() {
                   autoComplete="email"
                   value={formData.email}
                   onChange={handleInputChange}
-                  className="w-full px-3 py-2 bg-[#151210]/50 border border-gray-600 text-[#e8e0d5] placeholder-gray-400 focus:outline-none focus:border-[#6b6055] transition-colors font-mono text-sm"
+                  className="w-full px-3 py-2 bg-[#151210]/50 border border-[#4a4035] text-[#e8e0d5] placeholder-[#8a8070] focus:outline-none focus:border-[#6b6055] transition-colors font-mono text-sm"
                   placeholder="email"
                   required
                   disabled={isSubmitting}
@@ -313,7 +313,7 @@ export default function Contact() {
                   autoComplete="organization"
                   value={formData.company}
                   onChange={handleInputChange}
-                  className="w-full px-3 py-2 bg-[#151210]/50 border border-gray-600 text-[#e8e0d5] placeholder-gray-400 focus:outline-none focus:border-[#6b6055] transition-colors font-mono text-sm"
+                  className="w-full px-3 py-2 bg-[#151210]/50 border border-[#4a4035] text-[#e8e0d5] placeholder-[#8a8070] focus:outline-none focus:border-[#6b6055] transition-colors font-mono text-sm"
                   placeholder="company (optional)"
                   disabled={isSubmitting}
                 />
@@ -323,7 +323,7 @@ export default function Contact() {
                   value={formData.message}
                   onChange={handleInputChange}
                   rows={3}
-                  className="w-full px-3 py-2 bg-[#151210]/50 border border-gray-600 text-[#e8e0d5] placeholder-gray-400 focus:outline-none focus:border-[#6b6055] transition-colors resize-none font-mono text-sm"
+                  className="w-full px-3 py-2 bg-[#151210]/50 border border-[#4a4035] text-[#e8e0d5] placeholder-[#8a8070] focus:outline-none focus:border-[#6b6055] transition-colors resize-none font-mono text-sm"
                   placeholder="message"
                   required
                   disabled={isSubmitting}
@@ -348,11 +348,11 @@ export default function Contact() {
                   disabled={isSubmitting}
                   className={`group w-full bg-[#1a1815] border-2 px-5 py-3 relative overflow-hidden transition-all duration-200 flex items-center justify-center ${
                     isSubmitting 
-                      ? 'border-gray-600 cursor-not-allowed opacity-70' 
-                      : 'border-white/30 hover:border-white/60 hover:scale-105 hover:shadow-lg hover:shadow-white/20 cursor-pointer'
+                      ? 'border-[#4a4035] cursor-not-allowed opacity-70' 
+                      : 'border-[#F0E8D8]/30 hover:border-[#F0E8D8]/60 hover:scale-105 hover:shadow-lg hover:shadow-[#F0E8D8]/20 cursor-pointer'
                   }`}
                 >
-                  <div className="absolute inset-0 bg-white/10 opacity-0 group-hover:opacity-100 transition-opacity duration-200"></div>
+                  <div className="absolute inset-0 bg-[#F0E8D8]/10 opacity-0 group-hover:opacity-100 transition-opacity duration-200"></div>
                   <span className="relative text-[#e8e0d5] group-hover:text-[#e8e0d5] text-sm tracking-wider leading-none font-mono font-bold">
                     {isSubmitting ? '>> sending...' : '>> send'}
                   </span>
