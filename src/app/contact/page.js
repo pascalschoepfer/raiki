@@ -4,8 +4,46 @@ import { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
 import RaikiLogo from '../components/RaikiLogo';
 import MatrixText from '../components/MatrixText';
+import LanguageToggle, { useLanguage } from '../components/LanguageToggle';
+import Footer from '../components/Footer';
+
+const content = {
+  de: {
+    title: 'kontakt',
+    name: 'name',
+    email: 'e-mail',
+    company: 'firma (optional)',
+    message: 'nachricht',
+    send: '>> senden',
+    sending: '>> sende...',
+    success: 'Nachricht erfolgreich gesendet!',
+    errorRequired: 'Bitte füllen Sie alle Pflichtfelder aus.',
+    errorName: 'Name muss weniger als 100 Zeichen haben.',
+    errorMessage: 'Nachricht muss weniger als 2000 Zeichen haben.',
+    errorSecurity: 'Sicherheitsüberprüfung fehlgeschlagen. Bitte versuchen Sie es erneut.',
+    errorNetwork: 'Netzwerkfehler. Bitte überprüfen Sie Ihre Verbindung.'
+  },
+  en: {
+    title: 'contact',
+    name: 'name',
+    email: 'email',
+    company: 'company (optional)',
+    message: 'message',
+    send: '>> send',
+    sending: '>> sending...',
+    success: 'Message sent successfully!',
+    errorRequired: 'Please fill in all required fields.',
+    errorName: 'Name must be less than 100 characters.',
+    errorMessage: 'Message must be less than 2000 characters.',
+    errorSecurity: 'Security verification failed. Please try again.',
+    errorNetwork: 'Network error. Please check your connection and try again.'
+  }
+};
 
 export default function Contact() {
+  const { lang, toggleLang } = useLanguage();
+  const t = content[lang];
+
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -81,27 +119,27 @@ export default function Contact() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    
+
     if (isSubmitting) return;
 
     // Basic client-side validation
     if (!formData.name.trim() || !formData.email.trim() || !formData.message.trim()) {
       setSubmitStatus('error');
-      setStatusMessage('Please fill in all required fields.');
+      setStatusMessage(t.errorRequired);
       resetStatusMessage();
       return;
     }
 
     if (formData.name.length > 100) {
       setSubmitStatus('error');
-      setStatusMessage('Name must be less than 100 characters.');
+      setStatusMessage(t.errorName);
       resetStatusMessage();
       return;
     }
 
     if (formData.message.length > 2000) {
       setSubmitStatus('error');
-      setStatusMessage('Message must be less than 2000 characters.');
+      setStatusMessage(t.errorMessage);
       resetStatusMessage();
       return;
     }
@@ -142,7 +180,7 @@ export default function Contact() {
               finalToken = 'dev-bypass';
             } else {
               setSubmitStatus('error');
-              setStatusMessage('Security verification failed. Please try again.');
+              setStatusMessage(t.errorSecurity);
               setIsSubmitting(false);
               resetStatusMessage();
               return;
@@ -155,7 +193,7 @@ export default function Contact() {
             finalToken = 'dev-bypass';
           } else {
             setSubmitStatus('error');
-            setStatusMessage('Security verification failed. Please try again.');
+            setStatusMessage(t.errorSecurity);
             setIsSubmitting(false);
             resetStatusMessage();
             return;
@@ -170,7 +208,7 @@ export default function Contact() {
 
       if (!finalToken) {
         setSubmitStatus('error');
-        setStatusMessage('Security verification required. Please try again.');
+        setStatusMessage(t.errorSecurity);
         setIsSubmitting(false);
         resetStatusMessage();
         return;
@@ -193,7 +231,7 @@ export default function Contact() {
 
       if (response.ok) {
         setSubmitStatus('success');
-        setStatusMessage('Message sent successfully!');
+        setStatusMessage(t.success);
         setFormData({ name: '', email: '', company: '', message: '' });
       } else {
         setSubmitStatus('error');
@@ -202,7 +240,7 @@ export default function Contact() {
     } catch (error) {
       console.error('Form submission error:', error);
       setSubmitStatus('error');
-      setStatusMessage('Network error. Please check your connection and try again.');
+      setStatusMessage(t.errorNetwork);
     } finally {
       setIsSubmitting(false);
       resetStatusMessage();
@@ -212,27 +250,30 @@ export default function Contact() {
   return (
     <div className="h-screen overflow-hidden bg-gradient-to-br from-[#100c08] via-[#1a1510] to-[#251c15]">
         <div className="relative overflow-hidden h-full">
-        
+
         {/* Header with Navigation */}
         <header className="absolute top-0 left-0 right-0 z-20 px-6 py-3 bg-transparent">
           <nav className="max-w-7xl mx-auto flex items-center justify-between">
             <Link href="/"><RaikiLogo showText={false} /></Link>
 
             {/* Navigation Buttons */}
-            <div className="flex gap-2 font-mono">
-              <a href="/services" className="text-[#a09080] hover:text-[#e8e0d5] text-xs sm:text-sm tracking-wider transition-colors">services</a>
-              <span className="text-[#4a4035]">|</span>
-              <a href="/about" className="text-[#a09080] hover:text-[#e8e0d5] text-xs sm:text-sm tracking-wider transition-colors">about</a>
-              <span className="text-[#4a4035]">|</span>
-              <a href="/" className="text-[#a09080] hover:text-[#e8e0d5] text-xs sm:text-sm tracking-wider transition-colors">home</a>
+            <div className="flex items-center gap-4">
+              <div className="flex gap-2 font-mono">
+                <a href="/services" className="text-[#a09080] hover:text-[#e8e0d5] text-xs sm:text-sm tracking-wider transition-colors">services</a>
+                <span className="text-[#4a4035]">|</span>
+                <a href="/about" className="text-[#a09080] hover:text-[#e8e0d5] text-xs sm:text-sm tracking-wider transition-colors">about</a>
+                <span className="text-[#4a4035]">|</span>
+                <a href="/" className="text-[#a09080] hover:text-[#e8e0d5] text-xs sm:text-sm tracking-wider transition-colors">home</a>
+              </div>
+              <LanguageToggle lang={lang} onToggle={toggleLang} />
             </div>
           </nav>
         </header>
 
         {/* Title - same height as other pages */}
-        <div className="absolute left-0 right-0 z-10 px-6 top-[12vh] sm:top-[15vh] flex items-center justify-center">
+        <div className="absolute left-0 right-0 z-10 px-6 top-[10.8vh] sm:top-[13.5vh] flex items-center justify-center">
           <MatrixText
-            text="contact"
+            text={t.title}
             className="text-4xl md:text-5xl font-mono font-bold text-[#d0c8b8] tracking-wider"
           />
         </div>
@@ -240,7 +281,7 @@ export default function Contact() {
         {/* Form Content */}
         <div className="absolute inset-0 flex flex-col justify-center items-center z-10 px-6 pt-16">
           <div className="max-w-md mx-auto w-full text-center space-y-6">
-            
+
             {/* Compact Form */}
             <section>
               <form onSubmit={handleSubmit} autoComplete="on" className="space-y-4">
@@ -252,7 +293,7 @@ export default function Contact() {
                   value={formData.name}
                   onChange={handleInputChange}
                   className="w-full px-3 py-2 bg-[#151210]/50 border border-[#4a4035] text-[#e8e0d5] placeholder-[#8a8070] focus:outline-none focus:border-[#6b6055] transition-colors font-mono text-sm"
-                  placeholder="name"
+                  placeholder={t.name}
                   required
                   disabled={isSubmitting}
                 />
@@ -264,7 +305,7 @@ export default function Contact() {
                   value={formData.email}
                   onChange={handleInputChange}
                   className="w-full px-3 py-2 bg-[#151210]/50 border border-[#4a4035] text-[#e8e0d5] placeholder-[#8a8070] focus:outline-none focus:border-[#6b6055] transition-colors font-mono text-sm"
-                  placeholder="email"
+                  placeholder={t.email}
                   required
                   disabled={isSubmitting}
                 />
@@ -276,7 +317,7 @@ export default function Contact() {
                   value={formData.company}
                   onChange={handleInputChange}
                   className="w-full px-3 py-2 bg-[#151210]/50 border border-[#4a4035] text-[#e8e0d5] placeholder-[#8a8070] focus:outline-none focus:border-[#6b6055] transition-colors font-mono text-sm"
-                  placeholder="company (optional)"
+                  placeholder={t.company}
                   disabled={isSubmitting}
                 />
                 <textarea
@@ -286,22 +327,22 @@ export default function Contact() {
                   onChange={handleInputChange}
                   rows={3}
                   className="w-full px-3 py-2 bg-[#151210]/50 border border-[#4a4035] text-[#e8e0d5] placeholder-[#8a8070] focus:outline-none focus:border-[#6b6055] transition-colors resize-none font-mono text-sm"
-                  placeholder="message"
+                  placeholder={t.message}
                   required
                   disabled={isSubmitting}
                 />
-                
+
                 {/* Status Message */}
                 {statusMessage && (
                   <div className={`text-center py-2 px-3 rounded font-mono text-sm ${
-                    submitStatus === 'success' 
-                      ? 'bg-green-900/50 border border-green-600 text-green-300' 
+                    submitStatus === 'success'
+                      ? 'bg-green-900/50 border border-green-600 text-green-300'
                       : 'bg-red-900/50 border border-red-600 text-red-300'
                   }`}>
                     {statusMessage}
                   </div>
                 )}
-                
+
                 {/* Turnstile widget */}
                 <div ref={turnstileRef} className="flex justify-center scale-[0.85] -my-4 mb-2"></div>
 
@@ -309,21 +350,23 @@ export default function Contact() {
                   type="submit"
                   disabled={isSubmitting}
                   className={`group w-full bg-[#1a1815] border-2 px-5 py-3 relative overflow-hidden transition-all duration-200 flex items-center justify-center ${
-                    isSubmitting 
-                      ? 'border-[#4a4035] cursor-not-allowed opacity-70' 
+                    isSubmitting
+                      ? 'border-[#4a4035] cursor-not-allowed opacity-70'
                       : 'border-[#F0E8D8]/30 hover:border-[#F0E8D8]/60 hover:scale-105 hover:shadow-lg hover:shadow-[#F0E8D8]/20 cursor-pointer'
                   }`}
                 >
                   <div className="absolute inset-0 bg-[#F0E8D8]/10 opacity-0 group-hover:opacity-100 transition-opacity duration-200"></div>
                   <span className="relative text-[#d0c8b8] group-hover:text-[#e8e0d5] text-sm tracking-wider leading-none font-mono font-bold">
-                    {isSubmitting ? '>> sending...' : '>> send'}
+                    {isSubmitting ? t.sending : t.send}
                   </span>
                 </button>
               </form>
             </section>
-            
+
             </div>
         </div>
+
+        <Footer lang={lang} />
 
         <style jsx global>{`
           html {

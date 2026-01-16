@@ -2,8 +2,12 @@
 
 import RaikiLogo from './components/RaikiLogo';
 import MatrixText from './components/MatrixText';
+import LanguageToggle, { useLanguage } from './components/LanguageToggle';
+import Footer from './components/Footer';
 
 export default function Home() {
+  const { lang, toggleLang } = useLanguage();
+
   return (
     <div className="h-screen overflow-hidden bg-gradient-to-br from-[#100c08] via-[#1a1510] to-[#251c15]">
         {/* Hero Section */}
@@ -15,17 +19,20 @@ export default function Home() {
             <RaikiLogo showText={false} />
 
             {/* Navigation Buttons */}
-            <div className="flex gap-2 font-mono">
-              <a href="/services" className="text-[#a09080] hover:text-[#e8e0d5] text-xs sm:text-sm tracking-wider transition-colors">services</a>
-              <span className="text-[#4a4035]">|</span>
-              <a href="/about" className="text-[#a09080] hover:text-[#e8e0d5] text-xs sm:text-sm tracking-wider transition-colors">about</a>
-              <span className="text-[#4a4035]">|</span>
-              <a href="/contact" className="text-[#a09080] hover:text-[#e8e0d5] text-xs sm:text-sm tracking-wider transition-colors">contact</a>
+            <div className="flex items-center gap-4">
+              <div className="flex gap-2 font-mono">
+                <a href="/services" className="text-[#a09080] hover:text-[#e8e0d5] text-xs sm:text-sm tracking-wider transition-colors">services</a>
+                <span className="text-[#4a4035]">|</span>
+                <a href="/about" className="text-[#a09080] hover:text-[#e8e0d5] text-xs sm:text-sm tracking-wider transition-colors">about</a>
+                <span className="text-[#4a4035]">|</span>
+                <a href="/contact" className="text-[#a09080] hover:text-[#e8e0d5] text-xs sm:text-sm tracking-wider transition-colors">contact</a>
+              </div>
+              <LanguageToggle lang={lang} onToggle={toggleLang} />
             </div>
           </nav>
         </header>
         {/* Top Section Container - higher positioning */}
-        <div className="absolute left-0 right-0 z-10 px-6 top-[12vh] sm:top-[15vh]">
+        <div className="absolute left-0 right-0 z-10 px-6 top-[10.8vh] sm:top-[13.5vh]">
           <div className="max-w-4xl mx-auto text-center">
             {/* Small text */}
             <div className="mb-2">
@@ -58,12 +65,16 @@ export default function Home() {
             {/* Description */}
             <div className="mt-12 sm:mt-16">
               <p className="text-sm sm:text-base md:text-lg text-[#c0b8a8] leading-relaxed max-w-lg mx-auto">
-                At Raiki we specialize in securing digital infrastructure, crafting modern
-                web applications and navigating the depths of decentralized finance and web3.
+                {lang === 'de'
+                  ? 'Bei Raiki spezialisieren wir uns auf die Absicherung digitaler Infrastruktur, die Entwicklung moderner Webanwendungen und die Navigation durch die Tiefen von DeFi und Web3.'
+                  : 'At Raiki we specialize in securing digital infrastructure, crafting modern web applications and navigating the depths of decentralized finance and web3.'
+                }
               </p>
             </div>
           </div>
         </div>
+
+        <Footer lang={lang} />
         </div>
 
       <style jsx global>{`
