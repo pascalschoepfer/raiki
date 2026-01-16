@@ -46,11 +46,8 @@ const content = {
         content: 'Wir behalten uns vor, diese Datenschutzerklärung bei Bedarf anzupassen, um sie an geänderte Rechtslage oder bei Änderungen unserer Dienstleistungen anzupassen.'
       }
     ],
-    dataIntro: 'Beim Besuch unserer Website werden folgende Daten erhoben:',
-    dataItems: [
-      'Technische Zugriffsdaten (IP-Adresse, Browsertyp, Zugriffszeit)',
-      'Bei Nutzung des Kontaktformulars: Name, E-Mail-Adresse und Ihre Nachricht'
-    ],
+    dataIntro: 'Wir erheben selbst keine personenbezogenen Daten beim Besuch unserer Website. Lediglich bei Nutzung des Kontaktformulars werden Ihre Angaben (Name, E-Mail-Adresse, Nachricht) zur Bearbeitung Ihrer Anfrage gespeichert. Unser Hosting-Anbieter Vercel führt serverseitig Standard-Logs gemäss deren Datenschutzrichtlinien.',
+    dataItems: [],
     contactLink: 'Kontaktformular',
     date: 'Stand: Januar 2026',
     linkText: 'Impressum'
@@ -95,11 +92,8 @@ const content = {
         content: 'We reserve the right to adapt this privacy policy as needed to reflect changes in legal requirements or our services.'
       }
     ],
-    dataIntro: 'When visiting our website, the following data is collected:',
-    dataItems: [
-      'Technical access data (IP address, browser type, access time)',
-      'When using the contact form: name, email address, and your message'
-    ],
+    dataIntro: 'We do not collect any personal data when you visit our website. Only when using the contact form, your details (name, email address, message) are stored to process your inquiry. Our hosting provider Vercel maintains server-side standard logs according to their privacy policy.',
+    dataItems: [],
     contactLink: 'Contact Form',
     date: 'Last updated: January 2026',
     linkText: 'Imprint'
@@ -128,16 +122,9 @@ export default function Datenschutz() {
     }
     if (section.content === 'data') {
       return (
-        <>
-          <p className="text-[#c0b8a8] text-sm leading-relaxed mb-2">
-            {t.dataIntro}
-          </p>
-          <ul className="text-[#c0b8a8] text-sm space-y-1 list-disc list-inside">
-            {t.dataItems.map((item, i) => (
-              <li key={i}>{item}</li>
-            ))}
-          </ul>
-        </>
+        <p className="text-[#c0b8a8] text-sm leading-relaxed">
+          {t.dataIntro}
+        </p>
       );
     }
     return <p className="text-[#c0b8a8] text-sm leading-relaxed">{section.content}</p>;
