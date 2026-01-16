@@ -26,8 +26,8 @@ export default function Home() {
             </div>
           </nav>
         </header>
-        {/* Top Section Container - 20vh from top on desktop, 15vh on mobile */}
-        <div className="absolute left-0 right-0 z-10 px-6 top-[15vh] sm:top-[20vh]">
+        {/* Top Section Container - higher positioning */}
+        <div className="absolute left-0 right-0 z-10 px-6 top-[12vh] sm:top-[15vh]">
           <div className="max-w-4xl mx-auto text-center">
             {/* Small text */}
             <div className="mb-2">
@@ -45,7 +45,7 @@ export default function Home() {
             </div>
 
             {/* Navigation Buttons */}
-            <div className="mt-10 sm:mt-14 flex justify-center gap-4 sm:gap-6 font-mono">
+            <div className="mt-14 sm:mt-20 flex justify-center gap-4 sm:gap-6 font-mono">
               <a href="/services" className="group px-6 py-2.5 border border-[#4a4035] hover:border-[#70c060] bg-[#151210]/60 hover:bg-[#1a2518]/60 transition-all duration-300">
                 <span className="text-[#a09080] group-hover:text-[#70c060] text-sm tracking-wider transition-colors duration-300">services</span>
               </a>
