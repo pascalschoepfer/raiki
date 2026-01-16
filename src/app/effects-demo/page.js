@@ -218,16 +218,16 @@ function MatrixRainScan({ canvasRef }) {
         }
       }
 
-      // Draw scan line
+      // Draw scan line (subtle)
       const lineY = scanY % canvas.height;
-      for (let x = 0; x < canvas.width; x += 20) {
-        if (Math.random() > 0.8) {
-          ctx.fillStyle = `rgba(112, 192, 96, ${0.08 + Math.random() * 0.08})`;
+      for (let x = 0; x < canvas.width; x += 30) {
+        if (Math.random() > 0.9) {
+          ctx.fillStyle = `rgba(112, 192, 96, ${0.04 + Math.random() * 0.04})`;
           const char = chars[Math.floor(Math.random() * chars.length)];
           ctx.fillText(char, x, lineY);
         }
       }
-      scanY += 1.5;
+      scanY += 1;
     };
 
     const interval = setInterval(draw, 60);
@@ -428,21 +428,21 @@ function MatrixDoubleScan({ canvasRef }) {
       const y1 = scan1 % canvas.height;
       const y2 = scan2 % canvas.height;
 
-      for (let x = 0; x < canvas.width; x += 25) {
-        if (Math.random() > 0.85) {
-          ctx.fillStyle = `rgba(112, 192, 96, ${0.06 + Math.random() * 0.06})`;
+      for (let x = 0; x < canvas.width; x += 35) {
+        if (Math.random() > 0.92) {
+          ctx.fillStyle = `rgba(112, 192, 96, ${0.03 + Math.random() * 0.03})`;
           const char = chars[Math.floor(Math.random() * chars.length)];
           ctx.fillText(char, x, y1);
         }
-        if (Math.random() > 0.9) {
-          ctx.fillStyle = `rgba(112, 192, 96, ${0.05 + Math.random() * 0.05})`;
+        if (Math.random() > 0.94) {
+          ctx.fillStyle = `rgba(112, 192, 96, ${0.03 + Math.random() * 0.03})`;
           const char = chars[Math.floor(Math.random() * chars.length)];
           ctx.fillText(char, x + 12, y2);
         }
       }
 
-      scan1 += 1.2;
-      scan2 += 0.8;
+      scan1 += 0.8;
+      scan2 += 0.5;
 
       // Spawn occasional floater
       if (Math.random() > 0.99 && floaters.length < 5) {
