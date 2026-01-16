@@ -1,5 +1,6 @@
 'use client';
 
+import { useEffect, useRef, useState } from 'react';
 import RaikiLogo from '../components/RaikiLogo';
 import MatrixText from '../components/MatrixText';
 import LanguageToggle, { useLanguage } from '../components/LanguageToggle';
@@ -103,6 +104,17 @@ const content = {
 export default function Datenschutz() {
   const { lang, toggleLang } = useLanguage();
   const t = content[lang];
+  const [showLink, setShowLink] = useState(false);
+  const bottomRef = useRef(null);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => setShowLink(entry.isIntersecting),
+      { threshold: 0.5 }
+    );
+    if (bottomRef.current) observer.observe(bottomRef.current);
+    return () => observer.disconnect();
+  }, []);
 
   const renderSection = (section) => {
     if (section.content === 'company') {
@@ -182,8 +194,8 @@ export default function Datenschutz() {
 
             </div>
 
-            {/* Link to Impressum */}
-            <div className="mt-6 text-center">
+            {/* Link to Impressum - appears when scrolled to bottom */}
+            <div ref={bottomRef} className={`mt-6 text-center transition-opacity duration-500 ${showLink ? 'opacity-100' : 'opacity-0'}`}>
               <a href="/impressum" className="text-[#70c060] hover:text-[#90e080] font-mono text-sm transition-colors">
                 → {t.linkText}
               </a>
