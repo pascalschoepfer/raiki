@@ -3,8 +3,8 @@
 import { useEffect, useRef } from 'react';
 import Link from 'next/link';
 
-// 1. Binary Rain - sparse falling 0s and 1s
-function BinaryRain({ canvasRef }) {
+// 1. Classic Matrix - the OG effect
+function MatrixClassic({ canvasRef }) {
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
@@ -12,25 +12,41 @@ function BinaryRain({ canvasRef }) {
     canvas.width = canvas.offsetWidth;
     canvas.height = canvas.offsetHeight;
 
-    const drops = [];
-    const maxDrops = 8;
+    const chars = 'アイウエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホマミムメモヤユヨラリルレロワヲン0123456789';
+    const fontSize = 14;
+    const columns = Math.floor(canvas.width / fontSize);
+    const drops = Array(columns).fill(0).map(() => Math.random() * -100);
 
     const draw = () => {
       ctx.fillStyle = 'rgba(12, 10, 8, 0.05)';
       ctx.fillRect(0, 0, canvas.width, canvas.height);
-      ctx.font = '14px monospace';
+      ctx.font = `${fontSize}px monospace`;
 
-      if (drops.length < maxDrops && Math.random() > 0.97) {
-        drops.push({ x: Math.random() * canvas.width, y: -20, speed: 0.5 + Math.random() * 0.5, char: Math.random() > 0.5 ? '0' : '1', opacity: 0.3 });
-      }
+      for (let i = 0; i < drops.length; i++) {
+        if (Math.random() > 0.98) {
+          const char = chars[Math.floor(Math.random() * chars.length)];
+          const x = i * fontSize;
+          const y = drops[i] * fontSize;
 
-      for (let i = drops.length - 1; i >= 0; i--) {
-        const d = drops[i];
-        ctx.fillStyle = `rgba(112, 192, 96, ${d.opacity})`;
-        ctx.fillText(d.char, d.x, d.y);
-        d.y += d.speed;
-        if (d.y > canvas.height - 50) d.opacity *= 0.95;
-        if (d.opacity < 0.02) drops.splice(i, 1);
+          // Bright head
+          ctx.fillStyle = 'rgba(180, 255, 180, 0.9)';
+          ctx.fillText(char, x, y);
+
+          // Trail
+          for (let t = 1; t < 20; t++) {
+            const trailY = y - t * fontSize;
+            if (trailY > 0) {
+              const trailChar = chars[Math.floor(Math.random() * chars.length)];
+              ctx.fillStyle = `rgba(112, 192, 96, ${0.4 - t * 0.02})`;
+              ctx.fillText(trailChar, x, trailY);
+            }
+          }
+        }
+
+        drops[i] += 0.3;
+        if (drops[i] * fontSize > canvas.height && Math.random() > 0.98) {
+          drops[i] = 0;
+        }
       }
     };
 
@@ -40,8 +56,8 @@ function BinaryRain({ canvasRef }) {
   return null;
 }
 
-// 2. Hex Grid - fading hex values appearing in a grid
-function HexGrid({ canvasRef }) {
+// 2. Sparse Rain - minimal, few columns
+function MatrixSparse({ canvasRef }) {
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
@@ -49,27 +65,93 @@ function HexGrid({ canvasRef }) {
     canvas.width = canvas.offsetWidth;
     canvas.height = canvas.offsetHeight;
 
-    const cells = [];
-    const cellSize = 60;
+    const chars = 'アイウエオ01';
+    const streams = [];
+    const maxStreams = 5;
 
     const draw = () => {
       ctx.fillStyle = 'rgba(12, 10, 8, 0.03)';
       ctx.fillRect(0, 0, canvas.width, canvas.height);
-      ctx.font = '10px monospace';
+      ctx.font = '14px monospace';
 
-      if (cells.length < 12 && Math.random() > 0.96) {
-        const col = Math.floor(Math.random() * (canvas.width / cellSize));
-        const row = Math.floor(Math.random() * (canvas.height / cellSize));
-        const hex = Math.floor(Math.random() * 65535).toString(16).toUpperCase().padStart(4, '0');
-        cells.push({ x: col * cellSize + 10, y: row * cellSize + 30, text: `0x${hex}`, opacity: 0.25 });
+      if (streams.length < maxStreams && Math.random() > 0.98) {
+        streams.push({
+          x: Math.random() * canvas.width,
+          y: -20,
+          speed: 1 + Math.random() * 0.5,
+          trail: []
+        });
       }
 
-      for (let i = cells.length - 1; i >= 0; i--) {
-        const c = cells[i];
-        ctx.fillStyle = `rgba(112, 192, 96, ${c.opacity})`;
-        ctx.fillText(c.text, c.x, c.y);
-        c.opacity *= 0.99;
-        if (c.opacity < 0.02) cells.splice(i, 1);
+      for (let i = streams.length - 1; i >= 0; i--) {
+        const s = streams[i];
+
+        // Add new char to trail
+        if (Math.random() > 0.7) {
+          s.trail.push({ y: s.y, char: chars[Math.floor(Math.random() * chars.length)], opacity: 0.8 });
+        }
+
+        // Draw trail
+        for (let j = s.trail.length - 1; j >= 0; j--) {
+          const t = s.trail[j];
+          ctx.fillStyle = `rgba(112, 192, 96, ${t.opacity})`;
+          ctx.fillText(t.char, s.x, t.y);
+          t.opacity *= 0.96;
+          if (t.opacity < 0.02) s.trail.splice(j, 1);
+        }
+
+        s.y += s.speed;
+        if (s.y > canvas.height + 50 && s.trail.length === 0) {
+          streams.splice(i, 1);
+        }
+      }
+    };
+
+    const interval = setInterval(draw, 40);
+    return () => clearInterval(interval);
+  }, [canvasRef]);
+  return null;
+}
+
+// 3. Matrix Glow - with bloom effect
+function MatrixGlow({ canvasRef }) {
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d');
+    canvas.width = canvas.offsetWidth;
+    canvas.height = canvas.offsetHeight;
+
+    const chars = 'ラリルレロ01アイウ';
+    const fontSize = 16;
+    const columns = Math.floor(canvas.width / fontSize);
+    const drops = Array(columns).fill(0).map(() => Math.random() * -50);
+    const active = Array(columns).fill(false).map(() => Math.random() > 0.7);
+
+    const draw = () => {
+      ctx.fillStyle = 'rgba(12, 10, 8, 0.08)';
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+      ctx.font = `${fontSize}px monospace`;
+
+      for (let i = 0; i < drops.length; i++) {
+        if (!active[i]) continue;
+
+        const char = chars[Math.floor(Math.random() * chars.length)];
+        const x = i * fontSize;
+        const y = drops[i] * fontSize;
+
+        // Glow effect
+        ctx.shadowColor = '#70c060';
+        ctx.shadowBlur = 15;
+        ctx.fillStyle = 'rgba(150, 255, 150, 0.9)';
+        ctx.fillText(char, x, y);
+        ctx.shadowBlur = 0;
+
+        drops[i] += 0.4;
+        if (drops[i] * fontSize > canvas.height) {
+          drops[i] = 0;
+          active[i] = Math.random() > 0.6;
+        }
       }
     };
 
@@ -79,8 +161,8 @@ function HexGrid({ canvasRef }) {
   return null;
 }
 
-// 3. Particle Network - connected dots
-function ParticleNetwork({ canvasRef }) {
+// 4. Matrix Cascade - wave pattern
+function MatrixCascade({ canvasRef }) {
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
@@ -88,320 +170,27 @@ function ParticleNetwork({ canvasRef }) {
     canvas.width = canvas.offsetWidth;
     canvas.height = canvas.offsetHeight;
 
-    const particles = [];
-    for (let i = 0; i < 15; i++) {
-      particles.push({
-        x: Math.random() * canvas.width,
-        y: Math.random() * canvas.height,
-        vx: (Math.random() - 0.5) * 0.3,
-        vy: (Math.random() - 0.5) * 0.3
-      });
-    }
-
-    const draw = () => {
-      ctx.fillStyle = 'rgba(12, 10, 8, 0.1)';
-      ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-      // Draw connections
-      for (let i = 0; i < particles.length; i++) {
-        for (let j = i + 1; j < particles.length; j++) {
-          const dx = particles[i].x - particles[j].x;
-          const dy = particles[i].y - particles[j].y;
-          const dist = Math.sqrt(dx * dx + dy * dy);
-          if (dist < 120) {
-            ctx.strokeStyle = `rgba(112, 192, 96, ${0.08 * (1 - dist / 120)})`;
-            ctx.beginPath();
-            ctx.moveTo(particles[i].x, particles[i].y);
-            ctx.lineTo(particles[j].x, particles[j].y);
-            ctx.stroke();
-          }
-        }
-      }
-
-      // Draw and move particles
-      for (const p of particles) {
-        ctx.fillStyle = 'rgba(112, 192, 96, 0.15)';
-        ctx.beginPath();
-        ctx.arc(p.x, p.y, 2, 0, Math.PI * 2);
-        ctx.fill();
-        p.x += p.vx;
-        p.y += p.vy;
-        if (p.x < 0 || p.x > canvas.width) p.vx *= -1;
-        if (p.y < 0 || p.y > canvas.height) p.vy *= -1;
-      }
-    };
-
-    const interval = setInterval(draw, 50);
-    return () => clearInterval(interval);
-  }, [canvasRef]);
-  return null;
-}
-
-// 4. Glitch Blocks - random rectangles that glitch in/out
-function GlitchBlocks({ canvasRef }) {
-  useEffect(() => {
-    const canvas = canvasRef.current;
-    if (!canvas) return;
-    const ctx = canvas.getContext('2d');
-    canvas.width = canvas.offsetWidth;
-    canvas.height = canvas.offsetHeight;
-
-    const blocks = [];
-
-    const draw = () => {
-      ctx.fillStyle = 'rgba(12, 10, 8, 0.08)';
-      ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-      if (blocks.length < 4 && Math.random() > 0.97) {
-        blocks.push({
-          x: Math.random() * canvas.width,
-          y: Math.random() * canvas.height,
-          w: 20 + Math.random() * 60,
-          h: 2 + Math.random() * 8,
-          opacity: 0.15,
-          life: 20 + Math.random() * 30
-        });
-      }
-
-      for (let i = blocks.length - 1; i >= 0; i--) {
-        const b = blocks[i];
-        ctx.fillStyle = `rgba(112, 192, 96, ${b.opacity})`;
-        ctx.fillRect(b.x, b.y, b.w, b.h);
-        b.life--;
-        if (b.life < 10) b.opacity *= 0.85;
-        if (b.life <= 0) blocks.splice(i, 1);
-      }
-    };
-
-    const interval = setInterval(draw, 50);
-    return () => clearInterval(interval);
-  }, [canvasRef]);
-  return null;
-}
-
-// 5. Terminal Typing - simulated terminal commands
-function TerminalTyping({ canvasRef }) {
-  useEffect(() => {
-    const canvas = canvasRef.current;
-    if (!canvas) return;
-    const ctx = canvas.getContext('2d');
-    canvas.width = canvas.offsetWidth;
-    canvas.height = canvas.offsetHeight;
-
-    const commands = ['ssh root@', 'nmap -sV', 'curl -X', 'ping -c', 'cat /etc/', 'grep -r', 'sudo rm', 'chmod +x'];
-    const lines = [];
-
-    const draw = () => {
-      ctx.fillStyle = 'rgba(12, 10, 8, 0.04)';
-      ctx.fillRect(0, 0, canvas.width, canvas.height);
-      ctx.font = '11px monospace';
-
-      if (lines.length < 3 && Math.random() > 0.98) {
-        lines.push({
-          x: 10 + Math.random() * (canvas.width - 150),
-          y: 20 + Math.random() * (canvas.height - 40),
-          text: '> ' + commands[Math.floor(Math.random() * commands.length)],
-          index: 0,
-          opacity: 0.25
-        });
-      }
-
-      for (let i = lines.length - 1; i >= 0; i--) {
-        const l = lines[i];
-        const displayText = l.text.substring(0, l.index);
-        ctx.fillStyle = `rgba(112, 192, 96, ${l.opacity})`;
-        ctx.fillText(displayText + (l.index < l.text.length ? '_' : ''), l.x, l.y);
-
-        if (l.index < l.text.length && Math.random() > 0.7) l.index++;
-        else if (l.index >= l.text.length) l.opacity *= 0.98;
-
-        if (l.opacity < 0.02) lines.splice(i, 1);
-      }
-    };
-
-    const interval = setInterval(draw, 80);
-    return () => clearInterval(interval);
-  }, [canvasRef]);
-  return null;
-}
-
-// 6. Circuit Traces - circuit board like paths
-function CircuitTraces({ canvasRef }) {
-  useEffect(() => {
-    const canvas = canvasRef.current;
-    if (!canvas) return;
-    const ctx = canvas.getContext('2d');
-    canvas.width = canvas.offsetWidth;
-    canvas.height = canvas.offsetHeight;
-
-    const traces = [];
-
-    const draw = () => {
-      ctx.fillStyle = 'rgba(12, 10, 8, 0.02)';
-      ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-      if (traces.length < 3 && Math.random() > 0.98) {
-        const startX = Math.random() * canvas.width;
-        const startY = Math.random() * canvas.height;
-        traces.push({
-          points: [{ x: startX, y: startY }],
-          dir: Math.floor(Math.random() * 4),
-          opacity: 0.12,
-          growing: true,
-          maxLen: 5 + Math.floor(Math.random() * 8)
-        });
-      }
-
-      for (let i = traces.length - 1; i >= 0; i--) {
-        const t = traces[i];
-
-        // Draw trace
-        ctx.strokeStyle = `rgba(112, 192, 96, ${t.opacity})`;
-        ctx.lineWidth = 1;
-        ctx.beginPath();
-        ctx.moveTo(t.points[0].x, t.points[0].y);
-        for (const p of t.points) ctx.lineTo(p.x, p.y);
-        ctx.stroke();
-
-        // Draw nodes
-        for (const p of t.points) {
-          ctx.fillStyle = `rgba(112, 192, 96, ${t.opacity * 1.5})`;
-          ctx.beginPath();
-          ctx.arc(p.x, p.y, 2, 0, Math.PI * 2);
-          ctx.fill();
-        }
-
-        if (t.growing && t.points.length < t.maxLen && Math.random() > 0.8) {
-          const last = t.points[t.points.length - 1];
-          const step = 20 + Math.random() * 20;
-          if (Math.random() > 0.6) t.dir = Math.floor(Math.random() * 4);
-          const dirs = [[1, 0], [0, 1], [-1, 0], [0, -1]];
-          const newX = last.x + dirs[t.dir][0] * step;
-          const newY = last.y + dirs[t.dir][1] * step;
-          if (newX > 0 && newX < canvas.width && newY > 0 && newY < canvas.height) {
-            t.points.push({ x: newX, y: newY });
-          } else {
-            t.growing = false;
-          }
-        } else if (!t.growing || t.points.length >= t.maxLen) {
-          t.growing = false;
-          t.opacity *= 0.98;
-        }
-
-        if (t.opacity < 0.01) traces.splice(i, 1);
-      }
-    };
-
-    const interval = setInterval(draw, 100);
-    return () => clearInterval(interval);
-  }, [canvasRef]);
-  return null;
-}
-
-// 7. Data Pulse - horizontal data streams
-function DataPulse({ canvasRef }) {
-  useEffect(() => {
-    const canvas = canvasRef.current;
-    if (!canvas) return;
-    const ctx = canvas.getContext('2d');
-    canvas.width = canvas.offsetWidth;
-    canvas.height = canvas.offsetHeight;
-
-    const pulses = [];
+    const chars = 'アイウエオ01カキク';
+    const fontSize = 12;
+    const columns = Math.floor(canvas.width / fontSize);
+    let time = 0;
 
     const draw = () => {
       ctx.fillStyle = 'rgba(12, 10, 8, 0.06)';
       ctx.fillRect(0, 0, canvas.width, canvas.height);
+      ctx.font = `${fontSize}px monospace`;
 
-      if (pulses.length < 5 && Math.random() > 0.97) {
-        pulses.push({
-          y: Math.random() * canvas.height,
-          x: -50,
-          speed: 2 + Math.random() * 2,
-          width: 30 + Math.random() * 50,
-          opacity: 0.15
-        });
-      }
+      for (let i = 0; i < columns; i++) {
+        const waveOffset = Math.sin(i * 0.2 + time * 0.05) * 50;
+        const y = ((time * 2 + waveOffset) % (canvas.height + 100)) - 50;
 
-      for (let i = pulses.length - 1; i >= 0; i--) {
-        const p = pulses[i];
-        const gradient = ctx.createLinearGradient(p.x, 0, p.x + p.width, 0);
-        gradient.addColorStop(0, 'rgba(112, 192, 96, 0)');
-        gradient.addColorStop(0.5, `rgba(112, 192, 96, ${p.opacity})`);
-        gradient.addColorStop(1, 'rgba(112, 192, 96, 0)');
-        ctx.fillStyle = gradient;
-        ctx.fillRect(p.x, p.y - 1, p.width, 2);
-        p.x += p.speed;
-        if (p.x > canvas.width + 50) pulses.splice(i, 1);
-      }
-    };
-
-    const interval = setInterval(draw, 30);
-    return () => clearInterval(interval);
-  }, [canvasRef]);
-  return null;
-}
-
-// 8. Static Noise - subtle TV static
-function StaticNoise({ canvasRef }) {
-  useEffect(() => {
-    const canvas = canvasRef.current;
-    if (!canvas) return;
-    const ctx = canvas.getContext('2d');
-    canvas.width = canvas.offsetWidth;
-    canvas.height = canvas.offsetHeight;
-
-    const draw = () => {
-      ctx.fillStyle = 'rgba(12, 10, 8, 0.3)';
-      ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-      for (let i = 0; i < 50; i++) {
-        const x = Math.random() * canvas.width;
-        const y = Math.random() * canvas.height;
-        const opacity = Math.random() * 0.06;
-        ctx.fillStyle = `rgba(112, 192, 96, ${opacity})`;
-        ctx.fillRect(x, y, 1, 1);
-      }
-    };
-
-    const interval = setInterval(draw, 100);
-    return () => clearInterval(interval);
-  }, [canvasRef]);
-  return null;
-}
-
-// 9. Waveform - audio waveform style
-function Waveform({ canvasRef }) {
-  useEffect(() => {
-    const canvas = canvasRef.current;
-    if (!canvas) return;
-    const ctx = canvas.getContext('2d');
-    canvas.width = canvas.offsetWidth;
-    canvas.height = canvas.offsetHeight;
-
-    let offset = 0;
-    const waves = [
-      { y: canvas.height * 0.3, amp: 15, freq: 0.02, speed: 0.03, opacity: 0.08 },
-      { y: canvas.height * 0.5, amp: 20, freq: 0.015, speed: 0.02, opacity: 0.1 },
-      { y: canvas.height * 0.7, amp: 12, freq: 0.025, speed: 0.04, opacity: 0.06 }
-    ];
-
-    const draw = () => {
-      ctx.fillStyle = 'rgba(12, 10, 8, 0.1)';
-      ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-      for (const wave of waves) {
-        ctx.strokeStyle = `rgba(112, 192, 96, ${wave.opacity})`;
-        ctx.lineWidth = 1;
-        ctx.beginPath();
-        for (let x = 0; x < canvas.width; x += 3) {
-          const y = wave.y + Math.sin((x * wave.freq) + offset * wave.speed) * wave.amp;
-          if (x === 0) ctx.moveTo(x, y);
-          else ctx.lineTo(x, y);
+        if (Math.random() > 0.95) {
+          const char = chars[Math.floor(Math.random() * chars.length)];
+          ctx.fillStyle = `rgba(112, 192, 96, ${0.3 + Math.random() * 0.2})`;
+          ctx.fillText(char, i * fontSize, y);
         }
-        ctx.stroke();
       }
-      offset++;
+      time++;
     };
 
     const interval = setInterval(draw, 50);
@@ -410,8 +199,8 @@ function Waveform({ canvasRef }) {
   return null;
 }
 
-// 10. Code Rain (classic but minimal)
-function CodeRain({ canvasRef }) {
+// 5. Matrix Binary - only 0 and 1
+function MatrixBinary({ canvasRef }) {
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
@@ -419,52 +208,295 @@ function CodeRain({ canvasRef }) {
     canvas.width = canvas.offsetWidth;
     canvas.height = canvas.offsetHeight;
 
-    const chars = '{}[]<>/\\|;:,.!?@#$%&*+-=~`';
-    const streams = [];
-    const maxStreams = 5;
+    const fontSize = 12;
+    const columns = Math.floor(canvas.width / fontSize);
+    const drops = Array(columns).fill(0).map(() => ({ y: Math.random() * -100, active: Math.random() > 0.85 }));
 
     const draw = () => {
       ctx.fillStyle = 'rgba(12, 10, 8, 0.04)';
       ctx.fillRect(0, 0, canvas.width, canvas.height);
-      ctx.font = '12px monospace';
+      ctx.font = `${fontSize}px monospace`;
 
-      if (streams.length < maxStreams && Math.random() > 0.98) {
-        streams.push({
-          x: Math.random() * canvas.width,
-          chars: [],
-          speed: 0.4 + Math.random() * 0.3,
-          nextY: -10
-        });
+      for (let i = 0; i < drops.length; i++) {
+        if (!drops[i].active) continue;
+
+        const char = Math.random() > 0.5 ? '1' : '0';
+        const x = i * fontSize;
+        const y = drops[i].y;
+
+        ctx.fillStyle = `rgba(112, 192, 96, ${0.15 + Math.random() * 0.15})`;
+        ctx.fillText(char, x, y);
+
+        drops[i].y += 0.5 + Math.random() * 0.3;
+        if (drops[i].y > canvas.height) {
+          drops[i].y = Math.random() * -50;
+          drops[i].active = Math.random() > 0.8;
+        }
+      }
+    };
+
+    const interval = setInterval(draw, 50);
+    return () => clearInterval(interval);
+  }, [canvasRef]);
+  return null;
+}
+
+// 6. Matrix Depth - multiple layers at different speeds
+function MatrixDepth({ canvasRef }) {
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d');
+    canvas.width = canvas.offsetWidth;
+    canvas.height = canvas.offsetHeight;
+
+    const chars = 'アイウエオ01';
+    const layers = [
+      { fontSize: 8, speed: 0.3, opacity: 0.08, columns: [] },
+      { fontSize: 12, speed: 0.5, opacity: 0.15, columns: [] },
+      { fontSize: 16, speed: 0.8, opacity: 0.25, columns: [] }
+    ];
+
+    layers.forEach(layer => {
+      const cols = Math.floor(canvas.width / layer.fontSize);
+      layer.columns = Array(cols).fill(0).map(() => ({
+        y: Math.random() * canvas.height,
+        active: Math.random() > 0.8
+      }));
+    });
+
+    const draw = () => {
+      ctx.fillStyle = 'rgba(12, 10, 8, 0.05)';
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      for (const layer of layers) {
+        ctx.font = `${layer.fontSize}px monospace`;
+
+        for (let i = 0; i < layer.columns.length; i++) {
+          const col = layer.columns[i];
+          if (!col.active) continue;
+
+          const char = chars[Math.floor(Math.random() * chars.length)];
+          ctx.fillStyle = `rgba(112, 192, 96, ${layer.opacity})`;
+          ctx.fillText(char, i * layer.fontSize, col.y);
+
+          col.y += layer.speed;
+          if (col.y > canvas.height) {
+            col.y = -20;
+            col.active = Math.random() > 0.7;
+          }
+        }
+      }
+    };
+
+    const interval = setInterval(draw, 50);
+    return () => clearInterval(interval);
+  }, [canvasRef]);
+  return null;
+}
+
+// 7. Matrix Katakana - pure Japanese
+function MatrixKatakana({ canvasRef }) {
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d');
+    canvas.width = canvas.offsetWidth;
+    canvas.height = canvas.offsetHeight;
+
+    const chars = 'アイウエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホマミムメモヤユヨラリルレロワヲンガギグゲゴ';
+    const fontSize = 14;
+    const streams = [];
+    const maxStreams = 8;
+
+    const draw = () => {
+      ctx.fillStyle = 'rgba(12, 10, 8, 0.04)';
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+      ctx.font = `${fontSize}px monospace`;
+
+      if (streams.length < maxStreams && Math.random() > 0.97) {
+        const x = Math.floor(Math.random() * (canvas.width / fontSize)) * fontSize;
+        streams.push({ x, y: -fontSize, length: 5 + Math.floor(Math.random() * 15) });
       }
 
       for (let i = streams.length - 1; i >= 0; i--) {
         const s = streams[i];
 
-        if (s.nextY < canvas.height && Math.random() > 0.85) {
-          s.chars.push({
-            y: s.nextY,
-            char: chars[Math.floor(Math.random() * chars.length)],
-            opacity: 0.25
-          });
-          s.nextY += 14;
+        for (let j = 0; j < s.length; j++) {
+          const charY = s.y - j * fontSize;
+          if (charY > 0 && charY < canvas.height) {
+            const char = chars[Math.floor(Math.random() * chars.length)];
+            const opacity = j === 0 ? 0.9 : 0.4 - (j / s.length) * 0.3;
+            ctx.fillStyle = j === 0 ? 'rgba(200, 255, 200, 0.9)' : `rgba(112, 192, 96, ${Math.max(opacity, 0.05)})`;
+            ctx.fillText(char, s.x, charY);
+          }
         }
 
-        for (let j = s.chars.length - 1; j >= 0; j--) {
-          const c = s.chars[j];
-          ctx.fillStyle = `rgba(112, 192, 96, ${c.opacity})`;
-          ctx.fillText(c.char, s.x, c.y);
-          c.y += s.speed;
-          if (c.y > canvas.height - 30) c.opacity *= 0.94;
-          if (c.opacity < 0.02) s.chars.splice(j, 1);
-        }
-
-        if (s.nextY > canvas.height && s.chars.length === 0) {
+        s.y += 2;
+        if (s.y - s.length * fontSize > canvas.height) {
           streams.splice(i, 1);
         }
       }
     };
 
     const interval = setInterval(draw, 50);
+    return () => clearInterval(interval);
+  }, [canvasRef]);
+  return null;
+}
+
+// 8. Matrix Hex - hexadecimal codes
+function MatrixHex({ canvasRef }) {
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d');
+    canvas.width = canvas.offsetWidth;
+    canvas.height = canvas.offsetHeight;
+
+    const streams = [];
+    const maxStreams = 6;
+
+    const draw = () => {
+      ctx.fillStyle = 'rgba(12, 10, 8, 0.04)';
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+      ctx.font = '10px monospace';
+
+      if (streams.length < maxStreams && Math.random() > 0.97) {
+        streams.push({
+          x: Math.random() * (canvas.width - 40),
+          y: -15,
+          speed: 0.8 + Math.random() * 0.4,
+          values: []
+        });
+      }
+
+      for (let i = streams.length - 1; i >= 0; i--) {
+        const s = streams[i];
+
+        if (Math.random() > 0.8 && s.y < canvas.height) {
+          const hex = Math.floor(Math.random() * 256).toString(16).toUpperCase().padStart(2, '0');
+          s.values.push({ y: s.y, text: hex, opacity: 0.5 });
+        }
+
+        for (let j = s.values.length - 1; j >= 0; j--) {
+          const v = s.values[j];
+          ctx.fillStyle = `rgba(112, 192, 96, ${v.opacity})`;
+          ctx.fillText(v.text, s.x, v.y);
+          v.opacity *= 0.98;
+          if (v.opacity < 0.02) s.values.splice(j, 1);
+        }
+
+        s.y += s.speed;
+        if (s.y > canvas.height + 50 && s.values.length === 0) {
+          streams.splice(i, 1);
+        }
+      }
+    };
+
+    const interval = setInterval(draw, 40);
+    return () => clearInterval(interval);
+  }, [canvasRef]);
+  return null;
+}
+
+// 9. Matrix Code - programming symbols
+function MatrixCode({ canvasRef }) {
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d');
+    canvas.width = canvas.offsetWidth;
+    canvas.height = canvas.offsetHeight;
+
+    const chars = '{}[]()<>;;::==!=&&||++--/*%$#@!?';
+    const fontSize = 12;
+    const columns = Math.floor(canvas.width / fontSize);
+    const drops = Array(columns).fill(0).map(() => ({
+      y: Math.random() * -200,
+      speed: 0.3 + Math.random() * 0.4,
+      active: Math.random() > 0.9
+    }));
+
+    const draw = () => {
+      ctx.fillStyle = 'rgba(12, 10, 8, 0.03)';
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+      ctx.font = `${fontSize}px monospace`;
+
+      for (let i = 0; i < drops.length; i++) {
+        if (!drops[i].active) {
+          if (Math.random() > 0.998) drops[i].active = true;
+          continue;
+        }
+
+        const char = chars[Math.floor(Math.random() * chars.length)];
+        ctx.fillStyle = `rgba(112, 192, 96, ${0.2 + Math.random() * 0.1})`;
+        ctx.fillText(char, i * fontSize, drops[i].y);
+
+        drops[i].y += drops[i].speed;
+        if (drops[i].y > canvas.height) {
+          drops[i].y = Math.random() * -100;
+          drops[i].active = Math.random() > 0.85;
+        }
+      }
+    };
+
+    const interval = setInterval(draw, 50);
+    return () => clearInterval(interval);
+  }, [canvasRef]);
+  return null;
+}
+
+// 10. Matrix Minimal - super subtle
+function MatrixMinimal({ canvasRef }) {
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d');
+    canvas.width = canvas.offsetWidth;
+    canvas.height = canvas.offsetHeight;
+
+    const chars = 'アイウ01';
+    const drops = [];
+    const maxDrops = 3;
+
+    const draw = () => {
+      ctx.fillStyle = 'rgba(12, 10, 8, 0.02)';
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+      ctx.font = '14px monospace';
+
+      if (drops.length < maxDrops && Math.random() > 0.99) {
+        drops.push({
+          x: Math.random() * canvas.width,
+          y: -20,
+          trail: [],
+          speed: 0.5 + Math.random() * 0.3
+        });
+      }
+
+      for (let i = drops.length - 1; i >= 0; i--) {
+        const d = drops[i];
+
+        if (Math.random() > 0.6) {
+          d.trail.push({ y: d.y, char: chars[Math.floor(Math.random() * chars.length)], opacity: 0.15 });
+        }
+
+        for (let j = d.trail.length - 1; j >= 0; j--) {
+          const t = d.trail[j];
+          ctx.fillStyle = `rgba(112, 192, 96, ${t.opacity})`;
+          ctx.fillText(t.char, d.x, t.y);
+          t.opacity *= 0.99;
+          if (t.opacity < 0.01) d.trail.splice(j, 1);
+        }
+
+        d.y += d.speed;
+        if (d.y > canvas.height && d.trail.length === 0) {
+          drops.splice(i, 1);
+        }
+      }
+    };
+
+    const interval = setInterval(draw, 60);
     return () => clearInterval(interval);
   }, [canvasRef]);
   return null;
@@ -494,27 +526,27 @@ export default function EffectsDemo() {
     <div className="min-h-screen bg-[#0c0a08] p-6">
       <div className="max-w-6xl mx-auto">
         <div className="flex items-center justify-between mb-8">
-          <h1 className="text-2xl font-mono text-[#d0c8b8]">background effects v3</h1>
+          <h1 className="text-2xl font-mono text-[#d0c8b8]">matrix backgrounds</h1>
           <Link href="/" className="text-[#70c060] hover:text-[#90e080] font-mono text-sm">
             &larr; back
           </Link>
         </div>
 
         <p className="text-[#a09080] font-mono text-sm mb-8">
-          10 different subtle background effects:
+          10 matrix-style background variations:
         </p>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-          <EffectDemo title="1. binary rain" description="falling 0s and 1s" Effect={BinaryRain} />
-          <EffectDemo title="2. hex grid" description="fading hex values" Effect={HexGrid} />
-          <EffectDemo title="3. particle network" description="connected dots" Effect={ParticleNetwork} />
-          <EffectDemo title="4. glitch blocks" description="random glitch rectangles" Effect={GlitchBlocks} />
-          <EffectDemo title="5. terminal typing" description="simulated commands" Effect={TerminalTyping} />
-          <EffectDemo title="6. circuit traces" description="circuit board paths" Effect={CircuitTraces} />
-          <EffectDemo title="7. data pulse" description="horizontal streams" Effect={DataPulse} />
-          <EffectDemo title="8. static noise" description="subtle tv static" Effect={StaticNoise} />
-          <EffectDemo title="9. waveform" description="audio wave lines" Effect={Waveform} />
-          <EffectDemo title="10. code rain" description="classic symbols" Effect={CodeRain} />
+          <EffectDemo title="1. classic" description="traditional matrix rain" Effect={MatrixClassic} />
+          <EffectDemo title="2. sparse" description="minimal streams" Effect={MatrixSparse} />
+          <EffectDemo title="3. glow" description="with bloom effect" Effect={MatrixGlow} />
+          <EffectDemo title="4. cascade" description="wave pattern" Effect={MatrixCascade} />
+          <EffectDemo title="5. binary" description="only 0 and 1" Effect={MatrixBinary} />
+          <EffectDemo title="6. depth" description="multiple layers" Effect={MatrixDepth} />
+          <EffectDemo title="7. katakana" description="pure japanese" Effect={MatrixKatakana} />
+          <EffectDemo title="8. hex" description="hexadecimal codes" Effect={MatrixHex} />
+          <EffectDemo title="9. code" description="programming symbols" Effect={MatrixCode} />
+          <EffectDemo title="10. minimal" description="super subtle" Effect={MatrixMinimal} />
         </div>
       </div>
     </div>
