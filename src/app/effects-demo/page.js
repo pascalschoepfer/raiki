@@ -162,7 +162,7 @@ function MatrixSparseTrail({ canvasRef }) {
   return null;
 }
 
-// Variant C: Rain + Scan Combo
+// Variant C: Rain + Scan Combo (sparse)
 function MatrixRainScan({ canvasRef }) {
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -172,19 +172,23 @@ function MatrixRainScan({ canvasRef }) {
     canvas.width = canvas.offsetWidth;
     canvas.height = canvas.offsetHeight;
 
-    const chars = 'アイウエオカキク01';
+    const chars = 'アイウエオ01';
     const fontSize = 11;
-    const columns = Math.floor(canvas.width / fontSize);
 
+    // Only a few active drops
     const drops = [];
-    for (let i = 0; i < columns; i++) {
-      drops.push({
-        y: Math.random() * -100,
-        speed: 0.15 + Math.random() * 0.2,
-        active: Math.random() > 0.7,
-        trail: []
-      });
-    }
+    const maxDrops = 4;
+
+    const spawnDrop = () => {
+      if (drops.length < maxDrops && Math.random() > 0.98) {
+        drops.push({
+          x: Math.random() * canvas.width,
+          y: Math.random() * -50,
+          speed: 0.2 + Math.random() * 0.15,
+          trail: []
+        });
+      }
+    };
 
     let scanY = 0;
 
@@ -194,44 +198,42 @@ function MatrixRainScan({ canvasRef }) {
 
       ctx.font = `${fontSize}px monospace`;
 
-      // Draw rain
-      for (let i = 0; i < drops.length; i++) {
-        if (!drops[i].active) continue;
-
+      // Draw rain (sparse)
+      for (let i = drops.length - 1; i >= 0; i--) {
         const drop = drops[i];
-        const x = i * fontSize;
 
-        if (Math.random() > 0.96) {
+        if (Math.random() > 0.94 && drop.y < canvas.height) {
           const char = chars[Math.floor(Math.random() * chars.length)];
-          drop.trail.push({ y: drop.y, char, opacity: 0.2 });
+          drop.trail.push({ y: drop.y, char, opacity: 0.18 });
         }
 
         for (let j = drop.trail.length - 1; j >= 0; j--) {
           const t = drop.trail[j];
           ctx.fillStyle = `rgba(112, 192, 96, ${t.opacity})`;
-          ctx.fillText(t.char, x, t.y * fontSize);
+          ctx.fillText(t.char, drop.x, t.y);
           t.opacity *= 0.96;
           if (t.opacity < 0.02) drop.trail.splice(j, 1);
         }
 
         drop.y += drop.speed;
 
-        if (drop.y * fontSize > canvas.height && drop.trail.length === 0) {
-          drop.y = Math.random() * -20;
-          drop.active = Math.random() > 0.6;
+        if (drop.y > canvas.height + 50 && drop.trail.length === 0) {
+          drops.splice(i, 1);
         }
       }
 
-      // Draw scan line (subtle)
+      spawnDrop();
+
+      // Draw scan line (very subtle)
       const lineY = scanY % canvas.height;
-      for (let x = 0; x < canvas.width; x += 30) {
-        if (Math.random() > 0.9) {
-          ctx.fillStyle = `rgba(112, 192, 96, ${0.04 + Math.random() * 0.04})`;
+      for (let x = 0; x < canvas.width; x += 40) {
+        if (Math.random() > 0.94) {
+          ctx.fillStyle = `rgba(112, 192, 96, ${0.03 + Math.random() * 0.03})`;
           const char = chars[Math.floor(Math.random() * chars.length)];
           ctx.fillText(char, x, lineY);
         }
       }
-      scanY += 1;
+      scanY += 0.8;
     };
 
     const interval = setInterval(draw, 60);
