@@ -3,7 +3,7 @@
 import { useEffect, useRef } from 'react';
 import Link from 'next/link';
 
-// Variant A: Subtle Rain with Fading Trail
+// Variant A: Subtle Rain with Fading Trail (sparse)
 function MatrixRainFade({ canvasRef }) {
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -13,37 +13,40 @@ function MatrixRainFade({ canvasRef }) {
     canvas.width = canvas.offsetWidth;
     canvas.height = canvas.offsetHeight;
 
-    const chars = 'アイウエオカキクケコ01';
+    const chars = 'アイウエオ01';
     const fontSize = 12;
-    const columns = Math.floor(canvas.width / fontSize);
 
-    // Each drop has position and trail
+    // Only a few active drops at a time
     const drops = [];
-    for (let i = 0; i < columns; i++) {
-      drops.push({
-        y: Math.random() * -50,
-        speed: 0.2 + Math.random() * 0.3,
-        trail: [] // {y, char, opacity}
-      });
-    }
+    const maxDrops = 6;
+
+    const spawnDrop = () => {
+      if (drops.length < maxDrops && Math.random() > 0.97) {
+        drops.push({
+          x: Math.random() * canvas.width,
+          y: Math.random() * -50,
+          speed: 0.3 + Math.random() * 0.2,
+          trail: []
+        });
+      }
+    };
 
     const draw = () => {
-      ctx.fillStyle = 'rgba(12, 10, 8, 0.08)';
+      ctx.fillStyle = 'rgba(12, 10, 8, 0.06)';
       ctx.fillRect(0, 0, canvas.width, canvas.height);
 
       ctx.font = `${fontSize}px monospace`;
 
-      for (let i = 0; i < drops.length; i++) {
+      for (let i = drops.length - 1; i >= 0; i--) {
         const drop = drops[i];
-        const x = i * fontSize;
 
         // Spawn new character occasionally
-        if (Math.random() > 0.97 && drop.y * fontSize < canvas.height) {
+        if (Math.random() > 0.92 && drop.y < canvas.height) {
           const char = chars[Math.floor(Math.random() * chars.length)];
           drop.trail.push({
             y: drop.y,
             char: char,
-            opacity: 0.25
+            opacity: 0.2
           });
         }
 
@@ -51,8 +54,8 @@ function MatrixRainFade({ canvasRef }) {
         for (let j = drop.trail.length - 1; j >= 0; j--) {
           const t = drop.trail[j];
           ctx.fillStyle = `rgba(112, 192, 96, ${t.opacity})`;
-          ctx.fillText(t.char, x, t.y * fontSize);
-          t.opacity *= 0.97;
+          ctx.fillText(t.char, drop.x, t.y);
+          t.opacity *= 0.96;
 
           if (t.opacity < 0.02) {
             drop.trail.splice(j, 1);
@@ -61,12 +64,13 @@ function MatrixRainFade({ canvasRef }) {
 
         drop.y += drop.speed;
 
-        // Reset when off screen
-        if (drop.y * fontSize > canvas.height + 50 && drop.trail.length === 0) {
-          drop.y = Math.random() * -30;
-          drop.speed = 0.2 + Math.random() * 0.3;
+        // Remove when off screen and trail gone
+        if (drop.y > canvas.height + 50 && drop.trail.length === 0) {
+          drops.splice(i, 1);
         }
       }
+
+      spawnDrop();
     };
 
     const interval = setInterval(draw, 60);
