@@ -44,19 +44,16 @@ export default function Home() {
               />
             </div>
 
-            {/* Navigation Links - Modern Style */}
-            <div className="mt-12 sm:mt-16 flex justify-center gap-10 sm:gap-16 font-mono">
-              <a href="/services" className="group relative text-[#8a8070] hover:text-[#e8e0d5] text-sm sm:text-base tracking-widest transition-colors duration-300">
-                services
-                <span className="absolute -bottom-1 left-0 w-0 h-px bg-[#e8e0d5] group-hover:w-full transition-all duration-300"></span>
+            {/* Navigation Buttons */}
+            <div className="mt-10 sm:mt-14 flex justify-center gap-4 sm:gap-6 font-mono">
+              <a href="/services" className="group px-6 py-2.5 border border-[#4a4035] hover:border-[#70c060] bg-[#151210]/60 hover:bg-[#1a2518]/60 transition-all duration-300">
+                <span className="text-[#a09080] group-hover:text-[#70c060] text-sm tracking-wider transition-colors duration-300">services</span>
               </a>
-              <a href="/about" className="group relative text-[#8a8070] hover:text-[#e8e0d5] text-sm sm:text-base tracking-widest transition-colors duration-300">
-                about
-                <span className="absolute -bottom-1 left-0 w-0 h-px bg-[#e8e0d5] group-hover:w-full transition-all duration-300"></span>
+              <a href="/about" className="group px-6 py-2.5 border border-[#4a4035] hover:border-[#70c060] bg-[#151210]/60 hover:bg-[#1a2518]/60 transition-all duration-300">
+                <span className="text-[#a09080] group-hover:text-[#70c060] text-sm tracking-wider transition-colors duration-300">about</span>
               </a>
-              <a href="/contact" className="group relative text-[#8a8070] hover:text-[#e8e0d5] text-sm sm:text-base tracking-widest transition-colors duration-300">
-                contact
-                <span className="absolute -bottom-1 left-0 w-0 h-px bg-[#e8e0d5] group-hover:w-full transition-all duration-300"></span>
+              <a href="/contact" className="group px-6 py-2.5 border border-[#4a4035] hover:border-[#70c060] bg-[#151210]/60 hover:bg-[#1a2518]/60 transition-all duration-300">
+                <span className="text-[#a09080] group-hover:text-[#70c060] text-sm tracking-wider transition-colors duration-300">contact</span>
               </a>
             </div>
 

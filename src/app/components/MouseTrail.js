@@ -267,26 +267,25 @@ export default function NeuralNetwork() {
 
     /**
      * Dynamic Color Generation
-     * 
-     * Creates smooth color transitions between yellow and green over
-     * a 10-second cycle using sine wave interpolation for natural
-     * color transitions that enhance the electrical effect.
-     * 
+     *
+     * Creates subtle green color variations matching the fundarb style.
+     * Uses the #70c060 green as base with gentle brightness oscillation.
+     *
      * @returns {Object} RGB color object {r, g, b}
      */
     const getColorAtTime = () => {
-      // 8 second cycle (8000ms) - faster transitions
+      // 6 second cycle for subtle brightness variation
       colorCycleRef.current += 16; // ~60fps
-      const cycleTime = (colorCycleRef.current % 8000) / 8000; // 0 to 1
-      
-      // Create sharp transition: pink -> green -> pink (glitch colors)
-      const colorPhase = Math.sin(cycleTime * Math.PI * 2) * 0.5 + 0.5; // 0 to 1
-      
-      // Glitch Pink: (255, 0, 128), Glitch Green: (0, 255, 128)
-      const r = Math.round(255 - 255 * colorPhase);
-      const g = Math.round(0 + 255 * colorPhase);
-      const b = 128; // Keep blue constant for consistency
-      
+      const cycleTime = (colorCycleRef.current % 6000) / 6000; // 0 to 1
+
+      // Subtle brightness oscillation
+      const brightness = 0.85 + Math.sin(cycleTime * Math.PI * 2) * 0.15; // 0.7 to 1.0
+
+      // Base color: #70c060 (112, 192, 96) - fundarb green
+      const r = Math.round(112 * brightness);
+      const g = Math.round(192 * brightness);
+      const b = Math.round(96 * brightness);
+
       return { r, g, b };
     };
 
