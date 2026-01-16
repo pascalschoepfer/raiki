@@ -106,7 +106,7 @@ export default function Home() {
             <div className="inline-block">
               <MatrixText
                 text="raiki"
-                className="text-5xl md:text-6xl font-mono font-bold text-[#e8e0d5] tracking-wider"
+                className="text-5xl md:text-6xl font-mono font-bold text-[#d0c8b8] tracking-wider"
               />
             </div>
           </div>

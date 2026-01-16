@@ -170,7 +170,7 @@ export default function RaikiLogo({ className = "", showText = true }) {
       {showText && (
         <ScrambleGlitchText 
           text="raiki" 
-          className="text-xl font-mono font-bold text-[#e8e0d5] tracking-wider" 
+          className="text-xl font-mono font-bold text-[#d0c8b8] tracking-wider" 
         />
       )}
     </div>

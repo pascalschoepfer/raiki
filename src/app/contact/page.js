@@ -273,9 +273,9 @@ export default function Contact() {
             
             {/* Title */}
             <section>
-              <MatrixText 
-                text="contact" 
-                className="text-4xl md:text-5xl font-mono font-bold text-[#e8e0d5] tracking-wider"
+              <MatrixText
+                text="contact"
+                className="text-4xl md:text-5xl font-mono font-bold text-[#d0c8b8] tracking-wider"
               />
             </section>
             
@@ -353,7 +353,7 @@ export default function Contact() {
                   }`}
                 >
                   <div className="absolute inset-0 bg-[#F0E8D8]/10 opacity-0 group-hover:opacity-100 transition-opacity duration-200"></div>
-                  <span className="relative text-[#e8e0d5] group-hover:text-[#e8e0d5] text-sm tracking-wider leading-none font-mono font-bold">
+                  <span className="relative text-[#d0c8b8] group-hover:text-[#e8e0d5] text-sm tracking-wider leading-none font-mono font-bold">
                     {isSubmitting ? '>> sending...' : '>> send'}
                   </span>
                 </button>
