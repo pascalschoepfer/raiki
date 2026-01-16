@@ -212,12 +212,6 @@ export default function Contact() {
         setSubmitStatus('success');
         setStatusMessage('Message sent successfully!');
         setFormData({ name: '', email: '', company: '', message: '' });
-        setTurnstileToken(null);
-        
-        // Reset Turnstile widget
-        if (window.turnstile) {
-          window.turnstile.reset();
-        }
       } else {
         setSubmitStatus('error');
         setStatusMessage(data.error || 'An error occurred. Please try again.');
