@@ -27,14 +27,14 @@ export default function BurgerDemo() {
       description: 'Digital brackets - cyberpunk themed',
       closed: (
         <button className="flex flex-col justify-center items-center w-8 h-8 bg-transparent border-0 cursor-pointer group">
-          <span className="text-gray-400 hover:text-white transition-all duration-300 text-lg font-mono group-hover:animate-pulse">
+          <span className="text-[#a09080] hover:text-[#e8e0d5] transition-all duration-300 text-lg font-mono group-hover:animate-pulse">
             [ ]
           </span>
         </button>
       ),
       open: (
         <button className="flex flex-col justify-center items-center w-8 h-8 bg-transparent border-0 cursor-pointer group">
-          <span className="text-white transition-all duration-300 text-lg font-mono animate-pulse">
+          <span className="text-[#e8e0d5] transition-all duration-300 text-lg font-mono animate-pulse">
             [X]
           </span>
         </button>
@@ -46,20 +46,20 @@ export default function BurgerDemo() {
       description: 'Command prompt with cursor',
       closed: (
         <button className="flex flex-col justify-center items-center w-8 h-8 bg-transparent border-0 cursor-pointer group">
-          <span className="text-gray-400 hover:text-white transition-all duration-300 text-sm font-mono">
+          <span className="text-[#a09080] hover:text-[#e8e0d5] transition-all duration-300 text-sm font-mono">
             ≡
           </span>
-          <span className="text-gray-600 group-hover:text-gray-300 transition-all duration-300 text-xs font-mono animate-pulse">
+          <span className="text-[#6b6055] group-hover:text-[#c0b8a8] transition-all duration-300 text-xs font-mono animate-pulse">
             _
           </span>
         </button>
       ),
       open: (
         <button className="flex flex-col justify-center items-center w-8 h-8 bg-transparent border-0 cursor-pointer group">
-          <span className="text-white transition-all duration-300 text-sm font-mono">
+          <span className="text-[#e8e0d5] transition-all duration-300 text-sm font-mono">
             ×
           </span>
-          <span className="text-gray-300 transition-all duration-300 text-xs font-mono animate-pulse">
+          <span className="text-[#c0b8a8] transition-all duration-300 text-xs font-mono animate-pulse">
             _
           </span>
         </button>
@@ -72,9 +72,9 @@ export default function BurgerDemo() {
       closed: (
         <button className="flex flex-col justify-center items-center w-8 h-8 bg-transparent border-0 cursor-pointer group">
           <div className="flex flex-col gap-1">
-            <div className="w-5 h-1 bg-gray-400 group-hover:bg-white transition-colors duration-200"></div>
-            <div className="w-5 h-1 bg-gray-400 group-hover:bg-white transition-colors duration-200"></div>
-            <div className="w-5 h-1 bg-gray-400 group-hover:bg-white transition-colors duration-200"></div>
+            <div className="w-5 h-1 bg-[#a09080] group-hover:bg-[#F0E8D8] transition-colors duration-200"></div>
+            <div className="w-5 h-1 bg-[#a09080] group-hover:bg-[#F0E8D8] transition-colors duration-200"></div>
+            <div className="w-5 h-1 bg-[#a09080] group-hover:bg-[#F0E8D8] transition-colors duration-200"></div>
           </div>
         </button>
       ),
@@ -94,21 +94,21 @@ export default function BurgerDemo() {
       closed: (
         <button className="flex flex-col justify-center items-center w-8 h-8 bg-transparent border-0 cursor-pointer group">
           <div className="grid grid-cols-3 gap-1">
-            <div className="w-1 h-1 bg-gray-400 group-hover:bg-white transition-all duration-200 rounded-full"></div>
-            <div className="w-1 h-1 bg-gray-400 group-hover:bg-white transition-all duration-200 rounded-full"></div>
-            <div className="w-1 h-1 bg-gray-400 group-hover:bg-white transition-all duration-200 rounded-full"></div>
-            <div className="w-1 h-1 bg-gray-400 group-hover:bg-white transition-all duration-200 rounded-full"></div>
-            <div className="w-1 h-1 bg-gray-400 group-hover:bg-white transition-all duration-200 rounded-full"></div>
-            <div className="w-1 h-1 bg-gray-400 group-hover:bg-white transition-all duration-200 rounded-full"></div>
-            <div className="w-1 h-1 bg-gray-400 group-hover:bg-white transition-all duration-200 rounded-full"></div>
-            <div className="w-1 h-1 bg-gray-400 group-hover:bg-white transition-all duration-200 rounded-full"></div>
-            <div className="w-1 h-1 bg-gray-400 group-hover:bg-white transition-all duration-200 rounded-full"></div>
+            <div className="w-1 h-1 bg-[#a09080] group-hover:bg-[#F0E8D8] transition-all duration-200 rounded-full"></div>
+            <div className="w-1 h-1 bg-[#a09080] group-hover:bg-[#F0E8D8] transition-all duration-200 rounded-full"></div>
+            <div className="w-1 h-1 bg-[#a09080] group-hover:bg-[#F0E8D8] transition-all duration-200 rounded-full"></div>
+            <div className="w-1 h-1 bg-[#a09080] group-hover:bg-[#F0E8D8] transition-all duration-200 rounded-full"></div>
+            <div className="w-1 h-1 bg-[#a09080] group-hover:bg-[#F0E8D8] transition-all duration-200 rounded-full"></div>
+            <div className="w-1 h-1 bg-[#a09080] group-hover:bg-[#F0E8D8] transition-all duration-200 rounded-full"></div>
+            <div className="w-1 h-1 bg-[#a09080] group-hover:bg-[#F0E8D8] transition-all duration-200 rounded-full"></div>
+            <div className="w-1 h-1 bg-[#a09080] group-hover:bg-[#F0E8D8] transition-all duration-200 rounded-full"></div>
+            <div className="w-1 h-1 bg-[#a09080] group-hover:bg-[#F0E8D8] transition-all duration-200 rounded-full"></div>
           </div>
         </button>
       ),
       open: (
         <button className="flex flex-col justify-center items-center w-8 h-8 bg-transparent border-0 cursor-pointer group">
-          <span className="text-white text-lg">×</span>
+          <span className="text-[#e8e0d5] text-lg">×</span>
         </button>
       )
     },
@@ -119,9 +119,9 @@ export default function BurgerDemo() {
       closed: (
         <button className="flex flex-col justify-center items-center w-8 h-8 bg-transparent border-0 cursor-pointer group">
           <div className="flex flex-col gap-1">
-            <div className="w-6 h-0.5 bg-gray-400 group-hover:bg-white transition-all duration-200 transform group-hover:translate-x-0.5"></div>
-            <div className="w-4 h-0.5 bg-gray-400 group-hover:bg-white transition-all duration-200 transform group-hover:-translate-x-0.5"></div>
-            <div className="w-5 h-0.5 bg-gray-400 group-hover:bg-white transition-all duration-200 transform group-hover:translate-x-1"></div>
+            <div className="w-6 h-0.5 bg-[#a09080] group-hover:bg-[#F0E8D8] transition-all duration-200 transform group-hover:translate-x-0.5"></div>
+            <div className="w-4 h-0.5 bg-[#a09080] group-hover:bg-[#F0E8D8] transition-all duration-200 transform group-hover:-translate-x-0.5"></div>
+            <div className="w-5 h-0.5 bg-[#a09080] group-hover:bg-[#F0E8D8] transition-all duration-200 transform group-hover:translate-x-1"></div>
           </div>
         </button>
       ),
@@ -140,7 +140,7 @@ export default function BurgerDemo() {
       description: '0s and 1s pattern',
       closed: (
         <button className="flex flex-col justify-center items-center w-8 h-8 bg-transparent border-0 cursor-pointer group">
-          <div className="text-gray-400 group-hover:text-white transition-all duration-300 font-mono text-xs leading-tight">
+          <div className="text-[#a09080] group-hover:text-[#e8e0d5] transition-all duration-300 font-mono text-xs leading-tight">
             <div>101</div>
             <div>010</div>
             <div>111</div>
@@ -149,7 +149,7 @@ export default function BurgerDemo() {
       ),
       open: (
         <button className="flex flex-col justify-center items-center w-8 h-8 bg-transparent border-0 cursor-pointer group">
-          <span className="text-white font-mono text-lg">×</span>
+          <span className="text-[#e8e0d5] font-mono text-lg">×</span>
         </button>
       )
     },
@@ -158,17 +158,17 @@ export default function BurgerDemo() {
       name: 'Neon Box Style',
       description: 'Outlined square with glow',
       closed: (
-        <button className="flex flex-col justify-center items-center w-8 h-8 bg-transparent border-2 border-gray-400 hover:border-white transition-all duration-300 cursor-pointer group hover:shadow-lg hover:shadow-gray-400/25">
+        <button className="flex flex-col justify-center items-center w-8 h-8 bg-transparent border-2 border-[#6b6055] hover:border-white transition-all duration-300 cursor-pointer group hover:shadow-lg hover:shadow-[#8a8070]/25">
           <div className="flex flex-col gap-0.5">
-            <div className="w-3 h-px bg-gray-400 group-hover:bg-white transition-colors duration-300"></div>
-            <div className="w-3 h-px bg-gray-400 group-hover:bg-white transition-colors duration-300"></div>
-            <div className="w-3 h-px bg-gray-400 group-hover:bg-white transition-colors duration-300"></div>
+            <div className="w-3 h-px bg-[#a09080] group-hover:bg-[#F0E8D8] transition-colors duration-300"></div>
+            <div className="w-3 h-px bg-[#a09080] group-hover:bg-[#F0E8D8] transition-colors duration-300"></div>
+            <div className="w-3 h-px bg-[#a09080] group-hover:bg-[#F0E8D8] transition-colors duration-300"></div>
           </div>
         </button>
       ),
       open: (
         <button className="flex flex-col justify-center items-center w-8 h-8 bg-transparent border-2 border-white transition-all duration-300 cursor-pointer group shadow-lg shadow-white/25">
-          <span className="text-white text-sm">×</span>
+          <span className="text-[#e8e0d5] text-sm">×</span>
         </button>
       )
     },
@@ -178,14 +178,14 @@ export default function BurgerDemo() {
       description: 'Text character symbols',
       closed: (
         <button className="flex flex-col justify-center items-center w-8 h-8 bg-transparent border-0 cursor-pointer group">
-          <span className="text-gray-400 group-hover:text-white transition-all duration-300 font-mono text-sm">
+          <span className="text-[#a09080] group-hover:text-[#e8e0d5] transition-all duration-300 font-mono text-sm">
             ▦
           </span>
         </button>
       ),
       open: (
         <button className="flex flex-col justify-center items-center w-8 h-8 bg-transparent border-0 cursor-pointer group">
-          <span className="text-white font-mono text-sm">
+          <span className="text-[#e8e0d5] font-mono text-sm">
             ▣
           </span>
         </button>
@@ -196,17 +196,17 @@ export default function BurgerDemo() {
       name: 'Minimal Retro',
       description: 'Matches your button style perfectly',
       closed: (
-        <button className="flex flex-col justify-center items-center w-8 h-8 bg-gray-900 border border-gray-400 hover:border-gray-300 cursor-pointer group transition-all duration-200 hover:shadow-lg hover:shadow-gray-400/25">
+        <button className="flex flex-col justify-center items-center w-8 h-8 bg-[#151210] border border-[#6b6055] hover:border-[#8a8070] cursor-pointer group transition-all duration-200 hover:shadow-lg hover:shadow-[#8a8070]/25">
           <div className="flex flex-col gap-1">
-            <div className="w-4 h-px bg-gray-400 group-hover:bg-white transition-colors duration-200"></div>
-            <div className="w-4 h-px bg-gray-400 group-hover:bg-white transition-colors duration-200"></div>
-            <div className="w-4 h-px bg-gray-400 group-hover:bg-white transition-colors duration-200"></div>
+            <div className="w-4 h-px bg-[#a09080] group-hover:bg-[#F0E8D8] transition-colors duration-200"></div>
+            <div className="w-4 h-px bg-[#a09080] group-hover:bg-[#F0E8D8] transition-colors duration-200"></div>
+            <div className="w-4 h-px bg-[#a09080] group-hover:bg-[#F0E8D8] transition-colors duration-200"></div>
           </div>
         </button>
       ),
       open: (
-        <button className="flex flex-col justify-center items-center w-8 h-8 bg-gray-900 border border-white cursor-pointer group transition-all duration-200 shadow-lg shadow-white/25">
-          <span className="text-white text-xs">×</span>
+        <button className="flex flex-col justify-center items-center w-8 h-8 bg-[#151210] border border-white cursor-pointer group transition-all duration-200 shadow-lg shadow-white/25">
+          <span className="text-[#e8e0d5] text-xs">×</span>
         </button>
       )
     }
@@ -221,7 +221,7 @@ export default function BurgerDemo() {
         <header className="absolute top-0 left-0 right-0 z-20 px-6 py-2 bg-transparent">
           <nav className="max-w-7xl mx-auto flex items-center justify-between">
             <a href="/"><RaikiLogo /></a>
-            <a href="/" className="text-gray-400 hover:text-white transition-colors duration-300 font-mono">← back</a>
+            <a href="/" className="text-[#a09080] hover:text-[#e8e0d5] transition-colors duration-300 font-mono">← back</a>
           </nav>
         </header>
 
@@ -231,10 +231,10 @@ export default function BurgerDemo() {
             
             {/* Title */}
             <div className="text-center mb-8">
-              <h1 className="text-3xl md:text-4xl font-bold text-white mb-4 font-mono">
+              <h1 className="text-3xl md:text-4xl font-bold text-[#e8e0d5] mb-4 font-mono">
                 Burger Menu Examples
               </h1>
-              <p className="text-gray-400">
+              <p className="text-[#a09080]">
                 Click each burger menu to see open/closed states
               </p>
             </div>
@@ -242,9 +242,9 @@ export default function BurgerDemo() {
             {/* Burger Menu Grid */}
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
               {burgerStyles.map((style) => (
-                <div key={style.id} className="bg-gray-900/60 backdrop-blur-sm border border-gray-700 rounded-lg p-6 text-center">
-                  <h3 className="text-white font-mono text-lg mb-2">{style.name}</h3>
-                  <p className="text-gray-400 text-sm mb-4">{style.description}</p>
+                <div key={style.id} className="bg-[#151210]/60 backdrop-blur-sm border border-[#3d3530] rounded-lg p-6 text-center">
+                  <h3 className="text-[#e8e0d5] font-mono text-lg mb-2">{style.name}</h3>
+                  <p className="text-[#a09080] text-sm mb-4">{style.description}</p>
                   
                   {/* Demo Button */}
                   <div className="mb-4 flex justify-center">
@@ -254,7 +254,7 @@ export default function BurgerDemo() {
                   </div>
                   
                   {/* State Label */}
-                  <p className="text-xs text-gray-500 font-mono">
+                  <p className="text-xs text-[#8a8070] font-mono">
                     {openStates[style.id] ? 'OPEN STATE' : 'CLOSED STATE'}
                   </p>
                 </div>
@@ -262,12 +262,12 @@ export default function BurgerDemo() {
             </div>
 
             {/* Recommendation */}
-            <div className="text-center bg-gray-900/60 backdrop-blur-sm border border-gray-700 rounded-lg p-6">
-              <h3 className="text-white font-mono text-lg mb-2">Recommendation</h3>
-              <p className="text-gray-300 mb-4">
-                The <strong className="text-white">Minimal Retro</strong> style matches your navigation buttons perfectly
+            <div className="text-center bg-[#151210]/60 backdrop-blur-sm border border-[#3d3530] rounded-lg p-6">
+              <h3 className="text-[#e8e0d5] font-mono text-lg mb-2">Recommendation</h3>
+              <p className="text-[#c0b8a8] mb-4">
+                The <strong className="text-[#e8e0d5]">Minimal Retro</strong> style matches your navigation buttons perfectly
               </p>
-              <p className="text-gray-400 text-sm">
+              <p className="text-[#a09080] text-sm">
                 Same colors, borders, and hover effects as your ▶ services/about/contact buttons
               </p>
             </div>

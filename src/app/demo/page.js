@@ -19,14 +19,14 @@ export default function LoaderDemo() {
     hexagon: (
       <div className="flex flex-col items-center justify-center h-48">
         <div className="relative w-20 h-20 mb-6">
-          <div className="absolute inset-0 border-4 border-gray-700 border-t-white animate-spin" 
+          <div className="absolute inset-0 border-4 border-[#3d3530] border-t-white animate-spin" 
                style={{ 
                  clipPath: 'polygon(50% 0%, 93% 25%, 93% 75%, 50% 100%, 7% 75%, 7% 25%)',
                  animationDuration: '1s'
                }}>
           </div>
         </div>
-        <p className="text-white font-mono text-lg tracking-wider">INITIALIZING...</p>
+        <p className="text-[#e8e0d5] font-mono text-lg tracking-wider">INITIALIZING...</p>
       </div>
     ),
 
@@ -62,7 +62,7 @@ export default function LoaderDemo() {
                  animationDuration: '1.5s'
                }}>
           </div>
-          <div className="absolute inset-4 border-2 border-gray-700 border-t-white animate-spin" 
+          <div className="absolute inset-4 border-2 border-[#3d3530] border-t-white animate-spin" 
                style={{ 
                  clipPath: 'polygon(50% 0%, 93% 25%, 93% 75%, 50% 100%, 7% 75%, 7% 25%)',
                  animationDuration: '1s',
@@ -70,14 +70,14 @@ export default function LoaderDemo() {
                }}>
           </div>
         </div>
-        <p className="text-gray-300 font-mono text-lg tracking-wider">LOADING...</p>
+        <p className="text-[#c0b8a8] font-mono text-lg tracking-wider">LOADING...</p>
       </div>
     ),
 
     // Glitch Effect
     glitch: (
       <div className="flex flex-col items-center justify-center h-48">
-        <div className="text-2xl font-mono text-white mb-4 animate-pulse">
+        <div className="text-2xl font-mono text-[#e8e0d5] mb-4 animate-pulse">
           <span className="inline-block animate-bounce delay-0">L</span>
           <span className="inline-block animate-bounce delay-100">O</span>
           <span className="inline-block animate-bounce delay-200">A</span>
@@ -86,7 +86,7 @@ export default function LoaderDemo() {
           <span className="inline-block animate-bounce delay-500">N</span>
           <span className="inline-block animate-bounce delay-600">G</span>
         </div>
-        <div className="w-32 h-1 bg-gray-800 rounded-full overflow-hidden">
+        <div className="w-32 h-1 bg-[#1a1815] rounded-full overflow-hidden">
           <div className="h-full bg-gradient-to-r from-gray-600 to-white animate-pulse"></div>
         </div>
       </div>
@@ -100,14 +100,14 @@ export default function LoaderDemo() {
           <div className="w-2 h-2 bg-white rounded-full animate-bounce delay-150"></div>
           <div className="w-2 h-2 bg-white rounded-full animate-bounce delay-300"></div>
         </div>
-        <p className="text-gray-500 font-mono text-xs">loading</p>
+        <p className="text-[#8a8070] font-mono text-xs">loading</p>
       </div>
     ),
 
     // Typing Effect
     typing: (
       <div className="flex flex-col items-center justify-center h-48">
-        <div className="text-lg font-mono text-gray-300 mb-4">
+        <div className="text-lg font-mono text-[#c0b8a8] mb-4">
           <span className="animate-pulse">&gt; preparing interface</span>
           <span className="animate-pulse ml-1">_</span>
         </div>
@@ -125,7 +125,7 @@ export default function LoaderDemo() {
         <div className="absolute inset-0 opacity-50">
           {[...Array(12)].map((_, i) => (
             <div key={i} 
-                 className="absolute top-0 text-white font-mono text-xl animate-pulse"
+                 className="absolute top-0 text-[#e8e0d5] font-mono text-xl animate-pulse"
                  style={{ 
                    left: `${i * 8.33}%`, 
                    animationDelay: `${i * 0.15}s`,
@@ -135,7 +135,7 @@ export default function LoaderDemo() {
             </div>
           ))}
         </div>
-        <div className="relative z-10 text-white font-mono text-lg tracking-wider">
+        <div className="relative z-10 text-[#e8e0d5] font-mono text-lg tracking-wider">
           <span className="animate-pulse">MATRIX LOADING...</span>
         </div>
       </div>
@@ -144,12 +144,12 @@ export default function LoaderDemo() {
     // Cyberpunk Terminal
     terminal: (
       <div className="flex flex-col items-center justify-center h-48">
-        <div className="bg-black border-2 border-gray-400 p-6 font-mono text-sm w-80">
+        <div className="bg-black border-2 border-[#6b6055] p-6 font-mono text-sm w-80">
           <div className="text-green-400 mb-2">raiki@system:~$</div>
-          <div className="text-white mb-1">
+          <div className="text-[#e8e0d5] mb-1">
             <span className="animate-pulse">loading interface...</span>
           </div>
-          <div className="text-gray-400 mb-2">
+          <div className="text-[#a09080] mb-2">
             [████████████████████] 100%
           </div>
           <div className="text-cyan-400">
@@ -165,7 +165,7 @@ export default function LoaderDemo() {
         <div className="absolute inset-0 opacity-40">
           {[...Array(20)].map((_, i) => (
             <div key={i} 
-                 className="absolute top-0 text-gray-300 font-mono text-lg animate-pulse"
+                 className="absolute top-0 text-[#c0b8a8] font-mono text-lg animate-pulse"
                  style={{ 
                    left: `${i * 5}%`, 
                    animationDelay: `${i * 0.1}s`,
@@ -176,7 +176,7 @@ export default function LoaderDemo() {
           ))}
         </div>
         <div className="relative z-10 bg-black/60 px-6 py-3 border border-gray-500">
-          <div className="text-white font-mono text-lg tracking-wider">
+          <div className="text-[#e8e0d5] font-mono text-lg tracking-wider">
             <span className="animate-pulse">DECRYPTING DATA...</span>
           </div>
         </div>
@@ -197,7 +197,7 @@ export default function LoaderDemo() {
             </div>
           ))}
         </div>
-        <p className="text-gray-400 font-mono text-sm">PROCESSING</p>
+        <p className="text-[#a09080] font-mono text-sm">PROCESSING</p>
       </div>
     )
   };
@@ -223,7 +223,7 @@ export default function LoaderDemo() {
         <header className="absolute top-0 left-0 right-0 z-20 px-6 py-2 bg-transparent">
           <nav className="max-w-7xl mx-auto flex items-center justify-between">
             <a href="/"><RaikiLogo /></a>
-            <a href="/" className="text-gray-400 hover:text-white transition-colors duration-300 font-mono">← back</a>
+            <a href="/" className="text-[#a09080] hover:text-[#e8e0d5] transition-colors duration-300 font-mono">← back</a>
           </nav>
         </header>
 
@@ -233,10 +233,10 @@ export default function LoaderDemo() {
             
             {/* Title */}
             <div className="text-center mb-8">
-              <h1 className="text-3xl md:text-4xl font-bold text-white mb-4 font-mono">
+              <h1 className="text-3xl md:text-4xl font-bold text-[#e8e0d5] mb-4 font-mono">
                 Loader Options
               </h1>
-              <p className="text-gray-400 mb-6">
+              <p className="text-[#a09080] mb-6">
                 Different loading transitions to prevent text flash when switching pages
               </p>
               
@@ -249,7 +249,7 @@ export default function LoaderDemo() {
                     className={`px-4 py-2 rounded font-mono text-sm transition-all duration-300 ${
                       currentLoader === loader
                         ? 'bg-white text-black'
-                        : 'bg-gray-800 text-gray-300 hover:bg-gray-700 hover:text-white'
+                        : 'bg-[#1a1815] text-[#c0b8a8] hover:bg-[#2a2520] hover:text-[#e8e0d5]'
                     }`}
                   >
                     {loader}
@@ -260,26 +260,26 @@ export default function LoaderDemo() {
 
             {/* Demo Area */}
             <div className="text-center">
-              <div className="bg-gray-900/60 backdrop-blur-sm border border-gray-700 rounded-lg p-8 mb-6">
-                <h2 className="text-lg text-white mb-4 font-mono capitalize">{currentLoader} Loader</h2>
+              <div className="bg-[#151210]/60 backdrop-blur-sm border border-[#3d3530] rounded-lg p-8 mb-6">
+                <h2 className="text-lg text-[#e8e0d5] mb-4 font-mono capitalize">{currentLoader} Loader</h2>
                 {loaders[currentLoader]}
                 
                 <button
                   onClick={() => simulateLoading()}
                   disabled={isLoading}
-                  className="mt-6 group bg-gray-800 border-2 border-gray-400 hover:border-gray-300 px-6 py-3 relative overflow-hidden transition-all duration-200 hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed"
+                  className="mt-6 group bg-[#1a1815] border-2 border-[#6b6055] hover:border-[#8a8070] px-6 py-3 relative overflow-hidden transition-all duration-200 hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed"
                 >
-                  <div className="absolute inset-0 bg-gray-400/20 opacity-0 group-hover:opacity-100 transition-opacity duration-200"></div>
-                  <span className="relative text-gray-300 group-hover:text-white font-mono tracking-wider">
+                  <div className="absolute inset-0 bg-[#a09080]/20 opacity-0 group-hover:opacity-100 transition-opacity duration-200"></div>
+                  <span className="relative text-[#c0b8a8] group-hover:text-[#e8e0d5] font-mono tracking-wider">
                     {isLoading ? 'LOADING...' : '>> TEST LOADER'}
                   </span>
                 </button>
               </div>
               
               {/* Implementation Notes */}
-              <div className="bg-gray-800/60 backdrop-blur-sm border border-gray-600 rounded-lg p-6">
-                <h3 className="text-white font-mono mb-3">Implementation</h3>
-                <div className="text-left text-gray-300 font-mono text-sm space-y-2">
+              <div className="bg-[#1a1815]/60 backdrop-blur-sm border border-gray-600 rounded-lg p-6">
+                <h3 className="text-[#e8e0d5] font-mono mb-3">Implementation</h3>
+                <div className="text-left text-[#c0b8a8] font-mono text-sm space-y-2">
                   <p>• Show loader for ~200-500ms during page transitions</p>
                   <p>• Hide MatrixText until loader completes</p>
                   <p>• Prevents text flash by covering initial render</p>
@@ -294,13 +294,13 @@ export default function LoaderDemo() {
         <div className="absolute bottom-0 left-0 right-0 z-10 pb-8 px-6 bg-gradient-to-t from-black/60 to-transparent pt-6">
           <div className="max-w-4xl mx-auto text-center">
             <div className="flex flex-col sm:flex-row gap-3 font-mono max-w-sm mx-auto sm:max-w-none sm:justify-center">
-              <a href="/" className="group bg-gray-900 border-2 border-gray-400 hover:border-gray-300 px-5 py-3 relative overflow-hidden transition-all duration-200 hover:scale-105 hover:shadow-lg hover:shadow-gray-400/40 cursor-pointer text-center sm:w-36 flex items-center justify-center">
-                <div className="absolute inset-0 bg-gray-400/20 opacity-0 group-hover:opacity-100 transition-opacity duration-200"></div>
-                <span className="relative text-gray-400 group-hover:text-white text-sm tracking-wider leading-none">&gt;&gt; home</span>
+              <a href="/" className="group bg-[#151210] border-2 border-[#6b6055] hover:border-[#8a8070] px-5 py-3 relative overflow-hidden transition-all duration-200 hover:scale-105 hover:shadow-lg hover:shadow-[#8a8070]/40 cursor-pointer text-center sm:w-36 flex items-center justify-center">
+                <div className="absolute inset-0 bg-[#a09080]/20 opacity-0 group-hover:opacity-100 transition-opacity duration-200"></div>
+                <span className="relative text-[#a09080] group-hover:text-[#e8e0d5] text-sm tracking-wider leading-none">&gt;&gt; home</span>
               </a>
-              <a href="/services" className="group bg-gray-900 border-2 border-gray-400 hover:border-gray-300 px-5 py-3 relative overflow-hidden transition-all duration-200 hover:scale-105 hover:shadow-lg hover:shadow-gray-400/40 cursor-pointer text-center sm:w-36 flex items-center justify-center">
-                <div className="absolute inset-0 bg-gray-400/20 opacity-0 group-hover:opacity-100 transition-opacity duration-200"></div>
-                <span className="relative text-gray-400 group-hover:text-white text-sm tracking-wider leading-none">&gt;&gt; services</span>
+              <a href="/services" className="group bg-[#151210] border-2 border-[#6b6055] hover:border-[#8a8070] px-5 py-3 relative overflow-hidden transition-all duration-200 hover:scale-105 hover:shadow-lg hover:shadow-[#8a8070]/40 cursor-pointer text-center sm:w-36 flex items-center justify-center">
+                <div className="absolute inset-0 bg-[#a09080]/20 opacity-0 group-hover:opacity-100 transition-opacity duration-200"></div>
+                <span className="relative text-[#a09080] group-hover:text-[#e8e0d5] text-sm tracking-wider leading-none">&gt;&gt; services</span>
               </a>
             </div>
           </div>

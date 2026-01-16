@@ -249,15 +249,15 @@ export default function Contact() {
               
               {/* Dropdown Menu */}
               {isMenuOpen && (
-                <div className="absolute right-0 mt-2 w-48 bg-gray-800 rounded-lg shadow-lg border border-gray-700 z-50">
+                <div className="absolute right-0 mt-2 w-48 bg-[#1a1815] rounded-lg shadow-lg border border-[#3d3530] z-50">
                   <div className="py-2">
-                    <a href="/services" className="block px-4 py-2 text-white hover:bg-gray-700 transition-colors">
+                    <a href="/services" className="block px-4 py-2 text-[#e8e0d5] hover:bg-[#2a2520] transition-colors">
                       Services
                     </a>
-                    <a href="/about" className="block px-4 py-2 text-white hover:bg-gray-700 transition-colors">
+                    <a href="/about" className="block px-4 py-2 text-[#e8e0d5] hover:bg-[#2a2520] transition-colors">
                       About
                     </a>
-                    <a href="/contact" className="block px-4 py-2 text-white hover:bg-gray-700 transition-colors">
+                    <a href="/contact" className="block px-4 py-2 text-[#e8e0d5] hover:bg-[#2a2520] transition-colors">
                       Contact
                     </a>
                   </div>
@@ -275,7 +275,7 @@ export default function Contact() {
             <section>
               <MatrixText 
                 text="contact" 
-                className="text-4xl md:text-5xl font-mono font-bold text-white tracking-wider"
+                className="text-4xl md:text-5xl font-mono font-bold text-[#e8e0d5] tracking-wider"
               />
             </section>
             
@@ -289,7 +289,7 @@ export default function Contact() {
                   autoComplete="name"
                   value={formData.name}
                   onChange={handleInputChange}
-                  className="w-full px-3 py-2 bg-gray-900/50 border border-gray-600 text-white placeholder-gray-400 focus:outline-none focus:border-gray-400 transition-colors font-mono text-sm"
+                  className="w-full px-3 py-2 bg-[#151210]/50 border border-gray-600 text-[#e8e0d5] placeholder-gray-400 focus:outline-none focus:border-[#6b6055] transition-colors font-mono text-sm"
                   placeholder="name"
                   required
                   disabled={isSubmitting}
@@ -301,7 +301,7 @@ export default function Contact() {
                   autoComplete="email"
                   value={formData.email}
                   onChange={handleInputChange}
-                  className="w-full px-3 py-2 bg-gray-900/50 border border-gray-600 text-white placeholder-gray-400 focus:outline-none focus:border-gray-400 transition-colors font-mono text-sm"
+                  className="w-full px-3 py-2 bg-[#151210]/50 border border-gray-600 text-[#e8e0d5] placeholder-gray-400 focus:outline-none focus:border-[#6b6055] transition-colors font-mono text-sm"
                   placeholder="email"
                   required
                   disabled={isSubmitting}
@@ -313,7 +313,7 @@ export default function Contact() {
                   autoComplete="organization"
                   value={formData.company}
                   onChange={handleInputChange}
-                  className="w-full px-3 py-2 bg-gray-900/50 border border-gray-600 text-white placeholder-gray-400 focus:outline-none focus:border-gray-400 transition-colors font-mono text-sm"
+                  className="w-full px-3 py-2 bg-[#151210]/50 border border-gray-600 text-[#e8e0d5] placeholder-gray-400 focus:outline-none focus:border-[#6b6055] transition-colors font-mono text-sm"
                   placeholder="company (optional)"
                   disabled={isSubmitting}
                 />
@@ -323,7 +323,7 @@ export default function Contact() {
                   value={formData.message}
                   onChange={handleInputChange}
                   rows={3}
-                  className="w-full px-3 py-2 bg-gray-900/50 border border-gray-600 text-white placeholder-gray-400 focus:outline-none focus:border-gray-400 transition-colors resize-none font-mono text-sm"
+                  className="w-full px-3 py-2 bg-[#151210]/50 border border-gray-600 text-[#e8e0d5] placeholder-gray-400 focus:outline-none focus:border-[#6b6055] transition-colors resize-none font-mono text-sm"
                   placeholder="message"
                   required
                   disabled={isSubmitting}
@@ -346,14 +346,14 @@ export default function Contact() {
                 <button
                   type="submit"
                   disabled={isSubmitting}
-                  className={`group w-full bg-gray-800 border-2 px-5 py-3 relative overflow-hidden transition-all duration-200 flex items-center justify-center ${
+                  className={`group w-full bg-[#1a1815] border-2 px-5 py-3 relative overflow-hidden transition-all duration-200 flex items-center justify-center ${
                     isSubmitting 
                       ? 'border-gray-600 cursor-not-allowed opacity-70' 
                       : 'border-white/30 hover:border-white/60 hover:scale-105 hover:shadow-lg hover:shadow-white/20 cursor-pointer'
                   }`}
                 >
                   <div className="absolute inset-0 bg-white/10 opacity-0 group-hover:opacity-100 transition-opacity duration-200"></div>
-                  <span className="relative text-white group-hover:text-white text-sm tracking-wider leading-none font-mono font-bold">
+                  <span className="relative text-[#e8e0d5] group-hover:text-[#e8e0d5] text-sm tracking-wider leading-none font-mono font-bold">
                     {isSubmitting ? '>> sending...' : '>> send'}
                   </span>
                 </button>
@@ -363,17 +363,17 @@ export default function Contact() {
             {/* Navigation Buttons - Hidden on mobile */}
             <section className="hidden sm:block">
               <div className="flex flex-col sm:flex-row gap-2 font-mono">
-                <Link href="/" className="group bg-gray-900 border-2 border-gray-400 hover:border-gray-300 px-4 py-2 relative overflow-hidden transition-all duration-200 hover:scale-105 hover:shadow-lg hover:shadow-gray-400/40 cursor-pointer text-center flex-1 flex items-center justify-center">
-                  <div className="absolute inset-0 bg-gray-400/20 opacity-0 group-hover:opacity-100 transition-opacity duration-200"></div>
-                  <span className="relative text-gray-400 group-hover:text-white text-xs tracking-wider leading-none">{'>> home'}</span>
+                <Link href="/" className="group bg-[#151210] border-2 border-[#6b6055] hover:border-[#8a8070] px-4 py-2 relative overflow-hidden transition-all duration-200 hover:scale-105 hover:shadow-lg hover:shadow-[#8a8070]/40 cursor-pointer text-center flex-1 flex items-center justify-center">
+                  <div className="absolute inset-0 bg-[#a09080]/20 opacity-0 group-hover:opacity-100 transition-opacity duration-200"></div>
+                  <span className="relative text-[#a09080] group-hover:text-[#e8e0d5] text-xs tracking-wider leading-none">{'>> home'}</span>
                 </Link>
-                <Link href="/services" className="group bg-gray-900 border-2 border-gray-400 hover:border-gray-300 px-4 py-2 relative overflow-hidden transition-all duration-200 hover:scale-105 hover:shadow-lg hover:shadow-gray-400/40 cursor-pointer text-center flex-1 flex items-center justify-center">
-                  <div className="absolute inset-0 bg-gray-400/20 opacity-0 group-hover:opacity-100 transition-opacity duration-200"></div>
-                  <span className="relative text-gray-400 group-hover:text-white text-xs tracking-wider leading-none">{'>> services'}</span>
+                <Link href="/services" className="group bg-[#151210] border-2 border-[#6b6055] hover:border-[#8a8070] px-4 py-2 relative overflow-hidden transition-all duration-200 hover:scale-105 hover:shadow-lg hover:shadow-[#8a8070]/40 cursor-pointer text-center flex-1 flex items-center justify-center">
+                  <div className="absolute inset-0 bg-[#a09080]/20 opacity-0 group-hover:opacity-100 transition-opacity duration-200"></div>
+                  <span className="relative text-[#a09080] group-hover:text-[#e8e0d5] text-xs tracking-wider leading-none">{'>> services'}</span>
                 </Link>
-                <Link href="/about" className="group bg-gray-900 border-2 border-gray-400 hover:border-gray-300 px-4 py-2 relative overflow-hidden transition-all duration-200 hover:scale-105 hover:shadow-lg hover:shadow-gray-400/40 cursor-pointer text-center flex-1 flex items-center justify-center">
-                  <div className="absolute inset-0 bg-gray-400/20 opacity-0 group-hover:opacity-100 transition-opacity duration-200"></div>
-                  <span className="relative text-gray-400 group-hover:text-white text-xs tracking-wider leading-none">{'>> about'}</span>
+                <Link href="/about" className="group bg-[#151210] border-2 border-[#6b6055] hover:border-[#8a8070] px-4 py-2 relative overflow-hidden transition-all duration-200 hover:scale-105 hover:shadow-lg hover:shadow-[#8a8070]/40 cursor-pointer text-center flex-1 flex items-center justify-center">
+                  <div className="absolute inset-0 bg-[#a09080]/20 opacity-0 group-hover:opacity-100 transition-opacity duration-200"></div>
+                  <span className="relative text-[#a09080] group-hover:text-[#e8e0d5] text-xs tracking-wider leading-none">{'>> about'}</span>
                 </Link>
               </div>
             </section>

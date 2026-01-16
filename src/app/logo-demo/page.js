@@ -14,7 +14,7 @@ export default function LogoDemo() {
   const logoEffects = {
     // Basic flickering
     flicker: (
-      <span className="text-4xl font-mono font-bold text-white tracking-wider animate-pulse">
+      <span className="text-4xl font-mono font-bold text-[#e8e0d5] tracking-wider animate-pulse">
         raiki
         <style jsx>{`
           @keyframes flicker {
@@ -34,7 +34,7 @@ export default function LogoDemo() {
 
     // Glitch with color shifts
     glitch: (
-      <span className="relative text-4xl font-mono font-bold text-white tracking-wider">
+      <span className="relative text-4xl font-mono font-bold text-[#e8e0d5] tracking-wider">
         <span className="relative z-10">raiki</span>
         <span className="absolute top-0 left-0 text-red-500 animate-glitch-1">raiki</span>
         <span className="absolute top-0 left-0 text-blue-500 animate-glitch-2">raiki</span>
@@ -71,12 +71,12 @@ export default function LogoDemo() {
 
     // Random character scrambling
     scramble: (
-      <ScrambleText text="raiki" className="text-4xl font-mono font-bold text-white tracking-wider" />
+      <ScrambleText text="raiki" className="text-4xl font-mono font-bold text-[#e8e0d5] tracking-wider" />
     ),
 
     // Electrical crackling
     crackle: (
-      <span className="relative text-4xl font-mono font-bold text-white tracking-wider">
+      <span className="relative text-4xl font-mono font-bold text-[#e8e0d5] tracking-wider">
         raiki
         <span className="absolute -top-1 -right-1 text-yellow-400 text-xs animate-ping opacity-75">⚡</span>
         <span className="absolute -bottom-1 -left-1 text-blue-400 text-xs animate-pulse opacity-50">⚡</span>
@@ -109,7 +109,7 @@ export default function LogoDemo() {
 
     // Neon glow pulsing
     neon: (
-      <span className="text-4xl font-mono font-bold text-white tracking-wider animate-neon">
+      <span className="text-4xl font-mono font-bold text-[#e8e0d5] tracking-wider animate-neon">
         raiki
         <style jsx>{`
           @keyframes neon {
@@ -137,7 +137,7 @@ export default function LogoDemo() {
 
     // Static/TV interference
     static: (
-      <span className="relative text-4xl font-mono font-bold text-white tracking-wider">
+      <span className="relative text-4xl font-mono font-bold text-[#e8e0d5] tracking-wider">
         raiki
         <div className="absolute inset-0 opacity-30 animate-static bg-gradient-to-b from-transparent via-white to-transparent"></div>
         <style jsx>{`
@@ -180,7 +180,7 @@ export default function LogoDemo() {
 
     // Simple breathing
     breathe: (
-      <span className="text-4xl font-mono font-bold text-white tracking-wider animate-breathe">
+      <span className="text-4xl font-mono font-bold text-[#e8e0d5] tracking-wider animate-breathe">
         raiki
         <style jsx>{`
           @keyframes breathe {
@@ -209,7 +209,7 @@ export default function LogoDemo() {
         {/* Header */}
         <header className="absolute top-0 left-0 right-0 z-20 px-6 py-2 bg-transparent">
           <nav className="max-w-7xl mx-auto flex items-center justify-between">
-            <a href="/" className="text-gray-400 hover:text-white transition-colors duration-300 font-mono">← back</a>
+            <a href="/" className="text-[#a09080] hover:text-[#e8e0d5] transition-colors duration-300 font-mono">← back</a>
           </nav>
         </header>
 
@@ -219,7 +219,7 @@ export default function LogoDemo() {
             
             {/* Title */}
             <div className="mb-8">
-              <h1 className="text-2xl md:text-3xl font-bold text-white mb-4 font-mono">
+              <h1 className="text-2xl md:text-3xl font-bold text-[#e8e0d5] mb-4 font-mono">
                 Logo Animation Effects
               </h1>
               
@@ -232,7 +232,7 @@ export default function LogoDemo() {
                     className={`px-3 py-1 rounded font-mono text-xs transition-all duration-300 ${
                       currentEffect === effect
                         ? 'bg-white text-black'
-                        : 'bg-gray-800 text-gray-300 hover:bg-gray-700 hover:text-white'
+                        : 'bg-[#1a1815] text-[#c0b8a8] hover:bg-[#2a2520] hover:text-[#e8e0d5]'
                     }`}
                   >
                     {effect}
@@ -243,18 +243,18 @@ export default function LogoDemo() {
 
             {/* Demo Area */}
             <div className="mb-8">
-              <div className="bg-gray-900/60 backdrop-blur-sm border border-gray-700 rounded-lg p-12 mb-4 min-h-[200px] flex items-center justify-center">
+              <div className="bg-[#151210]/60 backdrop-blur-sm border border-[#3d3530] rounded-lg p-12 mb-4 min-h-[200px] flex items-center justify-center">
                 {logoEffects[currentEffect]}
               </div>
-              <p className="text-gray-400 text-sm capitalize">
+              <p className="text-[#a09080] text-sm capitalize">
                 {currentEffect} effect
               </p>
             </div>
 
             {/* Description */}
-            <div className="text-center bg-gray-900/60 backdrop-blur-sm border border-gray-700 rounded-lg p-6">
-              <h3 className="text-white font-mono text-lg mb-2">Effect Descriptions</h3>
-              <div className="text-gray-300 text-sm grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+            <div className="text-center bg-[#151210]/60 backdrop-blur-sm border border-[#3d3530] rounded-lg p-6">
+              <h3 className="text-[#e8e0d5] font-mono text-lg mb-2">Effect Descriptions</h3>
+              <div className="text-[#c0b8a8] text-sm grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
                 <div><strong>flicker:</strong> Random opacity changes</div>
                 <div><strong>glitch:</strong> RGB color separation</div>
                 <div><strong>scramble:</strong> Character randomization</div>

@@ -60,30 +60,30 @@ export default function Home() {
             <div className="relative" ref={menuRef}>
               <button
                 onClick={() => setIsMenuOpen(!isMenuOpen)}
-                className="flex flex-col justify-center items-center w-8 h-8 bg-gray-900 border border-gray-400 hover:border-gray-300 cursor-pointer group transition-all duration-200 hover:shadow-lg hover:shadow-gray-400/25"
+                className="flex flex-col justify-center items-center w-8 h-8 bg-[#151210] border border-[#6b6055] hover:border-[#8a8070] cursor-pointer group transition-all duration-200 hover:shadow-lg hover:shadow-[#8a8070]/25"
               >
                 {!isMenuOpen ? (
                   <div className="flex flex-col gap-1">
-                    <div className="w-4 h-px bg-gray-400 group-hover:bg-white transition-colors duration-200"></div>
-                    <div className="w-4 h-px bg-gray-400 group-hover:bg-white transition-colors duration-200"></div>
-                    <div className="w-4 h-px bg-gray-400 group-hover:bg-white transition-colors duration-200"></div>
+                    <div className="w-4 h-px bg-[#a09080] group-hover:bg-[#F0E8D8] transition-colors duration-200"></div>
+                    <div className="w-4 h-px bg-[#a09080] group-hover:bg-[#F0E8D8] transition-colors duration-200"></div>
+                    <div className="w-4 h-px bg-[#a09080] group-hover:bg-[#F0E8D8] transition-colors duration-200"></div>
                   </div>
                 ) : (
-                  <span className="text-white text-xs">×</span>
+                  <span className="text-[#e8e0d5] text-xs">×</span>
                 )}
               </button>
               
               {/* Dropdown Menu */}
               {isMenuOpen && (
-                <div className="absolute right-0 mt-2 w-48 bg-gray-800 rounded-lg shadow-lg border border-gray-700 z-50">
+                <div className="absolute right-0 mt-2 w-48 bg-[#1a1815] rounded-lg shadow-lg border border-[#3d3530] z-50">
                   <div className="py-2">
-                    <a href="/services" className="block px-4 py-2 text-white hover:bg-gray-700 transition-colors">
+                    <a href="/services" className="block px-4 py-2 text-[#e8e0d5] hover:bg-[#2a2520] transition-colors">
                       Services
                     </a>
-                    <a href="/about" className="block px-4 py-2 text-white hover:bg-gray-700 transition-colors">
+                    <a href="/about" className="block px-4 py-2 text-[#e8e0d5] hover:bg-[#2a2520] transition-colors">
                       About
                     </a>
-                    <a href="/contact" className="block px-4 py-2 text-white hover:bg-gray-700 transition-colors">
+                    <a href="/contact" className="block px-4 py-2 text-[#e8e0d5] hover:bg-[#2a2520] transition-colors">
                       Contact
                     </a>
                   </div>
@@ -97,7 +97,7 @@ export default function Home() {
           <div className="max-w-4xl mx-auto text-center">
             {/* Small text */}
             <div className="mb-2">
-              <p className="text-xs md:text-sm text-gray-400 font-mono">
+              <p className="text-xs md:text-sm text-[#a09080] font-mono">
                 cybersecurity • digital experiences • web3
               </p>
             </div>
@@ -106,7 +106,7 @@ export default function Home() {
             <div className="inline-block">
               <MatrixText
                 text="raiki"
-                className="text-5xl md:text-6xl font-mono font-bold text-white tracking-wider"
+                className="text-5xl md:text-6xl font-mono font-bold text-[#e8e0d5] tracking-wider"
               />
             </div>
           </div>
@@ -117,7 +117,7 @@ export default function Home() {
           <div className="max-w-4xl mx-auto text-center">
             {/* Description - 3vh above buttons */}
             <div className="mb-4 sm:mb-6">
-              <p className="text-sm sm:text-base md:text-lg text-gray-300 leading-relaxed max-w-lg mx-auto">
+              <p className="text-sm sm:text-base md:text-lg text-[#c0b8a8] leading-relaxed max-w-lg mx-auto">
                 At Raiki we specialize in securing digital infrastructure, crafting modern
                 web applications and navigating the depths of decentralized finance and web3.
               </p>
@@ -125,17 +125,17 @@ export default function Home() {
             
             {/* Buttons */}
             <div className="flex flex-col sm:flex-row gap-2 sm:gap-3 font-mono max-w-sm mx-auto sm:max-w-none sm:justify-center">
-              <a href="/services" className="group bg-gray-900 border-2 border-gray-400 hover:border-gray-300 px-5 py-3 relative overflow-hidden transition-all duration-200 hover:scale-105 hover:shadow-lg hover:shadow-gray-400/40 cursor-pointer text-center sm:w-36 flex items-center justify-center">
-                <div className="absolute inset-0 bg-gray-400/20 opacity-0 group-hover:opacity-100 transition-opacity duration-200"></div>
-                <span className="relative text-gray-400 group-hover:text-white text-sm tracking-wider leading-none whitespace-nowrap">&gt;&gt; services</span>
+              <a href="/services" className="group bg-[#151210] border-2 border-[#6b6055] hover:border-[#8a8070] px-5 py-3 relative overflow-hidden transition-all duration-200 hover:scale-105 hover:shadow-lg hover:shadow-[#8a8070]/40 cursor-pointer text-center sm:w-36 flex items-center justify-center">
+                <div className="absolute inset-0 bg-[#a09080]/20 opacity-0 group-hover:opacity-100 transition-opacity duration-200"></div>
+                <span className="relative text-[#a09080] group-hover:text-[#e8e0d5] text-sm tracking-wider leading-none whitespace-nowrap">&gt;&gt; services</span>
               </a>
-              <a href="/about" className="group bg-gray-900 border-2 border-gray-400 hover:border-gray-300 px-5 py-3 relative overflow-hidden transition-all duration-200 hover:scale-105 hover:shadow-lg hover:shadow-gray-400/40 cursor-pointer text-center sm:w-36 flex items-center justify-center">
-                <div className="absolute inset-0 bg-gray-400/20 opacity-0 group-hover:opacity-100 transition-opacity duration-200"></div>
-                <span className="relative text-gray-400 group-hover:text-white text-sm tracking-wider leading-none whitespace-nowrap">&gt;&gt; about</span>
+              <a href="/about" className="group bg-[#151210] border-2 border-[#6b6055] hover:border-[#8a8070] px-5 py-3 relative overflow-hidden transition-all duration-200 hover:scale-105 hover:shadow-lg hover:shadow-[#8a8070]/40 cursor-pointer text-center sm:w-36 flex items-center justify-center">
+                <div className="absolute inset-0 bg-[#a09080]/20 opacity-0 group-hover:opacity-100 transition-opacity duration-200"></div>
+                <span className="relative text-[#a09080] group-hover:text-[#e8e0d5] text-sm tracking-wider leading-none whitespace-nowrap">&gt;&gt; about</span>
               </a>
-              <a href="/contact" className="group bg-gray-900 border-2 border-gray-400 hover:border-gray-300 px-5 py-3 relative overflow-hidden transition-all duration-200 hover:scale-105 hover:shadow-lg hover:shadow-gray-400/40 cursor-pointer text-center sm:w-36 flex items-center justify-center">
-                <div className="absolute inset-0 bg-gray-400/20 opacity-0 group-hover:opacity-100 transition-opacity duration-200"></div>
-                <span className="relative text-gray-400 group-hover:text-white text-sm tracking-wider leading-none whitespace-nowrap">&gt;&gt; contact</span>
+              <a href="/contact" className="group bg-[#151210] border-2 border-[#6b6055] hover:border-[#8a8070] px-5 py-3 relative overflow-hidden transition-all duration-200 hover:scale-105 hover:shadow-lg hover:shadow-[#8a8070]/40 cursor-pointer text-center sm:w-36 flex items-center justify-center">
+                <div className="absolute inset-0 bg-[#a09080]/20 opacity-0 group-hover:opacity-100 transition-opacity duration-200"></div>
+                <span className="relative text-[#a09080] group-hover:text-[#e8e0d5] text-sm tracking-wider leading-none whitespace-nowrap">&gt;&gt; contact</span>
               </a>
             </div>
           </div>

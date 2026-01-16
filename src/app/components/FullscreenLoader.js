@@ -66,7 +66,7 @@ export default function FullscreenLoader() {
         <div className="absolute inset-0 opacity-40">
           {binaryChars.map((item, i) => (
             <div key={i} 
-                 className="absolute top-0 text-gray-300 font-mono text-lg animate-pulse"
+                 className="absolute top-0 text-[#c0b8a8] font-mono text-lg animate-pulse"
                  style={{ 
                    left: `${item.left}%`,
                    animationDelay: `${item.delay}s`
@@ -76,7 +76,7 @@ export default function FullscreenLoader() {
           ))}
         </div>
         <div className="relative z-10 bg-black/60 px-6 py-3 border border-gray-500">
-          <div className="text-white font-mono text-lg tracking-wider">
+          <div className="text-[#e8e0d5] font-mono text-lg tracking-wider">
             <span className="animate-pulse">DECRYPTING DATA...</span>
           </div>
         </div>

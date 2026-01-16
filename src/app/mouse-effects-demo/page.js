@@ -49,15 +49,15 @@ export default function MouseEffectsDemo() {
       {/* Header */}
       <header className="absolute top-0 left-0 right-0 z-20 px-6 py-4 bg-black/20 backdrop-blur-sm">
         <nav className="max-w-7xl mx-auto flex items-center justify-between">
-          <a href="/" className="text-gray-400 hover:text-white transition-colors duration-300 font-mono">← back</a>
-          <h1 className="text-white font-mono text-lg">Mouse Effects Demo</h1>
+          <a href="/" className="text-[#a09080] hover:text-[#e8e0d5] transition-colors duration-300 font-mono">← back</a>
+          <h1 className="text-[#e8e0d5] font-mono text-lg">Mouse Effects Demo</h1>
         </nav>
       </header>
 
       {/* Effect Selector */}
       <div className="absolute bottom-0 left-0 right-0 z-20 p-6 bg-black/60 backdrop-blur-sm">
         <div className="max-w-6xl mx-auto">
-          <h2 className="text-white font-mono text-lg mb-4 text-center">Choose Your Effect</h2>
+          <h2 className="text-[#e8e0d5] font-mono text-lg mb-4 text-center">Choose Your Effect</h2>
           
           <div className="grid grid-cols-2 md:grid-cols-4 gap-2 mb-4">
             {Object.keys(effects).map((effect) => (
@@ -67,7 +67,7 @@ export default function MouseEffectsDemo() {
                 className={`px-3 py-2 rounded font-mono text-xs transition-all duration-300 ${
                   currentEffect === effect
                     ? 'bg-white text-black'
-                    : 'bg-gray-800 text-gray-300 hover:bg-gray-700 hover:text-white border border-gray-600'
+                    : 'bg-[#1a1815] text-[#c0b8a8] hover:bg-[#2a2520] hover:text-[#e8e0d5] border border-gray-600'
                 }`}
               >
                 {effect}
@@ -76,7 +76,7 @@ export default function MouseEffectsDemo() {
           </div>
           
           <div className="text-center">
-            <p className="text-gray-400 text-sm capitalize font-mono">
+            <p className="text-[#a09080] text-sm capitalize font-mono">
               Current: {currentEffect} effect
             </p>
           </div>
@@ -84,9 +84,9 @@ export default function MouseEffectsDemo() {
       </div>
 
       {/* Instructions */}
-      <div className="absolute top-20 left-6 z-20 bg-black/60 backdrop-blur-sm p-4 rounded border border-gray-700 max-w-sm">
-        <h3 className="text-white font-mono text-sm mb-2">Instructions</h3>
-        <p className="text-gray-300 text-xs font-mono leading-relaxed">
+      <div className="absolute top-20 left-6 z-20 bg-black/60 backdrop-blur-sm p-4 rounded border border-[#3d3530] max-w-sm">
+        <h3 className="text-[#e8e0d5] font-mono text-sm mb-2">Instructions</h3>
+        <p className="text-[#c0b8a8] text-xs font-mono leading-relaxed">
           Move your mouse around to see the effect. Each has different behaviors and aesthetics.
         </p>
       </div>
@@ -99,7 +99,7 @@ function NeuralNetworkEffect() {
   return (
     <div className="absolute inset-0 bg-gradient-to-br from-[#100c08] via-[#1a1510] to-[#251c15]">
       <div className="absolute inset-0 flex items-center justify-center">
-        <h1 className="text-4xl font-mono font-bold text-white/20">Neural Network</h1>
+        <h1 className="text-4xl font-mono font-bold text-[#e8e0d5]/20">Neural Network</h1>
       </div>
       {/* Import the existing MouseTrail component here in real implementation */}
     </div>
@@ -193,7 +193,7 @@ function ModernTrailEffect() {
         }}
       />
       <div className="absolute inset-0 flex items-center justify-center">
-        <h1 className="text-4xl font-mono font-bold text-white/20">Modern Trail</h1>
+        <h1 className="text-4xl font-mono font-bold text-[#e8e0d5]/20">Modern Trail</h1>
       </div>
     </div>
   );
@@ -298,7 +298,7 @@ function CleanGeometricEffect() {
         }}
       />
       <div className="absolute inset-0 flex items-center justify-center">
-        <h1 className="text-4xl font-mono font-bold text-gray-600/20">Clean Geometric</h1>
+        <h1 className="text-4xl font-mono font-bold text-[#6b6055]/20">Clean Geometric</h1>
       </div>
     </div>
   );
@@ -468,7 +468,7 @@ function CodeParticleEffect() {
         }}
       />
       <div className="absolute inset-0 flex items-center justify-center">
-        <h1 className="text-4xl font-mono font-bold text-white/20">Code Particles</h1>
+        <h1 className="text-4xl font-mono font-bold text-[#e8e0d5]/20">Code Particles</h1>
       </div>
     </div>
   );

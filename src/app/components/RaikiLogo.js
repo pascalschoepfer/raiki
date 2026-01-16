@@ -128,14 +128,14 @@ export default function RaikiLogo({ className = "", showText = true }) {
         {/* Outer hexagonal frame - main brand shape */}
         <path
           d="M12 2 L22 8 L22 16 L12 22 L2 16 L2 8 Z"
-          stroke="#FFFFFF"
+          stroke="#F0E8D8"
           strokeWidth="1.5"
           fill="none"
         />
         {/* Inner hexagonal frame - adds depth and dimension */}
         <path
           d="M12 6 L18 9.5 L18 14.5 L12 18 L6 14.5 L6 9.5 Z"
-          stroke="#FFFFFF"
+          stroke="#F0E8D8"
           strokeWidth="1"
           fill="none"
           opacity="0.6"
@@ -145,7 +145,7 @@ export default function RaikiLogo({ className = "", showText = true }) {
           cx="12"
           cy="12"
           r="2"
-          fill="#FFFFFF"
+          fill="#F0E8D8"
         />
         {/* Top connection line - extends upward from center */}
         <line
@@ -153,7 +153,7 @@ export default function RaikiLogo({ className = "", showText = true }) {
           y1="2"
           x2="12"
           y2="6"
-          stroke="#FFFFFF"
+          stroke="#F0E8D8"
           strokeWidth="1"
         />
         {/* Bottom connection line - extends downward from center */}
@@ -162,7 +162,7 @@ export default function RaikiLogo({ className = "", showText = true }) {
           y1="18"
           x2="12"
           y2="22"
-          stroke="#FFFFFF"
+          stroke="#F0E8D8"
           strokeWidth="1"
         />
       </svg>
@@ -170,7 +170,7 @@ export default function RaikiLogo({ className = "", showText = true }) {
       {showText && (
         <ScrambleGlitchText 
           text="raiki" 
-          className="text-xl font-mono font-bold text-white tracking-wider" 
+          className="text-xl font-mono font-bold text-[#e8e0d5] tracking-wider" 
         />
       )}
     </div>
