@@ -205,44 +205,38 @@ export default function NeuralNetwork() {
     };
 
     /**
-     * Draw Neural Network Connections
+     * Draw Trail Connections
      *
-     * Creates persistent connections between all particles until they fade.
-     * All particles stay connected regardless of distance.
+     * Connects particles in sequence (like a trail following the mouse).
+     * Each particle connects to the next one in the array, creating a
+     * continuous line without gaps even when moving fast.
      *
      * @param {Object} color - RGB color object {r, g, b}
      */
     const drawConnections = (color) => {
-      for (let i = 0; i < particles.length; i++) {
-        for (let j = i + 1; j < particles.length; j++) {
-          const p1 = particles[i];
-          const p2 = particles[j];
+      if (particles.length < 2) return;
 
-          if (p1.life <= 0 || p2.life <= 0) continue;
+      // Draw trail: connect each particle to the next one in sequence
+      for (let i = 0; i < particles.length - 1; i++) {
+        const p1 = particles[i];
+        const p2 = particles[i + 1];
 
-          const dx = p1.x - p2.x;
-          const dy = p1.y - p2.y;
-          const distance = Math.sqrt(dx * dx + dy * dy);
+        if (p1.life <= 0 || p2.life <= 0) continue;
 
-          // Always connect, fade based on life only (not distance)
-          const baseAlpha = p1.life * p2.life * 0.6;
-          // Slight distance fade for very far particles
-          const distanceFade = distance > 200 ? Math.max(0.3, 1 - (distance - 200) / 300) : 1;
-          const finalAlpha = baseAlpha * distanceFade;
+        // Alpha based on life of both particles
+        const alpha = Math.min(p1.life, p2.life) * 0.8;
 
-          if (finalAlpha > 0.05) {
-            ctx.save();
-            ctx.globalAlpha = finalAlpha;
-            ctx.strokeStyle = `rgba(${color.r}, ${color.g}, ${color.b}, 1.0)`;
-            ctx.lineWidth = 1;
+        if (alpha > 0.05) {
+          ctx.save();
+          ctx.globalAlpha = alpha;
+          ctx.strokeStyle = `rgba(${color.r}, ${color.g}, ${color.b}, 1.0)`;
+          ctx.lineWidth = 1.5;
 
-            // Draw smooth connection line
-            ctx.beginPath();
-            ctx.moveTo(p1.x, p1.y);
-            ctx.lineTo(p2.x, p2.y);
-            ctx.stroke();
-            ctx.restore();
-          }
+          ctx.beginPath();
+          ctx.moveTo(p1.x, p1.y);
+          ctx.lineTo(p2.x, p2.y);
+          ctx.stroke();
+          ctx.restore();
         }
       }
     };
