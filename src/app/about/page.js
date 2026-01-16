@@ -24,7 +24,7 @@ export default function About() {
   }, []);
 
   return (
-    <div className="h-screen overflow-hidden bg-gradient-to-br from-[#0a0a0c] via-[#121015] to-[#1a1720]">
+    <div className="h-screen overflow-hidden bg-gradient-to-br from-[#0c0a08] via-[#151210] to-[#1f1a15]">
         <div className="relative overflow-hidden h-full">
         <NeuralNetwork />
         
