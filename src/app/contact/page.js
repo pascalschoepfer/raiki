@@ -7,7 +7,6 @@ import NeuralNetwork from '../components/MouseTrail';
 import MatrixText from '../components/MatrixText';
 
 export default function Contact() {
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -15,11 +14,10 @@ export default function Contact() {
     message: ''
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [submitStatus, setSubmitStatus] = useState(null); // 'success', 'error', or null
+  const [submitStatus, setSubmitStatus] = useState(null);
   const [statusMessage, setStatusMessage] = useState('');
   const [turnstileToken, setTurnstileToken] = useState(null);
   const [isTurnstileLoaded, setIsTurnstileLoaded] = useState(false);
-  const menuRef = useRef(null);
   const turnstileRef = useRef(null);
 
   // Load Turnstile script
@@ -67,20 +65,6 @@ export default function Contact() {
       });
     }
   }, [isTurnstileLoaded]);
-
-  // Close menu when clicking outside
-  useEffect(() => {
-    const handleClickOutside = (event) => {
-      if (menuRef.current && !menuRef.current.contains(event.target)) {
-        setIsMenuOpen(false);
-      }
-    };
-
-    document.addEventListener('mousedown', handleClickOutside);
-    return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
-    };
-  }, []);
 
   const handleInputChange = (e) => {
     setFormData({
@@ -231,38 +215,18 @@ export default function Contact() {
         <div className="relative overflow-hidden h-full">
         <NeuralNetwork />
         
-        {/* Header */}
-        <header className="absolute top-0 left-0 right-0 z-20 px-6 py-2 bg-transparent">
+        {/* Header with Navigation */}
+        <header className="absolute top-0 left-0 right-0 z-20 px-6 py-3 bg-transparent">
           <nav className="max-w-7xl mx-auto flex items-center justify-between">
             <Link href="/"><RaikiLogo showText={false} /></Link>
-            
-            {/* Burger Menu */}
-            <div className="relative" ref={menuRef}>
-              <button
-                onClick={() => setIsMenuOpen(!isMenuOpen)}
-                className="flex flex-col justify-center items-center w-8 h-8 bg-transparent border-0 cursor-pointer"
-              >
-                <span className={`block w-6 h-0.5 bg-[#F0E8D8] transition-all duration-300 ${isMenuOpen ? 'rotate-45 translate-y-1.5' : ''}`}></span>
-                <span className={`block w-6 h-0.5 bg-[#F0E8D8] mt-1 transition-all duration-300 ${isMenuOpen ? 'opacity-0' : ''}`}></span>
-                <span className={`block w-6 h-0.5 bg-[#F0E8D8] mt-1 transition-all duration-300 ${isMenuOpen ? '-rotate-45 -translate-y-1.5' : ''}`}></span>
-              </button>
-              
-              {/* Dropdown Menu */}
-              {isMenuOpen && (
-                <div className="absolute right-0 mt-2 w-48 bg-[#1a1815] rounded-lg shadow-lg border border-[#3d3530] z-50">
-                  <div className="py-2">
-                    <a href="/services" className="block px-4 py-2 text-[#e8e0d5] hover:bg-[#2a2520] transition-colors">
-                      Services
-                    </a>
-                    <a href="/about" className="block px-4 py-2 text-[#e8e0d5] hover:bg-[#2a2520] transition-colors">
-                      About
-                    </a>
-                    <a href="/contact" className="block px-4 py-2 text-[#e8e0d5] hover:bg-[#2a2520] transition-colors">
-                      Contact
-                    </a>
-                  </div>
-                </div>
-              )}
+
+            {/* Navigation Buttons */}
+            <div className="flex gap-2 font-mono">
+              <a href="/services" className="text-[#a09080] hover:text-[#e8e0d5] text-xs sm:text-sm tracking-wider transition-colors">services</a>
+              <span className="text-[#4a4035]">|</span>
+              <a href="/about" className="text-[#a09080] hover:text-[#e8e0d5] text-xs sm:text-sm tracking-wider transition-colors">about</a>
+              <span className="text-[#4a4035]">|</span>
+              <a href="/" className="text-[#a09080] hover:text-[#e8e0d5] text-xs sm:text-sm tracking-wider transition-colors">home</a>
             </div>
           </nav>
         </header>
@@ -360,25 +324,7 @@ export default function Contact() {
               </form>
             </section>
             
-            {/* Navigation Buttons - Hidden on mobile */}
-            <section className="hidden sm:block">
-              <div className="flex flex-col sm:flex-row gap-2 font-mono">
-                <Link href="/" className="group bg-[#151210] border-2 border-[#6b6055] hover:border-[#8a8070] px-4 py-2 relative overflow-hidden transition-all duration-200 hover:scale-105 hover:shadow-lg hover:shadow-[#8a8070]/40 cursor-pointer text-center flex-1 flex items-center justify-center">
-                  <div className="absolute inset-0 bg-[#a09080]/20 opacity-0 group-hover:opacity-100 transition-opacity duration-200"></div>
-                  <span className="relative text-[#a09080] group-hover:text-[#e8e0d5] text-xs tracking-wider leading-none">{'>> home'}</span>
-                </Link>
-                <Link href="/services" className="group bg-[#151210] border-2 border-[#6b6055] hover:border-[#8a8070] px-4 py-2 relative overflow-hidden transition-all duration-200 hover:scale-105 hover:shadow-lg hover:shadow-[#8a8070]/40 cursor-pointer text-center flex-1 flex items-center justify-center">
-                  <div className="absolute inset-0 bg-[#a09080]/20 opacity-0 group-hover:opacity-100 transition-opacity duration-200"></div>
-                  <span className="relative text-[#a09080] group-hover:text-[#e8e0d5] text-xs tracking-wider leading-none">{'>> services'}</span>
-                </Link>
-                <Link href="/about" className="group bg-[#151210] border-2 border-[#6b6055] hover:border-[#8a8070] px-4 py-2 relative overflow-hidden transition-all duration-200 hover:scale-105 hover:shadow-lg hover:shadow-[#8a8070]/40 cursor-pointer text-center flex-1 flex items-center justify-center">
-                  <div className="absolute inset-0 bg-[#a09080]/20 opacity-0 group-hover:opacity-100 transition-opacity duration-200"></div>
-                  <span className="relative text-[#a09080] group-hover:text-[#e8e0d5] text-xs tracking-wider leading-none">{'>> about'}</span>
-                </Link>
-              </div>
-            </section>
-            
-          </div>
+            </div>
         </div>
 
         <style jsx global>{`

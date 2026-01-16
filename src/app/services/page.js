@@ -1,72 +1,28 @@
 'use client';
 
-import { useState, useEffect, useRef } from 'react';
 import RaikiLogo from '../components/RaikiLogo';
 import NeuralNetwork from '../components/MouseTrail';
 import MatrixText from '../components/MatrixText';
 
-/**
- * Services Page Component
- * 
- * Displays Raiki's cybersecurity, web development, and web3 services
- * with the same neural network background and cyberpunk aesthetic.
- */
 export default function Services() {
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const menuRef = useRef(null);
-
-  // Close menu when clicking outside
-  useEffect(() => {
-    const handleClickOutside = (event) => {
-      if (menuRef.current && !menuRef.current.contains(event.target)) {
-        setIsMenuOpen(false);
-      }
-    };
-
-    document.addEventListener('mousedown', handleClickOutside);
-    return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
-    };
-  }, []);
-
   return (
     <div className="h-screen overflow-hidden bg-gradient-to-br from-[#100c08] via-[#1a1510] to-[#251c15]">
         {/* Services Section with Neural Network */}
         <div className="relative overflow-hidden h-full">
         <NeuralNetwork />
-        
-        {/* Header - positioned over neural network */}
-        <header className="absolute top-0 left-0 right-0 z-20 px-6 py-2 bg-transparent">
+
+        {/* Header with Navigation */}
+        <header className="absolute top-0 left-0 right-0 z-20 px-6 py-3 bg-transparent">
           <nav className="max-w-7xl mx-auto flex items-center justify-between">
             <a href="/"><RaikiLogo /></a>
-            
-            {/* Burger Menu */}
-            <div className="relative" ref={menuRef}>
-              <button
-                onClick={() => setIsMenuOpen(!isMenuOpen)}
-                className="flex flex-col justify-center items-center w-8 h-8 bg-transparent border-0 cursor-pointer"
-              >
-                <span className={`block w-6 h-0.5 bg-[#F0E8D8] transition-all duration-300 ${isMenuOpen ? 'rotate-45 translate-y-1.5' : ''}`}></span>
-                <span className={`block w-6 h-0.5 bg-[#F0E8D8] mt-1 transition-all duration-300 ${isMenuOpen ? 'opacity-0' : ''}`}></span>
-                <span className={`block w-6 h-0.5 bg-[#F0E8D8] mt-1 transition-all duration-300 ${isMenuOpen ? '-rotate-45 -translate-y-1.5' : ''}`}></span>
-              </button>
-              
-              {/* Dropdown Menu */}
-              {isMenuOpen && (
-                <div className="absolute right-0 mt-2 w-48 bg-[#1a1815] rounded-lg shadow-lg border border-[#3d3530] z-50">
-                  <div className="py-2">
-                    <a href="/services" className="block px-4 py-2 text-[#e8e0d5] hover:bg-[#2a2520] transition-colors">
-                      Services
-                    </a>
-                    <a href="/about" className="block px-4 py-2 text-[#e8e0d5] hover:bg-[#2a2520] transition-colors">
-                      About
-                    </a>
-                    <a href="/contact" className="block px-4 py-2 text-[#e8e0d5] hover:bg-[#2a2520] transition-colors">
-                      Contact
-                    </a>
-                  </div>
-                </div>
-              )}
+
+            {/* Navigation Buttons */}
+            <div className="flex gap-2 font-mono">
+              <a href="/" className="text-[#a09080] hover:text-[#e8e0d5] text-xs sm:text-sm tracking-wider transition-colors">home</a>
+              <span className="text-[#4a4035]">|</span>
+              <a href="/about" className="text-[#a09080] hover:text-[#e8e0d5] text-xs sm:text-sm tracking-wider transition-colors">about</a>
+              <span className="text-[#4a4035]">|</span>
+              <a href="/contact" className="text-[#a09080] hover:text-[#e8e0d5] text-xs sm:text-sm tracking-wider transition-colors">contact</a>
             </div>
           </nav>
         </header>
@@ -121,26 +77,6 @@ export default function Services() {
           </div>
         </div>
 
-        {/* Bottom Navigation - Hidden on mobile, shown on desktop */}
-        <section className="absolute bottom-0 left-0 right-0 z-15 pb-16 px-6 bg-gradient-to-t from-black/60 to-transparent pt-6 hidden sm:block">
-          <div className="max-w-4xl mx-auto text-center">
-            
-            <div className="flex flex-row gap-3 font-mono justify-center">
-              <a href="/" className="group bg-[#151210] border-2 border-[#6b6055] hover:border-[#8a8070] px-5 py-3 relative overflow-hidden transition-all duration-200 hover:scale-105 hover:shadow-lg hover:shadow-[#8a8070]/40 cursor-pointer text-center w-36 flex items-center justify-center">
-                <div className="absolute inset-0 bg-[#a09080]/20 opacity-0 group-hover:opacity-100 transition-opacity duration-200"></div>
-                <span className="relative text-[#a09080] group-hover:text-[#e8e0d5] text-sm tracking-wider leading-none whitespace-nowrap">&gt;&gt; home</span>
-              </a>
-              <a href="/about" className="group bg-[#151210] border-2 border-[#6b6055] hover:border-[#8a8070] px-5 py-3 relative overflow-hidden transition-all duration-200 hover:scale-105 hover:shadow-lg hover:shadow-[#8a8070]/40 cursor-pointer text-center w-36 flex items-center justify-center">
-                <div className="absolute inset-0 bg-[#a09080]/20 opacity-0 group-hover:opacity-100 transition-opacity duration-200"></div>
-                <span className="relative text-[#a09080] group-hover:text-[#e8e0d5] text-sm tracking-wider leading-none whitespace-nowrap">&gt;&gt; about</span>
-              </a>
-              <a href="/contact" className="group bg-[#151210] border-2 border-[#6b6055] hover:border-[#8a8070] px-5 py-3 relative overflow-hidden transition-all duration-200 hover:scale-105 hover:shadow-lg hover:shadow-[#8a8070]/40 cursor-pointer text-center w-36 flex items-center justify-center">
-                <div className="absolute inset-0 bg-[#a09080]/20 opacity-0 group-hover:opacity-100 transition-opacity duration-200"></div>
-                <span className="relative text-[#a09080] group-hover:text-[#e8e0d5] text-sm tracking-wider leading-none whitespace-nowrap">&gt;&gt; contact</span>
-              </a>
-            </div>
-          </div>
-        </section>
         </div>
     </div>
   );
