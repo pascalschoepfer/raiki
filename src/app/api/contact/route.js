@@ -139,7 +139,7 @@ export async function POST(request) {
 
     // Send email using Resend
     const emailData = await resend.emails.send({
-      from: 'Raiki Kontaktformular <noreply@raiki.xyz>',
+      from: 'Raiki Kontaktformular <info@raiki.xyz>',
       to: ['info@raiki.xyz'],
       replyTo: sanitizedEmail,
       subject: `Neue Anfrage von ${sanitizedName}`,
