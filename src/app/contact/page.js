@@ -227,7 +227,7 @@ export default function Contact() {
   };
 
   return (
-    <div className="h-screen overflow-hidden bg-gradient-to-br from-[#0c0a08] via-[#151210] to-[#1f1a15]">
+    <div className="h-screen overflow-hidden bg-gradient-to-br from-[#100c08] via-[#1a1510] to-[#251c15]">
         <div className="relative overflow-hidden h-full">
         <NeuralNetwork />
         
