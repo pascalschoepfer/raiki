@@ -11,10 +11,19 @@ export default function Home() {
         <div className="relative overflow-hidden h-full">
         <NeuralNetwork />
 
-        {/* Header - Logo only */}
+        {/* Header with Navigation */}
         <header className="absolute top-0 left-0 right-0 z-20 px-6 py-3 bg-transparent">
-          <nav className="max-w-7xl mx-auto">
+          <nav className="max-w-7xl mx-auto flex items-center justify-between">
             <RaikiLogo showText={false} />
+
+            {/* Navigation Buttons */}
+            <div className="flex gap-2 font-mono">
+              <a href="/services" className="text-[#a09080] hover:text-[#e8e0d5] text-xs sm:text-sm tracking-wider transition-colors">services</a>
+              <span className="text-[#4a4035]">|</span>
+              <a href="/about" className="text-[#a09080] hover:text-[#e8e0d5] text-xs sm:text-sm tracking-wider transition-colors">about</a>
+              <span className="text-[#4a4035]">|</span>
+              <a href="/contact" className="text-[#a09080] hover:text-[#e8e0d5] text-xs sm:text-sm tracking-wider transition-colors">contact</a>
+            </div>
           </nav>
         </header>
         {/* Top Section Container - 20vh from top on desktop, 15vh on mobile */}
@@ -36,7 +45,7 @@ export default function Home() {
             </div>
 
             {/* Navigation Links - Modern Style */}
-            <div className="mt-8 flex justify-center gap-8 sm:gap-12 font-mono">
+            <div className="mt-12 sm:mt-16 flex justify-center gap-10 sm:gap-16 font-mono">
               <a href="/services" className="group relative text-[#8a8070] hover:text-[#e8e0d5] text-sm sm:text-base tracking-widest transition-colors duration-300">
                 services
                 <span className="absolute -bottom-1 left-0 w-0 h-px bg-[#e8e0d5] group-hover:w-full transition-all duration-300"></span>
@@ -52,9 +61,10 @@ export default function Home() {
             </div>
 
             {/* Description */}
-            <div className="mt-8">
-              <p className="text-sm sm:text-base text-[#a09080] leading-relaxed max-w-md mx-auto">
-                securing digital infrastructure, crafting modern web experiences, and navigating decentralized finance
+            <div className="mt-12 sm:mt-16">
+              <p className="text-sm sm:text-base md:text-lg text-[#c0b8a8] leading-relaxed max-w-lg mx-auto">
+                At Raiki we specialize in securing digital infrastructure, crafting modern
+                web applications and navigating the depths of decentralized finance and web3.
               </p>
             </div>
           </div>
