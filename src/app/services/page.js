@@ -14,7 +14,7 @@ export default function Services() {
         {/* Header with Navigation */}
         <header className="absolute top-0 left-0 right-0 z-20 px-6 py-3 bg-transparent">
           <nav className="max-w-7xl mx-auto flex items-center justify-between">
-            <a href="/"><RaikiLogo /></a>
+            <a href="/"><RaikiLogo showText={false} /></a>
 
             {/* Navigation Buttons */}
             <div className="flex gap-2 font-mono">
