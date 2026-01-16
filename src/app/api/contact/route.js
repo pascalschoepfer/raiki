@@ -139,60 +139,75 @@ export async function POST(request) {
 
     // Send email using Resend
     const emailData = await resend.emails.send({
-      from: 'Contact Form <contactform@raiki.xyz>',
+      from: 'Raiki Kontaktformular <noreply@raiki.xyz>',
       to: ['contactform@raiki.xyz'],
-      subject: `New Contact Form Submission from ${sanitizedName}`,
+      replyTo: sanitizedEmail,
+      subject: `Neue Anfrage von ${sanitizedName}`,
       html: `<!DOCTYPE html>
 <html>
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Contact Form Submission</title>
 </head>
-<body style="font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, sans-serif; line-height: 1.6; color: #333; max-width: 600px; margin: 0 auto; padding: 20px;">
-  <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); padding: 30px; border-radius: 10px; color: white; text-align: center; margin-bottom: 30px;">
-    <h1 style="margin: 0; font-size: 24px; font-weight: bold;">New Contact Form Submission</h1>
-  </div>
-  
-  <div style="background: #f8f9fa; padding: 25px; border-radius: 8px; margin-bottom: 20px;">
-    <h2 style="color: #495057; margin-top: 0; font-size: 18px; border-bottom: 2px solid #dee2e6; padding-bottom: 10px;">Contact Details</h2>
-    
-    <div style="margin-bottom: 15px;">
-      <strong style="color: #6c757d; display: inline-block; width: 70px;">Name:</strong>
-      <span style="background: white; padding: 8px 12px; border-radius: 4px; display: inline-block; border: 1px solid #dee2e6;">${sanitizedName}</span>
-    </div>
-    
-    <div style="margin-bottom: 15px;">
-      <strong style="color: #6c757d; display: inline-block; width: 70px;">Email:</strong>
-      <span style="background: white; padding: 8px 12px; border-radius: 4px; display: inline-block; border: 1px solid #dee2e6;">
-        <a href="mailto:${sanitizedEmail}" style="color: #007bff; text-decoration: none;">${sanitizedEmail}</a>
-      </span>
-    </div>
-  </div>
-  
-  <div style="background: #f8f9fa; padding: 25px; border-radius: 8px; margin-bottom: 20px;">
-    <h2 style="color: #495057; margin-top: 0; font-size: 18px; border-bottom: 2px solid #dee2e6; padding-bottom: 10px;">Message</h2>
-    <div style="background: white; padding: 20px; border-radius: 4px; border: 1px solid #dee2e6; white-space: pre-wrap; font-family: inherit;">${sanitizedMessage}</div>
-  </div>
-  
-  <div style="text-align: center; padding: 20px; background: #e9ecef; border-radius: 8px; margin-top: 30px;">
-    <p style="margin: 0; color: #6c757d; font-size: 14px;">
-      Submitted from: <strong>${ip}</strong><br>
-      Time: <strong>${new Date().toLocaleString()}</strong>
-    </p>
-  </div>
+<body style="margin: 0; padding: 0; background-color: #0a0a0a; font-family: 'Courier New', Consolas, monospace;">
+  <table width="100%" cellpadding="0" cellspacing="0" style="background-color: #0a0a0a; padding: 40px 20px;">
+    <tr>
+      <td align="center">
+        <table width="600" cellpadding="0" cellspacing="0" style="max-width: 600px; background-color: #111; border-radius: 8px; overflow: hidden; border: 1px solid #333;">
+          <!-- Header -->
+          <tr>
+            <td style="background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%); padding: 40px 30px; text-align: center; border-bottom: 1px solid #333;">
+              <h1 style="margin: 0; color: #fff; font-size: 28px; font-weight: 400; letter-spacing: 8px; font-family: 'Courier New', monospace;">RAIKI</h1>
+              <p style="margin: 10px 0 0; color: #666; font-size: 12px; letter-spacing: 3px; text-transform: uppercase;">Kontaktformular</p>
+            </td>
+          </tr>
+          <!-- Title -->
+          <tr>
+            <td style="padding: 30px 30px 20px; text-align: center;">
+              <h2 style="margin: 0; color: #0f0; font-size: 14px; font-weight: 400; letter-spacing: 2px; font-family: 'Courier New', monospace;">&gt;&gt; NEUE ANFRAGE</h2>
+            </td>
+          </tr>
+          <!-- Contact Details -->
+          <tr>
+            <td style="padding: 10px 30px 25px;">
+              <table width="100%" cellpadding="0" cellspacing="0" style="background-color: #1a1a1a; border: 1px solid #333;">
+                <tr>
+                  <td style="padding: 15px 20px; border-bottom: 1px solid #333;">
+                    <span style="color: #666; font-size: 11px; text-transform: uppercase; letter-spacing: 2px;">Name</span><br>
+                    <span style="color: #fff; font-size: 16px;">${sanitizedName}</span>
+                  </td>
+                </tr>
+                <tr>
+                  <td style="padding: 15px 20px;">
+                    <span style="color: #666; font-size: 11px; text-transform: uppercase; letter-spacing: 2px;">E-Mail</span><br>
+                    <a href="mailto:${sanitizedEmail}" style="color: #0f0; font-size: 16px; text-decoration: none;">${sanitizedEmail}</a>
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+          <!-- Message -->
+          <tr>
+            <td style="padding: 0 30px 30px;">
+              <p style="color: #666; font-size: 11px; text-transform: uppercase; letter-spacing: 2px; margin: 0 0 10px;">&gt; Nachricht</p>
+              <div style="background-color: #0a0a0a; border-left: 2px solid #0f0; padding: 20px; font-family: 'Courier New', monospace;">
+                <p style="margin: 0; color: #ccc; font-size: 14px; line-height: 1.6; white-space: pre-wrap;">${sanitizedMessage}</p>
+              </div>
+            </td>
+          </tr>
+          <!-- Footer -->
+          <tr>
+            <td style="background-color: #0a0a0a; padding: 20px 30px; text-align: center; border-top: 1px solid #333;">
+              <p style="margin: 0; color: #444; font-size: 11px; font-family: 'Courier New', monospace;">// raiki.xyz</p>
+            </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+  </table>
 </body>
 </html>`,
-      text: `New Contact Form Submission
-
-Name: ${sanitizedName}
-Email: ${sanitizedEmail}
-
-Message:
-${sanitizedMessage}
-
-Submitted from: ${ip}
-Time: ${new Date().toLocaleString()}`
+      text: `Neue Kontaktanfrage - Raiki\n\nName: ${sanitizedName}\nE-Mail: ${sanitizedEmail}\n\nNachricht:\n${sanitizedMessage}`
     });
 
     return NextResponse.json(

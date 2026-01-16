@@ -287,10 +287,12 @@ export default function Contact() {
             
             {/* Compact Form */}
             <section>
-              <form onSubmit={handleSubmit} className="space-y-4">
+              <form onSubmit={handleSubmit} autoComplete="on" className="space-y-4">
                 <input
                   type="text"
+                  id="name"
                   name="name"
+                  autoComplete="name"
                   value={formData.name}
                   onChange={handleInputChange}
                   className="w-full px-3 py-2 bg-gray-900/50 border border-gray-600 text-white placeholder-gray-400 focus:outline-none focus:border-gray-400 transition-colors font-mono text-sm"
@@ -300,7 +302,9 @@ export default function Contact() {
                 />
                 <input
                   type="email"
+                  id="email"
                   name="email"
+                  autoComplete="email"
                   value={formData.email}
                   onChange={handleInputChange}
                   className="w-full px-3 py-2 bg-gray-900/50 border border-gray-600 text-white placeholder-gray-400 focus:outline-none focus:border-gray-400 transition-colors font-mono text-sm"
@@ -310,7 +314,9 @@ export default function Contact() {
                 />
                 <input
                   type="text"
+                  id="company"
                   name="company"
+                  autoComplete="organization"
                   value={formData.company}
                   onChange={handleInputChange}
                   className="w-full px-3 py-2 bg-gray-900/50 border border-gray-600 text-white placeholder-gray-400 focus:outline-none focus:border-gray-400 transition-colors font-mono text-sm"
@@ -318,6 +324,7 @@ export default function Contact() {
                   disabled={isSubmitting}
                 />
                 <textarea
+                  id="message"
                   name="message"
                   value={formData.message}
                   onChange={handleInputChange}
