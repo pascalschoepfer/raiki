@@ -231,17 +231,17 @@ export default function Contact() {
           </nav>
         </header>
 
-        {/* Content - Centered */}
-        <div className="absolute inset-0 flex flex-col justify-center items-center z-10 px-6">
-          <div className="max-w-md mx-auto w-full text-center space-y-8">
-            
-            {/* Title */}
-            <section>
-              <MatrixText
-                text="contact"
-                className="text-4xl md:text-5xl font-mono font-bold text-[#d0c8b8] tracking-wider"
-              />
-            </section>
+        {/* Title - same height as other pages */}
+        <div className="absolute left-0 right-0 z-10 px-6 top-[12vh] sm:top-[15vh] flex items-center justify-center">
+          <MatrixText
+            text="contact"
+            className="text-4xl md:text-5xl font-mono font-bold text-[#d0c8b8] tracking-wider"
+          />
+        </div>
+
+        {/* Form Content */}
+        <div className="absolute inset-0 flex flex-col justify-center items-center z-10 px-6 pt-16">
+          <div className="max-w-md mx-auto w-full text-center space-y-6">
             
             {/* Compact Form */}
             <section>
