@@ -1,10 +1,10 @@
 'use client';
 
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef } from 'react';
 import Link from 'next/link';
 
-// Effect 1: Matrix Rain
-function MatrixRain({ canvasRef }) {
+// Variant 1: Very Subtle Matrix Rain (barely visible)
+function MatrixSubtle({ canvasRef }) {
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
@@ -13,27 +13,81 @@ function MatrixRain({ canvasRef }) {
     canvas.width = canvas.offsetWidth;
     canvas.height = canvas.offsetHeight;
 
-    const chars = 'アイウエオカキクケコサシスセソタチツテト0123456789';
-    const fontSize = 14;
+    const chars = 'アイウエオカキクケコ01';
+    const fontSize = 12;
     const columns = Math.floor(canvas.width / fontSize);
-    const drops = Array(columns).fill(1);
+    const drops = Array(columns).fill(0).map(() => Math.random() * -100);
 
     const draw = () => {
-      ctx.fillStyle = 'rgba(12, 10, 8, 0.05)';
+      ctx.fillStyle = 'rgba(12, 10, 8, 0.03)';
       ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-      ctx.fillStyle = '#70c060';
+      ctx.fillStyle = 'rgba(112, 192, 96, 0.15)';
       ctx.font = `${fontSize}px monospace`;
 
       for (let i = 0; i < drops.length; i++) {
-        const char = chars[Math.floor(Math.random() * chars.length)];
-        ctx.fillText(char, i * fontSize, drops[i] * fontSize);
+        if (Math.random() > 0.98) {
+          const char = chars[Math.floor(Math.random() * chars.length)];
+          ctx.fillText(char, i * fontSize, drops[i] * fontSize);
+        }
 
-        if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) {
+        if (drops[i] * fontSize > canvas.height && Math.random() > 0.99) {
           drops[i] = 0;
         }
-        drops[i]++;
+        drops[i] += 0.3;
       }
+    };
+
+    const interval = setInterval(draw, 80);
+    return () => clearInterval(interval);
+  }, [canvasRef]);
+
+  return null;
+}
+
+// Variant 2: Sparse Floating Characters
+function MatrixSparse({ canvasRef }) {
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d');
+
+    canvas.width = canvas.offsetWidth;
+    canvas.height = canvas.offsetHeight;
+
+    const chars = 'アイウエオ01<>/{}';
+    const particles = [];
+
+    const spawnParticle = () => {
+      if (particles.length < 15 && Math.random() > 0.95) {
+        particles.push({
+          x: Math.random() * canvas.width,
+          y: -20,
+          char: chars[Math.floor(Math.random() * chars.length)],
+          speed: 0.3 + Math.random() * 0.5,
+          opacity: 0.1 + Math.random() * 0.15
+        });
+      }
+    };
+
+    const draw = () => {
+      ctx.fillStyle = 'rgba(12, 10, 8, 0.02)';
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      ctx.font = '14px monospace';
+
+      for (let i = particles.length - 1; i >= 0; i--) {
+        const p = particles[i];
+        ctx.fillStyle = `rgba(112, 192, 96, ${p.opacity})`;
+        ctx.fillText(p.char, p.x, p.y);
+        p.y += p.speed;
+
+        if (p.y > canvas.height + 20) {
+          particles.splice(i, 1);
+        }
+      }
+
+      spawnParticle();
     };
 
     const interval = setInterval(draw, 50);
@@ -43,8 +97,8 @@ function MatrixRain({ canvasRef }) {
   return null;
 }
 
-// Effect 2: Glitch Blocks
-function GlitchBlocks({ canvasRef }) {
+// Variant 3: Static Grid with Occasional Flicker
+function MatrixGrid({ canvasRef }) {
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
@@ -53,53 +107,56 @@ function GlitchBlocks({ canvasRef }) {
     canvas.width = canvas.offsetWidth;
     canvas.height = canvas.offsetHeight;
 
-    const blocks = [];
+    const chars = '01アイウエオ';
+    const gridSize = 30;
+    const cols = Math.ceil(canvas.width / gridSize);
+    const rows = Math.ceil(canvas.height / gridSize);
 
-    const handleMouseMove = (e) => {
-      const rect = canvas.getBoundingClientRect();
-      const x = e.clientX - rect.left;
-      const y = e.clientY - rect.top;
-
-      for (let i = 0; i < 3; i++) {
-        blocks.push({
-          x: x + (Math.random() - 0.5) * 40,
-          y: y + (Math.random() - 0.5) * 40,
-          w: Math.random() * 20 + 5,
-          h: Math.random() * 10 + 3,
-          life: 1,
-          color: Math.random() > 0.5 ? '#70c060' : '#50a040'
-        });
+    const grid = [];
+    for (let y = 0; y < rows; y++) {
+      for (let x = 0; x < cols; x++) {
+        if (Math.random() > 0.85) {
+          grid.push({
+            x: x * gridSize + gridSize / 2,
+            y: y * gridSize + gridSize / 2,
+            char: chars[Math.floor(Math.random() * chars.length)],
+            opacity: 0
+          });
+        }
       }
-      if (blocks.length > 50) blocks.splice(0, 10);
-    };
+    }
 
-    const animate = () => {
-      ctx.fillStyle = 'rgba(12, 10, 8, 0.15)';
+    const draw = () => {
+      ctx.fillStyle = '#0c0a08';
       ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-      for (let i = blocks.length - 1; i >= 0; i--) {
-        const b = blocks[i];
-        ctx.fillStyle = b.color;
-        ctx.globalAlpha = b.life;
-        ctx.fillRect(b.x, b.y, b.w, b.h);
-        b.life -= 0.03;
-        b.x += (Math.random() - 0.5) * 4;
-        if (b.life <= 0) blocks.splice(i, 1);
-      }
-      ctx.globalAlpha = 1;
-      requestAnimationFrame(animate);
+      ctx.font = '10px monospace';
+      ctx.textAlign = 'center';
+
+      grid.forEach(cell => {
+        // Random flicker
+        if (Math.random() > 0.995) {
+          cell.opacity = 0.2 + Math.random() * 0.1;
+          cell.char = chars[Math.floor(Math.random() * chars.length)];
+        }
+        cell.opacity *= 0.98;
+
+        if (cell.opacity > 0.02) {
+          ctx.fillStyle = `rgba(112, 192, 96, ${cell.opacity})`;
+          ctx.fillText(cell.char, cell.x, cell.y);
+        }
+      });
     };
 
-    animate();
-    window.addEventListener('mousemove', handleMouseMove);
-    return () => window.removeEventListener('mousemove', handleMouseMove);
+    const interval = setInterval(draw, 50);
+    return () => clearInterval(interval);
   }, [canvasRef]);
 
   return null;
 }
 
-// Effect 3: Binary Trail
-function BinaryTrail({ canvasRef }) {
+// Variant 4: Gentle Pulse/Breathe Effect
+function MatrixPulse({ canvasRef }) {
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
@@ -108,52 +165,43 @@ function BinaryTrail({ canvasRef }) {
     canvas.width = canvas.offsetWidth;
     canvas.height = canvas.offsetHeight;
 
-    const bits = [];
+    const chars = '01';
+    const fontSize = 10;
+    const cols = Math.floor(canvas.width / fontSize);
+    const rows = Math.floor(canvas.height / fontSize);
 
-    const handleMouseMove = (e) => {
-      const rect = canvas.getBoundingClientRect();
-      const x = e.clientX - rect.left;
-      const y = e.clientY - rect.top;
+    let time = 0;
 
-      for (let i = 0; i < 2; i++) {
-        bits.push({
-          x, y,
-          vx: (Math.random() - 0.5) * 3,
-          vy: (Math.random() - 0.5) * 3,
-          char: Math.random() > 0.5 ? '0' : '1',
-          life: 1
-        });
-      }
-      if (bits.length > 60) bits.splice(0, 5);
-    };
-
-    const animate = () => {
-      ctx.fillStyle = 'rgba(12, 10, 8, 0.1)';
+    const draw = () => {
+      ctx.fillStyle = '#0c0a08';
       ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-      ctx.font = '12px monospace';
-      for (let i = bits.length - 1; i >= 0; i--) {
-        const b = bits[i];
-        ctx.fillStyle = `rgba(112, 192, 96, ${b.life})`;
-        ctx.fillText(b.char, b.x, b.y);
-        b.x += b.vx;
-        b.y += b.vy;
-        b.life -= 0.015;
-        if (b.life <= 0) bits.splice(i, 1);
+      ctx.font = `${fontSize}px monospace`;
+      time += 0.02;
+
+      for (let y = 0; y < rows; y += 3) {
+        for (let x = 0; x < cols; x += 3) {
+          const wave = Math.sin(time + x * 0.1 + y * 0.1) * 0.5 + 0.5;
+          const opacity = wave * 0.08;
+
+          if (opacity > 0.02) {
+            ctx.fillStyle = `rgba(112, 192, 96, ${opacity})`;
+            const char = chars[Math.floor(Math.random() * chars.length)];
+            ctx.fillText(char, x * fontSize, y * fontSize);
+          }
+        }
       }
-      requestAnimationFrame(animate);
     };
 
-    animate();
-    window.addEventListener('mousemove', handleMouseMove);
-    return () => window.removeEventListener('mousemove', handleMouseMove);
+    const interval = setInterval(draw, 100);
+    return () => clearInterval(interval);
   }, [canvasRef]);
 
   return null;
 }
 
-// Effect 4: Circuit Traces
-function CircuitTraces({ canvasRef }) {
+// Variant 5: Horizontal Scan Lines with Characters
+function MatrixScan({ canvasRef }) {
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
@@ -162,70 +210,37 @@ function CircuitTraces({ canvasRef }) {
     canvas.width = canvas.offsetWidth;
     canvas.height = canvas.offsetHeight;
 
-    const points = [];
-    let lastPoint = null;
+    const chars = '01アイウエオカキク';
+    let scanY = 0;
 
-    const handleMouseMove = (e) => {
-      const rect = canvas.getBoundingClientRect();
-      const x = e.clientX - rect.left;
-      const y = e.clientY - rect.top;
-
-      // Snap to grid for circuit-like appearance
-      const gridX = Math.round(x / 20) * 20;
-      const gridY = Math.round(y / 20) * 20;
-
-      if (!lastPoint || lastPoint.x !== gridX || lastPoint.y !== gridY) {
-        points.push({ x: gridX, y: gridY, life: 1 });
-        lastPoint = { x: gridX, y: gridY };
-      }
-      if (points.length > 30) points.splice(0, 1);
-    };
-
-    const animate = () => {
+    const draw = () => {
       ctx.fillStyle = 'rgba(12, 10, 8, 0.05)';
       ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-      ctx.strokeStyle = '#70c060';
-      ctx.lineWidth = 2;
+      ctx.font = '10px monospace';
 
-      for (let i = 1; i < points.length; i++) {
-        const p1 = points[i - 1];
-        const p2 = points[i];
-        ctx.globalAlpha = p2.life * 0.8;
-        ctx.beginPath();
-        ctx.moveTo(p1.x, p1.y);
-        // Draw L-shaped lines (circuit style)
-        if (Math.random() > 0.5) {
-          ctx.lineTo(p2.x, p1.y);
-          ctx.lineTo(p2.x, p2.y);
-        } else {
-          ctx.lineTo(p1.x, p2.y);
-          ctx.lineTo(p2.x, p2.y);
+      // Draw scan line with characters
+      const lineY = scanY % canvas.height;
+      for (let x = 0; x < canvas.width; x += 15) {
+        if (Math.random() > 0.7) {
+          ctx.fillStyle = `rgba(112, 192, 96, ${0.1 + Math.random() * 0.15})`;
+          const char = chars[Math.floor(Math.random() * chars.length)];
+          ctx.fillText(char, x, lineY);
         }
-        ctx.stroke();
-
-        // Draw node points
-        ctx.fillStyle = '#70c060';
-        ctx.beginPath();
-        ctx.arc(p2.x, p2.y, 3, 0, Math.PI * 2);
-        ctx.fill();
       }
 
-      points.forEach(p => p.life -= 0.008);
-      ctx.globalAlpha = 1;
-      requestAnimationFrame(animate);
+      scanY += 2;
     };
 
-    animate();
-    window.addEventListener('mousemove', handleMouseMove);
-    return () => window.removeEventListener('mousemove', handleMouseMove);
+    const interval = setInterval(draw, 50);
+    return () => clearInterval(interval);
   }, [canvasRef]);
 
   return null;
 }
 
-// Effect 5: Scan Lines
-function ScanLines({ canvasRef }) {
+// Variant 6: Minimal Corner Accents
+function MatrixCorners({ canvasRef }) {
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
@@ -234,115 +249,70 @@ function ScanLines({ canvasRef }) {
     canvas.width = canvas.offsetWidth;
     canvas.height = canvas.offsetHeight;
 
-    let mouseY = 0;
-    const lines = [];
+    const chars = '01アイ<>/';
+    const corners = [
+      { x: 20, y: 30, chars: [] },
+      { x: canvas.width - 60, y: 30, chars: [] },
+      { x: 20, y: canvas.height - 20, chars: [] },
+      { x: canvas.width - 60, y: canvas.height - 20, chars: [] }
+    ];
 
-    const handleMouseMove = (e) => {
-      const rect = canvas.getBoundingClientRect();
-      mouseY = e.clientY - rect.top;
-      lines.push({ y: mouseY, life: 1, width: canvas.width });
-      if (lines.length > 15) lines.splice(0, 1);
-    };
-
-    const animate = () => {
-      ctx.fillStyle = 'rgba(12, 10, 8, 0.1)';
-      ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-      lines.forEach((line, i) => {
-        ctx.strokeStyle = `rgba(112, 192, 96, ${line.life * 0.6})`;
-        ctx.lineWidth = 1;
-        ctx.beginPath();
-        ctx.moveTo(0, line.y);
-        ctx.lineTo(line.width, line.y);
-        ctx.stroke();
-        line.life -= 0.02;
-      });
-
-      // Remove dead lines
-      for (let i = lines.length - 1; i >= 0; i--) {
-        if (lines[i].life <= 0) lines.splice(i, 1);
-      }
-
-      requestAnimationFrame(animate);
-    };
-
-    animate();
-    window.addEventListener('mousemove', handleMouseMove);
-    return () => window.removeEventListener('mousemove', handleMouseMove);
-  }, [canvasRef]);
-
-  return null;
-}
-
-// Effect 6: Code Fragments
-function CodeFragments({ canvasRef }) {
-  useEffect(() => {
-    const canvas = canvasRef.current;
-    if (!canvas) return;
-    const ctx = canvas.getContext('2d');
-
-    canvas.width = canvas.offsetWidth;
-    canvas.height = canvas.offsetHeight;
-
-    const fragments = [];
-    const codes = ['{...}', '</>', '0x', '[];', '()', '=>', '&&', '||', '!=', '++', '/**/', 'null', 'true', '0xff'];
-
-    const handleMouseMove = (e) => {
-      const rect = canvas.getBoundingClientRect();
-      const x = e.clientX - rect.left;
-      const y = e.clientY - rect.top;
-
-      if (Math.random() > 0.7) {
-        fragments.push({
-          x, y,
-          vx: (Math.random() - 0.5) * 2,
-          vy: -Math.random() * 2 - 1,
-          code: codes[Math.floor(Math.random() * codes.length)],
-          life: 1
+    corners.forEach(c => {
+      for (let i = 0; i < 5; i++) {
+        c.chars.push({
+          char: chars[Math.floor(Math.random() * chars.length)],
+          offsetX: i * 12,
+          opacity: 0
         });
       }
-      if (fragments.length > 30) fragments.splice(0, 3);
-    };
+    });
 
-    const animate = () => {
-      ctx.fillStyle = 'rgba(12, 10, 8, 0.08)';
+    const draw = () => {
+      ctx.fillStyle = '#0c0a08';
       ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-      ctx.font = '11px monospace';
-      for (let i = fragments.length - 1; i >= 0; i--) {
-        const f = fragments[i];
-        ctx.fillStyle = `rgba(112, 192, 96, ${f.life})`;
-        ctx.fillText(f.code, f.x, f.y);
-        f.x += f.vx;
-        f.y += f.vy;
-        f.vy += 0.05; // gravity
-        f.life -= 0.012;
-        if (f.life <= 0) fragments.splice(i, 1);
-      }
-      requestAnimationFrame(animate);
+      ctx.font = '10px monospace';
+
+      corners.forEach(corner => {
+        corner.chars.forEach(c => {
+          if (Math.random() > 0.98) {
+            c.opacity = 0.15 + Math.random() * 0.1;
+            c.char = chars[Math.floor(Math.random() * chars.length)];
+          }
+          c.opacity *= 0.97;
+
+          if (c.opacity > 0.02) {
+            ctx.fillStyle = `rgba(112, 192, 96, ${c.opacity})`;
+            ctx.fillText(c.char, corner.x + c.offsetX, corner.y);
+          }
+        });
+      });
     };
 
-    animate();
-    window.addEventListener('mousemove', handleMouseMove);
-    return () => window.removeEventListener('mousemove', handleMouseMove);
+    const interval = setInterval(draw, 50);
+    return () => clearInterval(interval);
   }, [canvasRef]);
 
   return null;
 }
 
 // Demo Section Component
-function EffectDemo({ title, Effect }) {
+function EffectDemo({ title, description, Effect }) {
   const canvasRef = useRef(null);
 
   return (
-    <div className="relative h-[250px] border border-[#3d3530] rounded-lg overflow-hidden bg-[#0c0a08]">
+    <div className="relative h-[300px] border border-[#3d3530] rounded-lg overflow-hidden bg-[#0c0a08]">
       <canvas
         ref={canvasRef}
         className="absolute inset-0 w-full h-full"
       />
       <Effect canvasRef={canvasRef} />
-      <div className="absolute bottom-3 left-3 bg-[#0c0a08]/80 px-3 py-1 rounded">
-        <span className="text-[#70c060] font-mono text-sm">{title}</span>
+      <div className="absolute inset-0 flex items-center justify-center">
+        <p className="text-[#c0b8a8] font-mono text-lg opacity-50">content here</p>
+      </div>
+      <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-[#0c0a08] to-transparent p-4">
+        <span className="text-[#70c060] font-mono text-sm font-bold">{title}</span>
+        <p className="text-[#6b6055] font-mono text-xs mt-1">{description}</p>
       </div>
     </div>
   );
@@ -353,27 +323,51 @@ export default function EffectsDemo() {
     <div className="min-h-screen bg-[#0c0a08] p-6">
       <div className="max-w-6xl mx-auto">
         <div className="flex items-center justify-between mb-8">
-          <h1 className="text-2xl font-mono text-[#d0c8b8]">Mouse Effects Demo</h1>
+          <h1 className="text-2xl font-mono text-[#d0c8b8]">Matrix Background Variants</h1>
           <Link href="/" className="text-[#70c060] hover:text-[#90e080] font-mono text-sm">
-            &lt;- back
+            &larr; back
           </Link>
         </div>
 
         <p className="text-[#a09080] font-mono text-sm mb-8">
-          Bewege die Maus über die Bereiche um die Effekte zu sehen:
+          Verschiedene dezente Matrix-Hintergrund Effekte:
         </p>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          <EffectDemo title="1. Matrix Rain" Effect={MatrixRain} />
-          <EffectDemo title="2. Glitch Blocks" Effect={GlitchBlocks} />
-          <EffectDemo title="3. Binary Trail" Effect={BinaryTrail} />
-          <EffectDemo title="4. Circuit Traces" Effect={CircuitTraces} />
-          <EffectDemo title="5. Scan Lines" Effect={ScanLines} />
-          <EffectDemo title="6. Code Fragments" Effect={CodeFragments} />
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <EffectDemo
+            title="1. Subtle Rain"
+            description="Sehr dezent, kaum sichtbar, langsam fallend"
+            Effect={MatrixSubtle}
+          />
+          <EffectDemo
+            title="2. Sparse Float"
+            description="Vereinzelte Zeichen die langsam fallen"
+            Effect={MatrixSparse}
+          />
+          <EffectDemo
+            title="3. Grid Flicker"
+            description="Statisches Grid mit gelegentlichem Flackern"
+            Effect={MatrixGrid}
+          />
+          <EffectDemo
+            title="4. Pulse Wave"
+            description="Sanfte Wellen-Animation durch das Grid"
+            Effect={MatrixPulse}
+          />
+          <EffectDemo
+            title="5. Scan Line"
+            description="Horizontale Scan-Linie mit Zeichen"
+            Effect={MatrixScan}
+          />
+          <EffectDemo
+            title="6. Corner Accents"
+            description="Nur in den Ecken, sehr minimal"
+            Effect={MatrixCorners}
+          />
         </div>
 
         <p className="text-[#6b6055] font-mono text-xs mt-8 text-center">
-          Sag mir welchen du willst oder ob ich einen anpassen soll
+          Welche Variante gefällt dir? Kann auch kombiniert oder angepasst werden.
         </p>
       </div>
     </div>

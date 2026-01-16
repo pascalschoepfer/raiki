@@ -1,15 +1,13 @@
 'use client';
 
 import RaikiLogo from './components/RaikiLogo';
-import NeuralNetwork from './components/MouseTrail';
 import MatrixText from './components/MatrixText';
 
 export default function Home() {
   return (
     <div className="h-screen overflow-hidden bg-gradient-to-br from-[#100c08] via-[#1a1510] to-[#251c15]">
-        {/* Hero Section with Neural Network */}
+        {/* Hero Section */}
         <div className="relative overflow-hidden h-full">
-        <NeuralNetwork />
 
         {/* Header with Navigation */}
         <header className="absolute top-0 left-0 right-0 z-20 px-6 py-3 bg-transparent">
