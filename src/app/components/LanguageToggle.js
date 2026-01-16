@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react';
 
 export function useLanguage() {
-  const [lang, setLang] = useState('de');
+  const [lang, setLang] = useState('en');
 
   useEffect(() => {
     const stored = localStorage.getItem('raiki-lang');

@@ -155,11 +155,11 @@ export default function Datenschutz() {
             {/* Navigation + Language Toggle */}
             <div className="flex items-center gap-4">
               <div className="flex gap-2 font-mono">
+                <a href="/" className="text-[#a09080] hover:text-[#e8e0d5] text-xs sm:text-sm tracking-wider transition-colors">home</a>
+                <span className="text-[#4a4035]">|</span>
                 <a href="/services" className="text-[#a09080] hover:text-[#e8e0d5] text-xs sm:text-sm tracking-wider transition-colors">services</a>
                 <span className="text-[#4a4035]">|</span>
                 <a href="/about" className="text-[#a09080] hover:text-[#e8e0d5] text-xs sm:text-sm tracking-wider transition-colors">about</a>
-                <span className="text-[#4a4035]">|</span>
-                <a href="/contact" className="text-[#a09080] hover:text-[#e8e0d5] text-xs sm:text-sm tracking-wider transition-colors">contact</a>
               </div>
               <LanguageToggle lang={lang} onToggle={toggleLang} />
             </div>
