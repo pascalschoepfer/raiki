@@ -206,11 +206,10 @@ export default function NeuralNetwork() {
 
     /**
      * Draw Neural Network Connections
-     * 
-     * Creates dynamic connections between particles within range,
-     * forming the neural network visual effect. Connections have
-     * electrical crackling effects and fade based on distance.
-     * 
+     *
+     * Creates persistent connections between all particles until they fade.
+     * All particles stay connected regardless of distance.
+     *
      * @param {Object} color - RGB color object {r, g, b}
      */
     const drawConnections = (color) => {
@@ -218,48 +217,31 @@ export default function NeuralNetwork() {
         for (let j = i + 1; j < particles.length; j++) {
           const p1 = particles[i];
           const p2 = particles[j];
-          
+
           if (p1.life <= 0 || p2.life <= 0) continue;
-          
+
           const dx = p1.x - p2.x;
           const dy = p1.y - p2.y;
           const distance = Math.sqrt(dx * dx + dy * dy);
-          
-          if (distance < 110 && Math.random() < 0.8) {
-            const baseAlpha = (1 - distance / 110) * p1.life * p2.life * 0.7;
-            const flickerAlpha = baseAlpha * (0.9 + Math.random() * 0.1);
-            
-            if (flickerAlpha > 0.08) {
-              ctx.save();
-              ctx.globalAlpha = flickerAlpha;
-              ctx.strokeStyle = `rgba(${color.r}, ${color.g}, ${color.b}, ${1.0})`;
-              ctx.lineWidth = 1.2;
-              
-              // Draw balanced crackling electrical connection
-              ctx.beginPath();
-              ctx.moveTo(p1.x, p1.y);
-              
-              // Add moderate electrical crackle to the line
-              const steps = Math.max(2, Math.floor(distance / 25));
-              for (let step = 1; step <= steps; step++) {
-                const t = step / steps;
-                const midX = p1.x + (p2.x - p1.x) * t;
-                const midY = p1.y + (p2.y - p1.y) * t;
-                
-                // Add minimal electrical deviation for clearer lines
-                const crackleX = midX + (Math.random() - 0.5) * 2;
-                const crackleY = midY + (Math.random() - 0.5) * 2;
-                
-                if (step === steps) {
-                  ctx.lineTo(p2.x, p2.y);
-                } else {
-                  ctx.lineTo(crackleX, crackleY);
-                }
-              }
-              
-              ctx.stroke();
-              ctx.restore();
-            }
+
+          // Always connect, fade based on life only (not distance)
+          const baseAlpha = p1.life * p2.life * 0.6;
+          // Slight distance fade for very far particles
+          const distanceFade = distance > 200 ? Math.max(0.3, 1 - (distance - 200) / 300) : 1;
+          const finalAlpha = baseAlpha * distanceFade;
+
+          if (finalAlpha > 0.05) {
+            ctx.save();
+            ctx.globalAlpha = finalAlpha;
+            ctx.strokeStyle = `rgba(${color.r}, ${color.g}, ${color.b}, 1.0)`;
+            ctx.lineWidth = 1;
+
+            // Draw smooth connection line
+            ctx.beginPath();
+            ctx.moveTo(p1.x, p1.y);
+            ctx.lineTo(p2.x, p2.y);
+            ctx.stroke();
+            ctx.restore();
           }
         }
       }
