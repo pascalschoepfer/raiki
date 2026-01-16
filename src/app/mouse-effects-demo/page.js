@@ -42,7 +42,7 @@ export default function MouseEffectsDemo() {
   };
 
   return (
-    <div className="h-screen overflow-hidden bg-gradient-to-br from-black via-gray-900 to-gray-800 relative">
+    <div className="h-screen overflow-hidden bg-gradient-to-br from-[#0a0a0c] via-[#121015] to-[#1a1720] relative">
       {/* Current Effect */}
       {effects[currentEffect]}
       
@@ -97,7 +97,7 @@ export default function MouseEffectsDemo() {
 // Effect 1: Current Neural Network (baseline)
 function NeuralNetworkEffect() {
   return (
-    <div className="absolute inset-0 bg-gradient-to-br from-black via-gray-900 to-gray-800">
+    <div className="absolute inset-0 bg-gradient-to-br from-[#0a0a0c] via-[#121015] to-[#1a1720]">
       <div className="absolute inset-0 flex items-center justify-center">
         <h1 className="text-4xl font-mono font-bold text-white/20">Neural Network</h1>
       </div>
