@@ -88,14 +88,37 @@ export default function GridHorizonBackground() {
         }
       }
 
-      // Halo at vanishing point - fade from 55% to 65%
+      // Halo at vanishing point - normal radial, but fade out bottom half
+      // First draw halo above horizon (full strength)
       const gradient = ctx.createRadialGradient(vanishX, horizon, 0, vanishX, horizon, 200);
       gradient.addColorStop(0, 'rgba(112, 192, 96, 0.15)');
-      gradient.addColorStop(0.55, 'rgba(112, 192, 96, 0.15)');
-      gradient.addColorStop(0.65, 'rgba(112, 192, 96, 0.05)');
       gradient.addColorStop(1, 'rgba(112, 192, 96, 0)');
       ctx.fillStyle = gradient;
+      ctx.fillRect(0, 0, canvas.width, horizon);
+
+      // Below horizon: halo with vertical fade (55% to 65% of bottom half)
+      const bottomHeight = canvas.height - horizon;
+      const fadeStart = horizon + bottomHeight * 0.55;
+      const fadeEnd = horizon + bottomHeight * 0.65;
+
+      ctx.save();
+      ctx.beginPath();
+      ctx.rect(0, horizon, canvas.width, canvas.height - horizon);
+      ctx.clip();
+
+      // Draw halo
+      ctx.fillStyle = gradient;
       ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      // Overlay fade: transparent at top, dark at bottom
+      const fadeGradient = ctx.createLinearGradient(0, horizon, 0, canvas.height);
+      fadeGradient.addColorStop(0, 'rgba(16, 12, 8, 0)');
+      fadeGradient.addColorStop((fadeStart - horizon) / bottomHeight, 'rgba(16, 12, 8, 0)');
+      fadeGradient.addColorStop((fadeEnd - horizon) / bottomHeight, 'rgba(16, 12, 8, 0.67)');
+      fadeGradient.addColorStop(1, 'rgba(16, 12, 8, 1)');
+      ctx.fillStyle = fadeGradient;
+      ctx.fillRect(0, horizon, canvas.width, canvas.height - horizon);
+      ctx.restore();
 
       offset += 0.012;
       if (offset >= 1) offset = 0;
