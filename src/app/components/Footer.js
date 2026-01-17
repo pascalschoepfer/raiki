@@ -3,7 +3,7 @@
 export default function Footer({ lang = 'de', showBorder = false }) {
   const baseClasses = "text-[#a09080] hover:text-[#e8e0d5] transition-colors";
   const borderClasses = showBorder
-    ? "px-2 py-1 border border-[#2a2520]/50 hover:border-[#3a3530]"
+    ? "px-2 py-1 border-b border-dashed border-[#4a4540]/40 hover:border-[#6a6560]/60"
     : "";
 
   return (
