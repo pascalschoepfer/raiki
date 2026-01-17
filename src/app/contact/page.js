@@ -279,7 +279,7 @@ export default function Contact() {
         </div>
 
         {/* Form Content */}
-        <div className="absolute inset-0 flex flex-col justify-center items-center z-10 px-6 pt-8 sm:pt-16">
+        <div className="absolute inset-0 flex flex-col justify-center items-center z-10 px-6 pt-[calc(60px-4vh)] sm:pt-16">
           <div className="max-w-md mx-auto w-full text-center space-y-6">
 
             {/* Compact Form */}
