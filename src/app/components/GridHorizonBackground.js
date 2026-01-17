@@ -18,36 +18,43 @@ export default function GridHorizonBackground() {
     window.addEventListener('resize', resize);
 
     let offset = 0;
-    const cliffPosition = 0.75; // Cliff at 3/4 of the way
+    const cliffPosition = 0.5; // Cliff at halfway - further back
 
     const draw = () => {
       const horizon = canvas.height * 0.5;
       const vanishX = canvas.width / 2;
       const cliffY = horizon + (canvas.height - horizon) * cliffPosition;
+      const cliffSpread = cliffPosition * canvas.width * 1.5;
 
       // Clear canvas
       ctx.fillStyle = 'rgba(16, 12, 8, 0.15)';
       ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-      // Vertical lines converging to horizon (only above cliff)
-      ctx.strokeStyle = 'rgba(112, 192, 96, 0.12)';
       ctx.lineWidth = 1;
 
-      for (let x = -canvas.width * 2; x < canvas.width * 3; x += 40) {
+      // Vertical lines - converge to horizon, then fall straight down after cliff
+      for (let i = 0; i < 40; i++) {
+        const ratio = (i - 20) / 20; // -1 to 1
+        const xAtCliff = vanishX + ratio * cliffSpread;
+
+        ctx.strokeStyle = 'rgba(112, 192, 96, 0.12)';
+
+        // Part 1: From horizon to cliff edge (converging)
         ctx.beginPath();
-        ctx.moveTo(x, cliffY);
-        // Calculate where line intersects with cliff edge
-        const t = (cliffY - horizon) / (canvas.height - horizon);
-        const spreadAtCliff = t * canvas.width * 1.5;
-        const ratio = (x - vanishX) / (canvas.width * 1.5);
-        const cliffX = vanishX + ratio * spreadAtCliff * 2;
-        ctx.lineTo(vanishX, horizon);
+        ctx.moveTo(vanishX, horizon);
+        ctx.lineTo(xAtCliff, cliffY);
+        ctx.stroke();
+
+        // Part 2: From cliff edge falling straight down
+        ctx.beginPath();
+        ctx.moveTo(xAtCliff, cliffY);
+        ctx.lineTo(xAtCliff, canvas.height + 50);
         ctx.stroke();
       }
 
       // Horizontal lines with perspective - flowing towards viewer then falling
-      for (let i = 0; i < 25; i++) {
-        const t = (i + offset) / 25;
+      for (let i = 0; i < 30; i++) {
+        const t = (i + offset) / 30;
         const y = horizon + (canvas.height - horizon) * Math.pow(t, 1.5);
         const spread = t * canvas.width * 1.5;
         const lineOpacity = 0.04 + t * 0.12;
@@ -62,12 +69,11 @@ export default function GridHorizonBackground() {
         } else {
           // Lines that have passed the cliff - fall downward
           const fallProgress = (t - cliffPosition) / (1 - cliffPosition);
-          const fallDistance = Math.pow(fallProgress, 1.5) * 150;
-          const cliffSpread = cliffPosition * canvas.width * 1.5;
+          const fallDistance = Math.pow(fallProgress, 1.5) * 200;
           const fallingY = cliffY + fallDistance;
 
           // Lines fall and fade out
-          const fadeOpacity = lineOpacity * (1 - fallProgress * 0.8);
+          const fadeOpacity = lineOpacity * (1 - fallProgress * 0.7);
 
           if (fallingY < canvas.height + 50) {
             ctx.beginPath();
@@ -78,15 +84,6 @@ export default function GridHorizonBackground() {
           }
         }
       }
-
-      // Cliff edge glow - permanent waterfall edge effect
-      const edgeGlow = ctx.createLinearGradient(0, cliffY - 15, 0, cliffY + 30);
-      edgeGlow.addColorStop(0, 'rgba(112, 192, 96, 0)');
-      edgeGlow.addColorStop(0.4, 'rgba(112, 192, 96, 0.06)');
-      edgeGlow.addColorStop(0.6, 'rgba(112, 192, 96, 0.08)');
-      edgeGlow.addColorStop(1, 'rgba(112, 192, 96, 0)');
-      ctx.fillStyle = edgeGlow;
-      ctx.fillRect(0, cliffY - 15, canvas.width, 45);
 
       // Halo at vanishing point
       const gradient = ctx.createRadialGradient(vanishX, horizon, 0, vanishX, horizon, 120);
