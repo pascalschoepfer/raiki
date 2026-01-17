@@ -30,12 +30,13 @@ export default function GridHorizonBackground() {
       ctx.fillStyle = 'rgba(16, 12, 8, 0.15)';
       ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-      // Halo at vanishing point - drawn first (behind grid)
-      const gradient = ctx.createRadialGradient(vanishX, horizon, 0, vanishX, horizon, 150);
-      gradient.addColorStop(0, 'rgba(112, 192, 96, 0.15)');
+      // Halo at vanishing point - only visible above horizon
+      const gradient = ctx.createRadialGradient(vanishX, horizon, 0, vanishX, horizon - 100, 150);
+      gradient.addColorStop(0, 'rgba(112, 192, 96, 0.12)');
+      gradient.addColorStop(0.6, 'rgba(112, 192, 96, 0.05)');
       gradient.addColorStop(1, 'rgba(112, 192, 96, 0)');
       ctx.fillStyle = gradient;
-      ctx.fillRect(0, 0, canvas.width, canvas.height);
+      ctx.fillRect(0, 0, canvas.width, horizon);
 
       ctx.lineWidth = 1;
 
