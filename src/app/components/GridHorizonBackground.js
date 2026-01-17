@@ -88,13 +88,22 @@ export default function GridHorizonBackground() {
         }
       }
 
-      // Halo at vanishing point - fades out towards bottom
+      // Halo at vanishing point - normal radial gradient
       const gradient = ctx.createRadialGradient(vanishX, horizon, 0, vanishX, horizon, 200);
       gradient.addColorStop(0, 'rgba(112, 192, 96, 0.15)');
       gradient.addColorStop(1, 'rgba(112, 192, 96, 0)');
       ctx.fillStyle = gradient;
-      // Only draw halo above horizon + tiny bit below
-      ctx.fillRect(0, 0, canvas.width, horizon + 10);
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      // Fade out halo in bottom half: from 55% to 65% fade to 0.05 opacity equivalent
+      const bottomHalf = canvas.height - horizon;
+      const fadeGradient = ctx.createLinearGradient(0, horizon, 0, horizon + bottomHalf);
+      fadeGradient.addColorStop(0, 'rgba(16, 12, 8, 0)');
+      fadeGradient.addColorStop(0.55, 'rgba(16, 12, 8, 0)');
+      fadeGradient.addColorStop(0.65, 'rgba(16, 12, 8, 0.66)');
+      fadeGradient.addColorStop(1, 'rgba(16, 12, 8, 0.66)');
+      ctx.fillStyle = fadeGradient;
+      ctx.fillRect(0, horizon, canvas.width, bottomHalf);
 
       offset += 0.012;
       if (offset >= 1) offset = 0;
