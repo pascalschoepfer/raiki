@@ -83,7 +83,7 @@ export default function Services() {
         </div>
 
         {/* Services Content - starts right after title on mobile */}
-        <div className="absolute z-10 px-4 sm:px-6 top-[24vh] min-[400px]:top-[24vh] bottom-[15vh] left-0 right-0 sm:inset-0 flex items-center justify-center sm:pt-16 md:pt-8">
+        <div className="absolute z-10 px-4 sm:px-6 top-[min(24vh,140px)] min-[400px]:top-[min(24vh,140px)] bottom-[15vh] left-0 right-0 sm:inset-0 flex items-center justify-center sm:pt-16 md:pt-8">
           <div className="max-w-4xl sm:max-w-5xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-2 min-[400px]:gap-3 sm:gap-6 md:gap-8 w-[80%] sm:w-full max-h-none sm:max-h-none overflow-y-auto sm:overflow-visible">
 
             {/* System Engineering - Available but Passive */}
