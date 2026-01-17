@@ -502,6 +502,546 @@ function MatrixMinimal({ canvasRef }) {
   return null;
 }
 
+// 11. Neural Network - connected nodes
+function NeuralNetwork({ canvasRef }) {
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d');
+    canvas.width = canvas.offsetWidth;
+    canvas.height = canvas.offsetHeight;
+
+    const nodes = Array(30).fill(0).map(() => ({
+      x: Math.random() * canvas.width,
+      y: Math.random() * canvas.height,
+      vx: (Math.random() - 0.5) * 0.5,
+      vy: (Math.random() - 0.5) * 0.5,
+      radius: 2 + Math.random() * 2
+    }));
+
+    const draw = () => {
+      ctx.fillStyle = 'rgba(12, 10, 8, 0.1)';
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      // Draw connections
+      for (let i = 0; i < nodes.length; i++) {
+        for (let j = i + 1; j < nodes.length; j++) {
+          const dx = nodes[i].x - nodes[j].x;
+          const dy = nodes[i].y - nodes[j].y;
+          const dist = Math.sqrt(dx * dx + dy * dy);
+          if (dist < 100) {
+            ctx.beginPath();
+            ctx.moveTo(nodes[i].x, nodes[i].y);
+            ctx.lineTo(nodes[j].x, nodes[j].y);
+            ctx.strokeStyle = `rgba(112, 192, 96, ${0.3 - dist / 350})`;
+            ctx.stroke();
+          }
+        }
+      }
+
+      // Draw nodes
+      for (const node of nodes) {
+        ctx.beginPath();
+        ctx.arc(node.x, node.y, node.radius, 0, Math.PI * 2);
+        ctx.fillStyle = 'rgba(112, 192, 96, 0.6)';
+        ctx.fill();
+
+        node.x += node.vx;
+        node.y += node.vy;
+        if (node.x < 0 || node.x > canvas.width) node.vx *= -1;
+        if (node.y < 0 || node.y > canvas.height) node.vy *= -1;
+      }
+    };
+
+    const interval = setInterval(draw, 30);
+    return () => clearInterval(interval);
+  }, [canvasRef]);
+  return null;
+}
+
+// 12. Cyber Grid - Tron style
+function CyberGrid({ canvasRef }) {
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d');
+    canvas.width = canvas.offsetWidth;
+    canvas.height = canvas.offsetHeight;
+
+    let offset = 0;
+    const gridSize = 40;
+
+    const draw = () => {
+      ctx.fillStyle = '#0c0a08';
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      ctx.strokeStyle = 'rgba(112, 192, 96, 0.15)';
+      ctx.lineWidth = 1;
+
+      // Horizontal lines with perspective
+      for (let y = 0; y < canvas.height; y += gridSize) {
+        const perspective = 1 + (y / canvas.height) * 2;
+        ctx.beginPath();
+        ctx.moveTo(0, y);
+        ctx.lineTo(canvas.width, y);
+        ctx.globalAlpha = 0.1 + (y / canvas.height) * 0.2;
+        ctx.stroke();
+      }
+
+      // Vertical lines
+      ctx.globalAlpha = 0.15;
+      for (let x = 0; x < canvas.width; x += gridSize) {
+        ctx.beginPath();
+        ctx.moveTo(x, 0);
+        ctx.lineTo(x, canvas.height);
+        ctx.stroke();
+      }
+
+      // Moving pulse lines
+      ctx.strokeStyle = 'rgba(112, 192, 96, 0.5)';
+      ctx.lineWidth = 2;
+      const pulseY = (offset % canvas.height);
+      ctx.beginPath();
+      ctx.moveTo(0, pulseY);
+      ctx.lineTo(canvas.width, pulseY);
+      ctx.globalAlpha = 0.3;
+      ctx.stroke();
+
+      ctx.globalAlpha = 1;
+      offset += 1;
+    };
+
+    const interval = setInterval(draw, 30);
+    return () => clearInterval(interval);
+  }, [canvasRef]);
+  return null;
+}
+
+// 13. Particle Constellation
+function ParticleConstellation({ canvasRef }) {
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d');
+    canvas.width = canvas.offsetWidth;
+    canvas.height = canvas.offsetHeight;
+
+    const particles = Array(50).fill(0).map(() => ({
+      x: Math.random() * canvas.width,
+      y: Math.random() * canvas.height,
+      size: Math.random() * 2,
+      speedX: (Math.random() - 0.5) * 0.3,
+      speedY: (Math.random() - 0.5) * 0.3,
+      pulse: Math.random() * Math.PI * 2
+    }));
+
+    const draw = () => {
+      ctx.fillStyle = 'rgba(12, 10, 8, 0.08)';
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      for (const p of particles) {
+        p.pulse += 0.05;
+        const glow = 0.3 + Math.sin(p.pulse) * 0.2;
+
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.size + Math.sin(p.pulse) * 0.5, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(112, 192, 96, ${glow})`;
+        ctx.fill();
+
+        p.x += p.speedX;
+        p.y += p.speedY;
+        if (p.x < 0) p.x = canvas.width;
+        if (p.x > canvas.width) p.x = 0;
+        if (p.y < 0) p.y = canvas.height;
+        if (p.y > canvas.height) p.y = 0;
+      }
+    };
+
+    const interval = setInterval(draw, 30);
+    return () => clearInterval(interval);
+  }, [canvasRef]);
+  return null;
+}
+
+// 14. Circuit Board
+function CircuitBoard({ canvasRef }) {
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d');
+    canvas.width = canvas.offsetWidth;
+    canvas.height = canvas.offsetHeight;
+
+    const traces = [];
+    const maxTraces = 8;
+
+    const draw = () => {
+      ctx.fillStyle = 'rgba(12, 10, 8, 0.03)';
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      if (traces.length < maxTraces && Math.random() > 0.97) {
+        const startX = Math.random() > 0.5 ? 0 : canvas.width;
+        traces.push({
+          x: startX,
+          y: Math.random() * canvas.height,
+          dirX: startX === 0 ? 1 : -1,
+          dirY: 0,
+          path: [],
+          age: 0
+        });
+      }
+
+      for (let i = traces.length - 1; i >= 0; i--) {
+        const t = traces[i];
+        t.path.push({ x: t.x, y: t.y });
+
+        // Draw path
+        ctx.beginPath();
+        ctx.strokeStyle = 'rgba(112, 192, 96, 0.4)';
+        ctx.lineWidth = 1;
+        for (let j = 0; j < t.path.length - 1; j++) {
+          ctx.moveTo(t.path[j].x, t.path[j].y);
+          ctx.lineTo(t.path[j + 1].x, t.path[j + 1].y);
+        }
+        ctx.stroke();
+
+        // Draw head
+        ctx.beginPath();
+        ctx.arc(t.x, t.y, 3, 0, Math.PI * 2);
+        ctx.fillStyle = 'rgba(150, 255, 150, 0.8)';
+        ctx.fill();
+
+        // Move
+        t.x += t.dirX * 3;
+        t.y += t.dirY * 3;
+
+        // Random turn
+        if (Math.random() > 0.95) {
+          if (t.dirX !== 0) {
+            t.dirY = Math.random() > 0.5 ? 1 : -1;
+            t.dirX = 0;
+          } else {
+            t.dirX = Math.random() > 0.5 ? 1 : -1;
+            t.dirY = 0;
+          }
+        }
+
+        t.age++;
+        if (t.x < 0 || t.x > canvas.width || t.y < 0 || t.y > canvas.height || t.age > 200) {
+          traces.splice(i, 1);
+        }
+      }
+    };
+
+    const interval = setInterval(draw, 30);
+    return () => clearInterval(interval);
+  }, [canvasRef]);
+  return null;
+}
+
+// 15. Glitch Effect
+function GlitchEffect({ canvasRef }) {
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d');
+    canvas.width = canvas.offsetWidth;
+    canvas.height = canvas.offsetHeight;
+
+    const draw = () => {
+      ctx.fillStyle = 'rgba(12, 10, 8, 0.3)';
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      // Random glitch bars
+      if (Math.random() > 0.9) {
+        const y = Math.random() * canvas.height;
+        const height = 2 + Math.random() * 10;
+        ctx.fillStyle = `rgba(112, 192, 96, ${0.1 + Math.random() * 0.2})`;
+        ctx.fillRect(0, y, canvas.width, height);
+      }
+
+      // Scanlines
+      for (let y = 0; y < canvas.height; y += 4) {
+        ctx.fillStyle = 'rgba(0, 0, 0, 0.1)';
+        ctx.fillRect(0, y, canvas.width, 1);
+      }
+
+      // Random noise pixels
+      for (let i = 0; i < 20; i++) {
+        const x = Math.random() * canvas.width;
+        const y = Math.random() * canvas.height;
+        ctx.fillStyle = `rgba(112, 192, 96, ${Math.random() * 0.3})`;
+        ctx.fillRect(x, y, 2 + Math.random() * 4, 1);
+      }
+    };
+
+    const interval = setInterval(draw, 50);
+    return () => clearInterval(interval);
+  }, [canvasRef]);
+  return null;
+}
+
+// 16. Blockchain Nodes
+function BlockchainNodes({ canvasRef }) {
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d');
+    canvas.width = canvas.offsetWidth;
+    canvas.height = canvas.offsetHeight;
+
+    const blocks = Array(12).fill(0).map(() => ({
+      x: Math.random() * canvas.width,
+      y: Math.random() * canvas.height,
+      size: 15 + Math.random() * 10,
+      pulse: Math.random() * Math.PI * 2
+    }));
+
+    const draw = () => {
+      ctx.fillStyle = 'rgba(12, 10, 8, 0.1)';
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      // Draw connections
+      for (let i = 0; i < blocks.length - 1; i++) {
+        ctx.beginPath();
+        ctx.moveTo(blocks[i].x, blocks[i].y);
+        ctx.lineTo(blocks[i + 1].x, blocks[i + 1].y);
+        ctx.strokeStyle = 'rgba(112, 192, 96, 0.2)';
+        ctx.lineWidth = 1;
+        ctx.stroke();
+      }
+
+      // Draw blocks
+      for (const b of blocks) {
+        b.pulse += 0.03;
+        const glow = 0.3 + Math.sin(b.pulse) * 0.15;
+
+        ctx.strokeStyle = `rgba(112, 192, 96, ${glow})`;
+        ctx.lineWidth = 2;
+        ctx.strokeRect(b.x - b.size/2, b.y - b.size/2, b.size, b.size);
+
+        ctx.fillStyle = `rgba(112, 192, 96, ${glow * 0.3})`;
+        ctx.fillRect(b.x - b.size/2, b.y - b.size/2, b.size, b.size);
+      }
+    };
+
+    const interval = setInterval(draw, 40);
+    return () => clearInterval(interval);
+  }, [canvasRef]);
+  return null;
+}
+
+// 17. Waveform
+function Waveform({ canvasRef }) {
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d');
+    canvas.width = canvas.offsetWidth;
+    canvas.height = canvas.offsetHeight;
+
+    let time = 0;
+
+    const draw = () => {
+      ctx.fillStyle = 'rgba(12, 10, 8, 0.15)';
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      const centerY = canvas.height / 2;
+
+      ctx.beginPath();
+      ctx.moveTo(0, centerY);
+
+      for (let x = 0; x < canvas.width; x++) {
+        const y = centerY +
+          Math.sin(x * 0.02 + time) * 20 +
+          Math.sin(x * 0.01 + time * 0.5) * 30 +
+          Math.sin(x * 0.005 + time * 0.3) * 15;
+        ctx.lineTo(x, y);
+      }
+
+      ctx.strokeStyle = 'rgba(112, 192, 96, 0.5)';
+      ctx.lineWidth = 2;
+      ctx.stroke();
+
+      // Second wave
+      ctx.beginPath();
+      ctx.moveTo(0, centerY);
+      for (let x = 0; x < canvas.width; x++) {
+        const y = centerY +
+          Math.sin(x * 0.015 + time + 1) * 15 +
+          Math.sin(x * 0.008 + time * 0.7) * 25;
+        ctx.lineTo(x, y);
+      }
+      ctx.strokeStyle = 'rgba(112, 192, 96, 0.25)';
+      ctx.stroke();
+
+      time += 0.05;
+    };
+
+    const interval = setInterval(draw, 30);
+    return () => clearInterval(interval);
+  }, [canvasRef]);
+  return null;
+}
+
+// 18. Starfield Hyperspace
+function Starfield({ canvasRef }) {
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d');
+    canvas.width = canvas.offsetWidth;
+    canvas.height = canvas.offsetHeight;
+
+    const stars = Array(100).fill(0).map(() => ({
+      x: Math.random() * canvas.width - canvas.width / 2,
+      y: Math.random() * canvas.height - canvas.height / 2,
+      z: Math.random() * canvas.width
+    }));
+
+    const draw = () => {
+      ctx.fillStyle = 'rgba(12, 10, 8, 0.2)';
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      const cx = canvas.width / 2;
+      const cy = canvas.height / 2;
+
+      for (const star of stars) {
+        star.z -= 3;
+        if (star.z <= 0) {
+          star.x = Math.random() * canvas.width - cx;
+          star.y = Math.random() * canvas.height - cy;
+          star.z = canvas.width;
+        }
+
+        const sx = (star.x / star.z) * 200 + cx;
+        const sy = (star.y / star.z) * 200 + cy;
+        const size = (1 - star.z / canvas.width) * 3;
+        const opacity = (1 - star.z / canvas.width) * 0.8;
+
+        ctx.beginPath();
+        ctx.arc(sx, sy, size, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(112, 192, 96, ${opacity})`;
+        ctx.fill();
+      }
+    };
+
+    const interval = setInterval(draw, 30);
+    return () => clearInterval(interval);
+  }, [canvasRef]);
+  return null;
+}
+
+// 19. Hex Grid
+function HexGrid({ canvasRef }) {
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d');
+    canvas.width = canvas.offsetWidth;
+    canvas.height = canvas.offsetHeight;
+
+    const hexSize = 25;
+    const hexes = [];
+
+    for (let row = 0; row < canvas.height / (hexSize * 1.5) + 1; row++) {
+      for (let col = 0; col < canvas.width / (hexSize * 1.73) + 1; col++) {
+        hexes.push({
+          x: col * hexSize * 1.73 + (row % 2) * hexSize * 0.865,
+          y: row * hexSize * 1.5,
+          pulse: Math.random() * Math.PI * 2,
+          active: Math.random() > 0.85
+        });
+      }
+    }
+
+    const drawHex = (x, y, size, opacity) => {
+      ctx.beginPath();
+      for (let i = 0; i < 6; i++) {
+        const angle = (Math.PI / 3) * i - Math.PI / 6;
+        const hx = x + size * Math.cos(angle);
+        const hy = y + size * Math.sin(angle);
+        if (i === 0) ctx.moveTo(hx, hy);
+        else ctx.lineTo(hx, hy);
+      }
+      ctx.closePath();
+      ctx.strokeStyle = `rgba(112, 192, 96, ${opacity})`;
+      ctx.stroke();
+    };
+
+    const draw = () => {
+      ctx.fillStyle = 'rgba(12, 10, 8, 0.1)';
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      for (const hex of hexes) {
+        hex.pulse += 0.02;
+        if (hex.active) {
+          const opacity = 0.1 + Math.sin(hex.pulse) * 0.1;
+          drawHex(hex.x, hex.y, hexSize, opacity);
+        } else if (Math.random() > 0.999) {
+          hex.active = true;
+        }
+      }
+    };
+
+    const interval = setInterval(draw, 50);
+    return () => clearInterval(interval);
+  }, [canvasRef]);
+  return null;
+}
+
+// 20. Smoke/Fog
+function SmokeFog({ canvasRef }) {
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d');
+    canvas.width = canvas.offsetWidth;
+    canvas.height = canvas.offsetHeight;
+
+    const particles = Array(40).fill(0).map(() => ({
+      x: Math.random() * canvas.width,
+      y: canvas.height + Math.random() * 50,
+      size: 30 + Math.random() * 50,
+      speedY: -0.3 - Math.random() * 0.3,
+      speedX: (Math.random() - 0.5) * 0.5,
+      opacity: 0.02 + Math.random() * 0.03
+    }));
+
+    const draw = () => {
+      ctx.fillStyle = 'rgba(12, 10, 8, 0.05)';
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      for (const p of particles) {
+        const gradient = ctx.createRadialGradient(p.x, p.y, 0, p.x, p.y, p.size);
+        gradient.addColorStop(0, `rgba(112, 192, 96, ${p.opacity})`);
+        gradient.addColorStop(1, 'rgba(112, 192, 96, 0)');
+
+        ctx.fillStyle = gradient;
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+        ctx.fill();
+
+        p.y += p.speedY;
+        p.x += p.speedX;
+        p.size += 0.1;
+        p.opacity *= 0.995;
+
+        if (p.y < -p.size || p.opacity < 0.005) {
+          p.y = canvas.height + 20;
+          p.x = Math.random() * canvas.width;
+          p.size = 30 + Math.random() * 50;
+          p.opacity = 0.02 + Math.random() * 0.03;
+        }
+      }
+    };
+
+    const interval = setInterval(draw, 30);
+    return () => clearInterval(interval);
+  }, [canvasRef]);
+  return null;
+}
+
 // Demo Section Component
 function EffectDemo({ title, description, Effect }) {
   const canvasRef = useRef(null);
@@ -533,10 +1073,10 @@ export default function EffectsDemo() {
         </div>
 
         <p className="text-[#a09080] font-mono text-sm mb-8">
-          10 matrix-style background variations:
+          20 cyberpunk background variations:
         </p>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
           <EffectDemo title="1. classic" description="traditional matrix rain" Effect={MatrixClassic} />
           <EffectDemo title="2. sparse" description="minimal streams" Effect={MatrixSparse} />
           <EffectDemo title="3. glow" description="with bloom effect" Effect={MatrixGlow} />
@@ -547,6 +1087,16 @@ export default function EffectsDemo() {
           <EffectDemo title="8. hex" description="hexadecimal codes" Effect={MatrixHex} />
           <EffectDemo title="9. code" description="programming symbols" Effect={MatrixCode} />
           <EffectDemo title="10. minimal" description="super subtle" Effect={MatrixMinimal} />
+          <EffectDemo title="11. neural" description="connected nodes" Effect={NeuralNetwork} />
+          <EffectDemo title="12. cyber grid" description="tron style" Effect={CyberGrid} />
+          <EffectDemo title="13. constellation" description="pulsing particles" Effect={ParticleConstellation} />
+          <EffectDemo title="14. circuit" description="pcb traces" Effect={CircuitBoard} />
+          <EffectDemo title="15. glitch" description="scanlines & noise" Effect={GlitchEffect} />
+          <EffectDemo title="16. blockchain" description="connected blocks" Effect={BlockchainNodes} />
+          <EffectDemo title="17. waveform" description="audio visualizer" Effect={Waveform} />
+          <EffectDemo title="18. starfield" description="hyperspace travel" Effect={Starfield} />
+          <EffectDemo title="19. hex grid" description="honeycomb pattern" Effect={HexGrid} />
+          <EffectDemo title="20. smoke" description="rising fog" Effect={SmokeFog} />
         </div>
       </div>
     </div>
