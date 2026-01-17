@@ -88,16 +88,21 @@ export default function GridHorizonBackground() {
         }
       }
 
-      // Halo at vanishing point - clipped just below horizon where first line starts
+      // Halo at vanishing point - clipped to triangular area matching grid angle
       ctx.save();
       ctx.beginPath();
-      ctx.rect(0, 0, canvas.width, horizon + 5);
+      // Triangle from top corners down to vanishing point at horizon
+      ctx.moveTo(0, 0);
+      ctx.lineTo(canvas.width, 0);
+      ctx.lineTo(vanishX, horizon);
+      ctx.closePath();
       ctx.clip();
-      const gradient = ctx.createRadialGradient(vanishX, horizon, 0, vanishX, horizon, 150);
-      gradient.addColorStop(0, 'rgba(112, 192, 96, 0.18)');
+      const gradient = ctx.createRadialGradient(vanishX, horizon, 0, vanishX, horizon, 200);
+      gradient.addColorStop(0, 'rgba(112, 192, 96, 0.2)');
+      gradient.addColorStop(0.5, 'rgba(112, 192, 96, 0.08)');
       gradient.addColorStop(1, 'rgba(112, 192, 96, 0)');
       ctx.fillStyle = gradient;
-      ctx.fillRect(vanishX - 150, horizon - 150, 300, 155);
+      ctx.fillRect(0, 0, canvas.width, horizon);
       ctx.restore();
 
       offset += 0.012;
