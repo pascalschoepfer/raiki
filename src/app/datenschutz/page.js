@@ -158,7 +158,7 @@ export default function Datenschutz() {
                 <span className="text-[#4a4035]">|</span>
                 <a href="/services" className="text-[#a09080] hover:text-[#e8e0d5] text-xs sm:text-sm tracking-wider transition-colors">services</a>
                 <span className="text-[#4a4035]">|</span>
-                <a href="/about" className="text-[#a09080] hover:text-[#e8e0d5] text-xs sm:text-sm tracking-wider transition-colors">about</a>
+                <a href="/contact" className="text-[#a09080] hover:text-[#e8e0d5] text-xs sm:text-sm tracking-wider transition-colors">contact</a>
               </div>
               <LanguageToggle lang={lang} onToggle={toggleLang} />
             </div>
