@@ -4,6 +4,7 @@ import RaikiLogo from './components/RaikiLogo';
 import MatrixText from './components/MatrixText';
 import LanguageToggle, { useLanguage } from './components/LanguageToggle';
 import Footer from './components/Footer';
+import GridHorizonBackground from './components/GridHorizonBackground';
 
 export default function Home() {
   const { lang, toggleLang } = useLanguage();
@@ -12,6 +13,9 @@ export default function Home() {
     <div className="h-screen overflow-hidden bg-gradient-to-br from-[#100c08] via-[#1a1510] to-[#251c15]">
         {/* Hero Section */}
         <div className="relative overflow-hidden h-full">
+
+        {/* Grid Horizon Background */}
+        <GridHorizonBackground />
 
         {/* Header with Navigation */}
         <header className="absolute top-0 left-0 right-0 z-20 px-6 py-3 bg-transparent">
