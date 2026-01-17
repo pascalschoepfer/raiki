@@ -2845,6 +2845,1081 @@ function RainLight({ canvasRef }) {
   return null;
 }
 
+// === NEW BATCH: Organic Growth & Subtle Effects (51-70) ===
+
+// 51. Mycelium (Growing fungal network)
+function Mycelium({ canvasRef }) {
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d');
+    canvas.width = canvas.offsetWidth;
+    canvas.height = canvas.offsetHeight;
+
+    const threads = [];
+    const maxThreads = 15;
+
+    const draw = () => {
+      ctx.fillStyle = 'rgba(12, 10, 8, 0.02)';
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      // Spawn new thread from bottom
+      if (threads.length < maxThreads && Math.random() > 0.97) {
+        threads.push({
+          x: Math.random() * canvas.width,
+          y: canvas.height,
+          angle: -Math.PI / 2 + (Math.random() - 0.5) * 0.5,
+          length: 0,
+          maxLength: 80 + Math.random() * 120,
+          speed: 0.3 + Math.random() * 0.3,
+          branches: [],
+          opacity: 0.3 + Math.random() * 0.2
+        });
+      }
+
+      for (let i = threads.length - 1; i >= 0; i--) {
+        const t = threads[i];
+
+        // Grow main thread
+        if (t.length < t.maxLength) {
+          const endX = t.x + Math.cos(t.angle) * t.length;
+          const endY = t.y + Math.sin(t.angle) * t.length;
+
+          ctx.beginPath();
+          ctx.moveTo(t.x, t.y);
+          ctx.lineTo(endX, endY);
+          ctx.strokeStyle = `rgba(112, 192, 96, ${t.opacity * (1 - t.length / t.maxLength / 2)})`;
+          ctx.lineWidth = 1;
+          ctx.stroke();
+
+          // Random branching
+          if (Math.random() > 0.96 && t.branches.length < 4) {
+            t.branches.push({
+              startLength: t.length,
+              angle: t.angle + (Math.random() > 0.5 ? 1 : -1) * (0.3 + Math.random() * 0.5),
+              length: 0,
+              maxLength: 20 + Math.random() * 40
+            });
+          }
+
+          t.length += t.speed;
+          t.angle += (Math.random() - 0.5) * 0.05;
+        }
+
+        // Draw branches
+        for (const b of t.branches) {
+          if (b.length < b.maxLength) {
+            const startX = t.x + Math.cos(t.angle) * b.startLength;
+            const startY = t.y + Math.sin(t.angle) * b.startLength;
+            const endX = startX + Math.cos(b.angle) * b.length;
+            const endY = startY + Math.sin(b.angle) * b.length;
+
+            ctx.beginPath();
+            ctx.moveTo(startX, startY);
+            ctx.lineTo(endX, endY);
+            ctx.strokeStyle = `rgba(112, 192, 96, ${t.opacity * 0.5})`;
+            ctx.stroke();
+
+            b.length += t.speed * 0.7;
+          }
+        }
+
+        // Remove old threads
+        if (t.length >= t.maxLength) {
+          t.opacity *= 0.995;
+          if (t.opacity < 0.02) threads.splice(i, 1);
+        }
+      }
+    };
+
+    const interval = setInterval(draw, 40);
+    return () => clearInterval(interval);
+  }, [canvasRef]);
+  return null;
+}
+
+// 52. Root Network (Spreading roots from top)
+function RootNetwork({ canvasRef }) {
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d');
+    canvas.width = canvas.offsetWidth;
+    canvas.height = canvas.offsetHeight;
+
+    const roots = [];
+
+    const grow = (root) => {
+      if (root.depth > 5 || root.y > canvas.height) return;
+
+      root.points.push({ x: root.x, y: root.y });
+      root.x += (Math.random() - 0.5) * 8;
+      root.y += 1 + Math.random() * 2;
+
+      // Branch
+      if (Math.random() > 0.97 && root.depth < 4) {
+        roots.push({
+          x: root.x,
+          y: root.y,
+          points: [{ x: root.x, y: root.y }],
+          depth: root.depth + 1,
+          opacity: root.opacity * 0.7
+        });
+      }
+    };
+
+    // Initial root
+    if (roots.length === 0) {
+      roots.push({
+        x: canvas.width / 2,
+        y: 0,
+        points: [],
+        depth: 0,
+        opacity: 0.4
+      });
+    }
+
+    const draw = () => {
+      ctx.fillStyle = 'rgba(12, 10, 8, 0.01)';
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      for (const root of roots) {
+        grow(root);
+
+        if (root.points.length > 1) {
+          ctx.beginPath();
+          ctx.moveTo(root.points[0].x, root.points[0].y);
+          for (let i = 1; i < root.points.length; i++) {
+            ctx.lineTo(root.points[i].x, root.points[i].y);
+          }
+          ctx.strokeStyle = `rgba(112, 192, 96, ${root.opacity})`;
+          ctx.lineWidth = Math.max(1, 3 - root.depth * 0.5);
+          ctx.stroke();
+        }
+      }
+
+      // Reset when too many
+      if (roots.length > 50 || (roots.length > 0 && roots[0].y > canvas.height)) {
+        roots.length = 0;
+        ctx.fillStyle = 'rgba(12, 10, 8, 0.3)';
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+        roots.push({
+          x: Math.random() * canvas.width,
+          y: 0,
+          points: [],
+          depth: 0,
+          opacity: 0.4
+        });
+      }
+    };
+
+    const interval = setInterval(draw, 50);
+    return () => clearInterval(interval);
+  }, [canvasRef]);
+  return null;
+}
+
+// 53. Lichen Growth (Organic spreading pattern)
+function LichenGrowth({ canvasRef }) {
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d');
+    canvas.width = canvas.offsetWidth;
+    canvas.height = canvas.offsetHeight;
+
+    const cells = [];
+    const cellSize = 4;
+
+    // Start with a few seed points
+    for (let i = 0; i < 3; i++) {
+      cells.push({
+        x: Math.random() * canvas.width,
+        y: Math.random() * canvas.height,
+        age: 0
+      });
+    }
+
+    const draw = () => {
+      ctx.fillStyle = 'rgba(12, 10, 8, 0.005)';
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      // Grow new cells
+      if (cells.length < 500 && Math.random() > 0.7) {
+        const parent = cells[Math.floor(Math.random() * cells.length)];
+        const angle = Math.random() * Math.PI * 2;
+        const dist = cellSize + Math.random() * cellSize;
+        cells.push({
+          x: parent.x + Math.cos(angle) * dist,
+          y: parent.y + Math.sin(angle) * dist,
+          age: 0
+        });
+      }
+
+      // Draw cells
+      for (const cell of cells) {
+        cell.age++;
+        const opacity = Math.min(0.15, cell.age * 0.002);
+        ctx.beginPath();
+        ctx.arc(cell.x, cell.y, cellSize / 2, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(112, 192, 96, ${opacity})`;
+        ctx.fill();
+      }
+
+      // Reset periodically
+      if (cells.length >= 500) {
+        cells.length = 0;
+        ctx.fillStyle = 'rgba(12, 10, 8, 0.5)';
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+        for (let i = 0; i < 3; i++) {
+          cells.push({
+            x: Math.random() * canvas.width,
+            y: Math.random() * canvas.height,
+            age: 0
+          });
+        }
+      }
+    };
+
+    const interval = setInterval(draw, 30);
+    return () => clearInterval(interval);
+  }, [canvasRef]);
+  return null;
+}
+
+// 54. Vine Crawl (Vines growing across screen)
+function VineCrawl({ canvasRef }) {
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d');
+    canvas.width = canvas.offsetWidth;
+    canvas.height = canvas.offsetHeight;
+
+    const vines = [];
+
+    const draw = () => {
+      ctx.fillStyle = 'rgba(12, 10, 8, 0.02)';
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      // Spawn new vine
+      if (vines.length < 5 && Math.random() > 0.99) {
+        const startSide = Math.floor(Math.random() * 4);
+        let x, y, angle;
+        if (startSide === 0) { x = 0; y = Math.random() * canvas.height; angle = 0; }
+        else if (startSide === 1) { x = canvas.width; y = Math.random() * canvas.height; angle = Math.PI; }
+        else if (startSide === 2) { x = Math.random() * canvas.width; y = 0; angle = Math.PI / 2; }
+        else { x = Math.random() * canvas.width; y = canvas.height; angle = -Math.PI / 2; }
+
+        vines.push({ x, y, angle, points: [{ x, y }], age: 0 });
+      }
+
+      for (let i = vines.length - 1; i >= 0; i--) {
+        const v = vines[i];
+        v.age++;
+
+        if (v.age < 300 && v.x > -10 && v.x < canvas.width + 10 && v.y > -10 && v.y < canvas.height + 10) {
+          v.angle += (Math.random() - 0.5) * 0.15;
+          v.x += Math.cos(v.angle) * 1.5;
+          v.y += Math.sin(v.angle) * 1.5;
+          v.points.push({ x: v.x, y: v.y });
+
+          // Draw vine
+          ctx.beginPath();
+          ctx.moveTo(v.points[0].x, v.points[0].y);
+          for (const p of v.points) ctx.lineTo(p.x, p.y);
+          ctx.strokeStyle = `rgba(112, 192, 96, ${0.2 - v.age * 0.0005})`;
+          ctx.lineWidth = 1.5;
+          ctx.stroke();
+        } else {
+          vines.splice(i, 1);
+        }
+      }
+    };
+
+    const interval = setInterval(draw, 35);
+    return () => clearInterval(interval);
+  }, [canvasRef]);
+  return null;
+}
+
+// 55. Soft Rain (Slower, more subtle cyber rain)
+function SoftRain({ canvasRef }) {
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d');
+    canvas.width = canvas.offsetWidth;
+    canvas.height = canvas.offsetHeight;
+
+    const drops = Array(30).fill(0).map(() => ({
+      x: Math.random() * canvas.width,
+      y: Math.random() * canvas.height,
+      length: 20 + Math.random() * 30,
+      speed: 1 + Math.random() * 1.5,
+      opacity: 0.05 + Math.random() * 0.1
+    }));
+
+    const draw = () => {
+      ctx.fillStyle = 'rgba(12, 10, 8, 0.06)';
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      for (const drop of drops) {
+        const gradient = ctx.createLinearGradient(drop.x, drop.y, drop.x, drop.y + drop.length);
+        gradient.addColorStop(0, `rgba(120, 200, 110, ${drop.opacity})`);
+        gradient.addColorStop(1, 'rgba(112, 192, 96, 0)');
+
+        ctx.beginPath();
+        ctx.moveTo(drop.x, drop.y);
+        ctx.lineTo(drop.x, drop.y + drop.length);
+        ctx.strokeStyle = gradient;
+        ctx.lineWidth = 1;
+        ctx.stroke();
+
+        drop.y += drop.speed;
+        if (drop.y > canvas.height) {
+          drop.y = -drop.length;
+          drop.x = Math.random() * canvas.width;
+        }
+      }
+    };
+
+    const interval = setInterval(draw, 45);
+    return () => clearInterval(interval);
+  }, [canvasRef]);
+  return null;
+}
+
+// 56. Deep Stars (Very slow parallax starfield)
+function DeepStars({ canvasRef }) {
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d');
+    canvas.width = canvas.offsetWidth;
+    canvas.height = canvas.offsetHeight;
+
+    const layers = [
+      { stars: [], speed: 0.02, size: 0.5, opacity: 0.15, count: 40 },
+      { stars: [], speed: 0.05, size: 1, opacity: 0.25, count: 30 },
+      { stars: [], speed: 0.1, size: 1.5, opacity: 0.4, count: 20 }
+    ];
+
+    for (const layer of layers) {
+      for (let i = 0; i < layer.count; i++) {
+        layer.stars.push({
+          x: Math.random() * canvas.width,
+          y: Math.random() * canvas.height,
+          twinkle: Math.random() * Math.PI * 2
+        });
+      }
+    }
+
+    const draw = () => {
+      ctx.fillStyle = 'rgba(12, 10, 8, 0.05)';
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      for (const layer of layers) {
+        for (const star of layer.stars) {
+          star.twinkle += 0.02;
+          star.y += layer.speed;
+          if (star.y > canvas.height) {
+            star.y = 0;
+            star.x = Math.random() * canvas.width;
+          }
+
+          const twinkleOpacity = layer.opacity + Math.sin(star.twinkle) * 0.1;
+          ctx.beginPath();
+          ctx.arc(star.x, star.y, layer.size, 0, Math.PI * 2);
+          ctx.fillStyle = `rgba(140, 210, 130, ${twinkleOpacity})`;
+          ctx.fill();
+        }
+      }
+    };
+
+    const interval = setInterval(draw, 50);
+    return () => clearInterval(interval);
+  }, [canvasRef]);
+  return null;
+}
+
+// 57. Perspective Tunnel (3D tunnel effect)
+function PerspectiveTunnel({ canvasRef }) {
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d');
+    canvas.width = canvas.offsetWidth;
+    canvas.height = canvas.offsetHeight;
+
+    const cx = canvas.width / 2;
+    const cy = canvas.height / 2;
+    let time = 0;
+
+    const draw = () => {
+      ctx.fillStyle = 'rgba(12, 10, 8, 0.15)';
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      // Draw concentric rectangles
+      for (let i = 0; i < 15; i++) {
+        const t = (i + time) % 15;
+        const scale = 0.05 + t * 0.07;
+        const w = canvas.width * scale;
+        const h = canvas.height * scale;
+        const opacity = 0.3 - t * 0.02;
+
+        ctx.strokeStyle = `rgba(112, 192, 96, ${Math.max(0, opacity)})`;
+        ctx.lineWidth = 1;
+        ctx.strokeRect(cx - w / 2, cy - h / 2, w, h);
+      }
+
+      // Corner lines
+      ctx.strokeStyle = 'rgba(112, 192, 96, 0.1)';
+      ctx.beginPath();
+      ctx.moveTo(0, 0); ctx.lineTo(cx, cy);
+      ctx.moveTo(canvas.width, 0); ctx.lineTo(cx, cy);
+      ctx.moveTo(0, canvas.height); ctx.lineTo(cx, cy);
+      ctx.moveTo(canvas.width, canvas.height); ctx.lineTo(cx, cy);
+      ctx.stroke();
+
+      time += 0.03;
+    };
+
+    const interval = setInterval(draw, 40);
+    return () => clearInterval(interval);
+  }, [canvasRef]);
+  return null;
+}
+
+// 58. Soft Glitch (Subtle glitch effect)
+function SoftGlitch({ canvasRef }) {
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d');
+    canvas.width = canvas.offsetWidth;
+    canvas.height = canvas.offsetHeight;
+
+    const draw = () => {
+      ctx.fillStyle = 'rgba(12, 10, 8, 0.15)';
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      // Subtle scanlines
+      for (let y = 0; y < canvas.height; y += 4) {
+        ctx.fillStyle = 'rgba(112, 192, 96, 0.01)';
+        ctx.fillRect(0, y, canvas.width, 1);
+      }
+
+      // Occasional soft glitch bar
+      if (Math.random() > 0.95) {
+        const y = Math.random() * canvas.height;
+        const height = 2 + Math.random() * 5;
+        ctx.fillStyle = `rgba(112, 192, 96, ${0.03 + Math.random() * 0.04})`;
+        ctx.fillRect(0, y, canvas.width, height);
+      }
+
+      // Very rare RGB shift
+      if (Math.random() > 0.99) {
+        ctx.fillStyle = 'rgba(255, 120, 120, 0.02)';
+        ctx.fillRect(1, 0, canvas.width, canvas.height);
+        ctx.fillStyle = 'rgba(120, 120, 255, 0.02)';
+        ctx.fillRect(-1, 0, canvas.width, canvas.height);
+      }
+    };
+
+    const interval = setInterval(draw, 50);
+    return () => clearInterval(interval);
+  }, [canvasRef]);
+  return null;
+}
+
+// 59. Hologram Soft (Subtle VHS effect)
+function HologramSoft({ canvasRef }) {
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d');
+    canvas.width = canvas.offsetWidth;
+    canvas.height = canvas.offsetHeight;
+
+    let time = 0;
+
+    const draw = () => {
+      ctx.fillStyle = 'rgba(12, 10, 8, 0.08)';
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      // Gentle moving scanlines
+      for (let y = 0; y < canvas.height; y += 3) {
+        const wave = Math.sin(y * 0.05 + time) * 0.5;
+        ctx.fillStyle = `rgba(112, 192, 96, ${0.01 + wave * 0.005})`;
+        ctx.fillRect(0, y, canvas.width, 1);
+      }
+
+      // Soft horizontal wave
+      const waveY = (Math.sin(time * 0.5) * 0.5 + 0.5) * canvas.height;
+      ctx.fillStyle = 'rgba(112, 192, 96, 0.03)';
+      ctx.fillRect(0, waveY - 10, canvas.width, 20);
+
+      time += 0.05;
+    };
+
+    const interval = setInterval(draw, 40);
+    return () => clearInterval(interval);
+  }, [canvasRef]);
+  return null;
+}
+
+// 60. Constellation Static (Non-moving connected dots)
+function ConstellationStatic({ canvasRef }) {
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d');
+    canvas.width = canvas.offsetWidth;
+    canvas.height = canvas.offsetHeight;
+
+    const stars = Array(30).fill(0).map(() => ({
+      x: Math.random() * canvas.width,
+      y: Math.random() * canvas.height,
+      pulse: Math.random() * Math.PI * 2
+    }));
+
+    const draw = () => {
+      ctx.fillStyle = 'rgba(12, 10, 8, 0.08)';
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      // Draw connections
+      for (let i = 0; i < stars.length; i++) {
+        for (let j = i + 1; j < stars.length; j++) {
+          const dx = stars[i].x - stars[j].x;
+          const dy = stars[i].y - stars[j].y;
+          const dist = Math.sqrt(dx * dx + dy * dy);
+          if (dist < 100) {
+            ctx.beginPath();
+            ctx.moveTo(stars[i].x, stars[i].y);
+            ctx.lineTo(stars[j].x, stars[j].y);
+            ctx.strokeStyle = `rgba(112, 192, 96, ${0.06 - dist / 1600})`;
+            ctx.stroke();
+          }
+        }
+      }
+
+      // Draw pulsing stars
+      for (const star of stars) {
+        star.pulse += 0.03;
+        const size = 1.5 + Math.sin(star.pulse) * 0.5;
+        const opacity = 0.3 + Math.sin(star.pulse) * 0.15;
+
+        ctx.beginPath();
+        ctx.arc(star.x, star.y, size, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(140, 210, 130, ${opacity})`;
+        ctx.fill();
+      }
+    };
+
+    const interval = setInterval(draw, 45);
+    return () => clearInterval(interval);
+  }, [canvasRef]);
+  return null;
+}
+
+// 61. Coral Growth (Branching coral structure)
+function CoralGrowth({ canvasRef }) {
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d');
+    canvas.width = canvas.offsetWidth;
+    canvas.height = canvas.offsetHeight;
+
+    const branches = [];
+    let resetTimer = 0;
+
+    const addBranch = (x, y, angle, gen) => {
+      if (gen > 6) return;
+      branches.push({ x, y, angle, gen, length: 0, maxLength: 15 + Math.random() * 25, growing: true });
+    };
+
+    addBranch(canvas.width / 2, canvas.height, -Math.PI / 2, 0);
+
+    const draw = () => {
+      ctx.fillStyle = 'rgba(12, 10, 8, 0.01)';
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      for (const b of branches) {
+        if (b.growing && b.length < b.maxLength) {
+          b.length += 0.5;
+
+          const endX = b.x + Math.cos(b.angle) * b.length;
+          const endY = b.y + Math.sin(b.angle) * b.length;
+
+          ctx.beginPath();
+          ctx.moveTo(b.x, b.y);
+          ctx.lineTo(endX, endY);
+          ctx.strokeStyle = `rgba(112, 192, 96, ${0.25 - b.gen * 0.03})`;
+          ctx.lineWidth = Math.max(0.5, 2 - b.gen * 0.3);
+          ctx.stroke();
+
+          if (b.length >= b.maxLength && b.gen < 6) {
+            const spread = 0.3 + Math.random() * 0.3;
+            addBranch(endX, endY, b.angle - spread, b.gen + 1);
+            addBranch(endX, endY, b.angle + spread, b.gen + 1);
+            b.growing = false;
+          }
+        }
+      }
+
+      resetTimer++;
+      if (resetTimer > 400 || branches.length > 200) {
+        branches.length = 0;
+        resetTimer = 0;
+        ctx.fillStyle = 'rgba(12, 10, 8, 0.4)';
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+        addBranch(Math.random() * canvas.width, canvas.height, -Math.PI / 2 + (Math.random() - 0.5) * 0.3, 0);
+      }
+    };
+
+    const interval = setInterval(draw, 30);
+    return () => clearInterval(interval);
+  }, [canvasRef]);
+  return null;
+}
+
+// 62. Moss Spread (Slow organic spread)
+function MossSpread({ canvasRef }) {
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d');
+    canvas.width = canvas.offsetWidth;
+    canvas.height = canvas.offsetHeight;
+
+    const particles = [{ x: canvas.width / 2, y: canvas.height / 2 }];
+
+    const draw = () => {
+      ctx.fillStyle = 'rgba(12, 10, 8, 0.003)';
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      // Grow
+      if (particles.length < 300 && Math.random() > 0.6) {
+        const parent = particles[Math.floor(Math.random() * particles.length)];
+        const angle = Math.random() * Math.PI * 2;
+        particles.push({
+          x: parent.x + Math.cos(angle) * (2 + Math.random() * 3),
+          y: parent.y + Math.sin(angle) * (2 + Math.random() * 3)
+        });
+      }
+
+      // Draw
+      for (const p of particles) {
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, 1.5, 0, Math.PI * 2);
+        ctx.fillStyle = 'rgba(112, 192, 96, 0.08)';
+        ctx.fill();
+      }
+
+      // Reset
+      if (particles.length >= 300) {
+        particles.length = 0;
+        ctx.fillStyle = 'rgba(12, 10, 8, 0.3)';
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+        particles.push({ x: Math.random() * canvas.width, y: Math.random() * canvas.height });
+      }
+    };
+
+    const interval = setInterval(draw, 40);
+    return () => clearInterval(interval);
+  }, [canvasRef]);
+  return null;
+}
+
+// 63. Grid Horizon (Perspective grid floor)
+function GridHorizon({ canvasRef }) {
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d');
+    canvas.width = canvas.offsetWidth;
+    canvas.height = canvas.offsetHeight;
+
+    const horizon = canvas.height * 0.4;
+    const cx = canvas.width / 2;
+    let offset = 0;
+
+    const draw = () => {
+      ctx.fillStyle = '#0c0a08';
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      ctx.strokeStyle = 'rgba(112, 192, 96, 0.2)';
+      ctx.lineWidth = 1;
+
+      // Converging lines
+      for (let i = -10; i <= 10; i++) {
+        const x = cx + i * 50;
+        ctx.beginPath();
+        ctx.moveTo(x, canvas.height);
+        ctx.lineTo(cx, horizon);
+        ctx.stroke();
+      }
+
+      // Horizontal lines with perspective
+      for (let i = 0; i < 15; i++) {
+        const t = ((i + offset) % 15) / 15;
+        const y = horizon + (canvas.height - horizon) * Math.pow(t, 1.3);
+        const spread = (y - horizon) / (canvas.height - horizon) * canvas.width;
+
+        ctx.strokeStyle = `rgba(112, 192, 96, ${0.05 + t * 0.15})`;
+        ctx.beginPath();
+        ctx.moveTo(cx - spread, y);
+        ctx.lineTo(cx + spread, y);
+        ctx.stroke();
+      }
+
+      // Horizon glow
+      const gradient = ctx.createLinearGradient(0, horizon - 20, 0, horizon + 30);
+      gradient.addColorStop(0, 'rgba(112, 192, 96, 0)');
+      gradient.addColorStop(0.5, 'rgba(112, 192, 96, 0.05)');
+      gradient.addColorStop(1, 'rgba(112, 192, 96, 0)');
+      ctx.fillStyle = gradient;
+      ctx.fillRect(0, horizon - 20, canvas.width, 50);
+
+      offset += 0.02;
+    };
+
+    const interval = setInterval(draw, 35);
+    return () => clearInterval(interval);
+  }, [canvasRef]);
+  return null;
+}
+
+// 64. Night Sky (Realistic twinkling stars)
+function NightSky({ canvasRef }) {
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d');
+    canvas.width = canvas.offsetWidth;
+    canvas.height = canvas.offsetHeight;
+
+    const stars = Array(100).fill(0).map(() => ({
+      x: Math.random() * canvas.width,
+      y: Math.random() * canvas.height,
+      size: 0.3 + Math.random() * 1.2,
+      baseOpacity: 0.2 + Math.random() * 0.4,
+      twinkleSpeed: 0.01 + Math.random() * 0.03,
+      phase: Math.random() * Math.PI * 2
+    }));
+
+    const draw = () => {
+      ctx.fillStyle = 'rgba(12, 10, 8, 0.1)';
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      for (const star of stars) {
+        star.phase += star.twinkleSpeed;
+        const twinkle = Math.sin(star.phase) * 0.3;
+        const opacity = Math.max(0.05, star.baseOpacity + twinkle);
+
+        ctx.beginPath();
+        ctx.arc(star.x, star.y, star.size, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(150, 220, 140, ${opacity})`;
+        ctx.fill();
+      }
+    };
+
+    const interval = setInterval(draw, 50);
+    return () => clearInterval(interval);
+  }, [canvasRef]);
+  return null;
+}
+
+// 65. Fractal Fern (Growing fern pattern)
+function FractalFern({ canvasRef }) {
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d');
+    canvas.width = canvas.offsetWidth;
+    canvas.height = canvas.offsetHeight;
+
+    let time = 0;
+    const cx = canvas.width / 2;
+
+    const drawFern = (x, y, angle, length, depth) => {
+      if (depth === 0 || length < 2) return;
+
+      const endX = x + Math.cos(angle) * length;
+      const endY = y + Math.sin(angle) * length;
+
+      ctx.beginPath();
+      ctx.moveTo(x, y);
+      ctx.lineTo(endX, endY);
+      ctx.strokeStyle = `rgba(112, 192, 96, ${0.15 + depth * 0.02})`;
+      ctx.lineWidth = depth * 0.3;
+      ctx.stroke();
+
+      const wave = Math.sin(time + depth) * 0.05;
+      drawFern(endX, endY, angle - 0.4 + wave, length * 0.7, depth - 1);
+      drawFern(endX, endY, angle + 0.4 + wave, length * 0.7, depth - 1);
+      drawFern(endX, endY, angle + wave, length * 0.85, depth - 1);
+    };
+
+    const draw = () => {
+      ctx.fillStyle = 'rgba(12, 10, 8, 0.1)';
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      drawFern(cx, canvas.height, -Math.PI / 2, 50, 8);
+      time += 0.02;
+    };
+
+    const interval = setInterval(draw, 50);
+    return () => clearInterval(interval);
+  }, [canvasRef]);
+  return null;
+}
+
+// 66. Gentle Pulse (Soft pulsing center glow)
+function GentlePulse({ canvasRef }) {
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d');
+    canvas.width = canvas.offsetWidth;
+    canvas.height = canvas.offsetHeight;
+
+    let time = 0;
+    const cx = canvas.width / 2;
+    const cy = canvas.height / 2;
+
+    const draw = () => {
+      ctx.fillStyle = 'rgba(12, 10, 8, 0.08)';
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      const pulse = Math.sin(time) * 0.5 + 0.5;
+      const size = 60 + pulse * 40;
+      const opacity = 0.03 + pulse * 0.02;
+
+      const gradient = ctx.createRadialGradient(cx, cy, 0, cx, cy, size);
+      gradient.addColorStop(0, `rgba(112, 192, 96, ${opacity})`);
+      gradient.addColorStop(0.5, `rgba(112, 192, 96, ${opacity * 0.5})`);
+      gradient.addColorStop(1, 'rgba(112, 192, 96, 0)');
+
+      ctx.fillStyle = gradient;
+      ctx.beginPath();
+      ctx.arc(cx, cy, size, 0, Math.PI * 2);
+      ctx.fill();
+
+      time += 0.03;
+    };
+
+    const interval = setInterval(draw, 40);
+    return () => clearInterval(interval);
+  }, [canvasRef]);
+  return null;
+}
+
+// 67. Spore Drift (Floating spores)
+function SporeDrift({ canvasRef }) {
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d');
+    canvas.width = canvas.offsetWidth;
+    canvas.height = canvas.offsetHeight;
+
+    const spores = Array(25).fill(0).map(() => ({
+      x: Math.random() * canvas.width,
+      y: Math.random() * canvas.height,
+      size: 1 + Math.random() * 2,
+      speedX: (Math.random() - 0.5) * 0.3,
+      speedY: -0.2 - Math.random() * 0.3,
+      wobble: Math.random() * Math.PI * 2,
+      opacity: 0.1 + Math.random() * 0.2
+    }));
+
+    const draw = () => {
+      ctx.fillStyle = 'rgba(12, 10, 8, 0.05)';
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      for (const s of spores) {
+        s.wobble += 0.03;
+        s.x += s.speedX + Math.sin(s.wobble) * 0.2;
+        s.y += s.speedY;
+
+        if (s.y < -10) {
+          s.y = canvas.height + 10;
+          s.x = Math.random() * canvas.width;
+        }
+
+        ctx.beginPath();
+        ctx.arc(s.x, s.y, s.size, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(140, 210, 120, ${s.opacity})`;
+        ctx.fill();
+      }
+    };
+
+    const interval = setInterval(draw, 40);
+    return () => clearInterval(interval);
+  }, [canvasRef]);
+  return null;
+}
+
+// 68. Web Threads (Spider web like threads)
+function WebThreads({ canvasRef }) {
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d');
+    canvas.width = canvas.offsetWidth;
+    canvas.height = canvas.offsetHeight;
+
+    const cx = canvas.width / 2;
+    const cy = canvas.height / 2;
+    let time = 0;
+
+    const draw = () => {
+      ctx.fillStyle = 'rgba(12, 10, 8, 0.05)';
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      // Radial threads
+      for (let i = 0; i < 12; i++) {
+        const angle = (i / 12) * Math.PI * 2 + time * 0.01;
+        const length = 80 + Math.sin(time + i) * 10;
+        ctx.beginPath();
+        ctx.moveTo(cx, cy);
+        ctx.lineTo(cx + Math.cos(angle) * length, cy + Math.sin(angle) * length);
+        ctx.strokeStyle = 'rgba(112, 192, 96, 0.1)';
+        ctx.stroke();
+      }
+
+      // Spiral threads
+      for (let r = 20; r < 80; r += 15) {
+        ctx.beginPath();
+        for (let a = 0; a < Math.PI * 2; a += 0.1) {
+          const wobble = Math.sin(a * 3 + time) * 3;
+          const x = cx + Math.cos(a) * (r + wobble);
+          const y = cy + Math.sin(a) * (r + wobble);
+          if (a === 0) ctx.moveTo(x, y);
+          else ctx.lineTo(x, y);
+        }
+        ctx.closePath();
+        ctx.strokeStyle = `rgba(112, 192, 96, ${0.05 + r * 0.0005})`;
+        ctx.stroke();
+      }
+
+      time += 0.02;
+    };
+
+    const interval = setInterval(draw, 45);
+    return () => clearInterval(interval);
+  }, [canvasRef]);
+  return null;
+}
+
+// 69. Hyperspace Slow (Slow warp effect)
+function HyperspaceSlow({ canvasRef }) {
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d');
+    canvas.width = canvas.offsetWidth;
+    canvas.height = canvas.offsetHeight;
+
+    const stars = Array(60).fill(0).map(() => ({
+      x: Math.random() * canvas.width - canvas.width / 2,
+      y: Math.random() * canvas.height - canvas.height / 2,
+      z: Math.random() * 500
+    }));
+
+    const cx = canvas.width / 2;
+    const cy = canvas.height / 2;
+
+    const draw = () => {
+      ctx.fillStyle = 'rgba(12, 10, 8, 0.1)';
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      for (const star of stars) {
+        star.z -= 1;
+        if (star.z <= 0) {
+          star.x = Math.random() * canvas.width - cx;
+          star.y = Math.random() * canvas.height - cy;
+          star.z = 500;
+        }
+
+        const sx = (star.x / star.z) * 150 + cx;
+        const sy = (star.y / star.z) * 150 + cy;
+        const size = (1 - star.z / 500) * 2;
+        const opacity = (1 - star.z / 500) * 0.5;
+
+        // Trail
+        const px = (star.x / (star.z + 10)) * 150 + cx;
+        const py = (star.y / (star.z + 10)) * 150 + cy;
+
+        ctx.beginPath();
+        ctx.moveTo(px, py);
+        ctx.lineTo(sx, sy);
+        ctx.strokeStyle = `rgba(140, 210, 130, ${opacity * 0.5})`;
+        ctx.lineWidth = size;
+        ctx.stroke();
+
+        ctx.beginPath();
+        ctx.arc(sx, sy, size, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(150, 220, 140, ${opacity})`;
+        ctx.fill();
+      }
+    };
+
+    const interval = setInterval(draw, 40);
+    return () => clearInterval(interval);
+  }, [canvasRef]);
+  return null;
+}
+
+// 70. Ambient Dust (Floating dust particles)
+function AmbientDust({ canvasRef }) {
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d');
+    canvas.width = canvas.offsetWidth;
+    canvas.height = canvas.offsetHeight;
+
+    const particles = Array(40).fill(0).map(() => ({
+      x: Math.random() * canvas.width,
+      y: Math.random() * canvas.height,
+      size: 0.5 + Math.random() * 1,
+      speedX: (Math.random() - 0.5) * 0.2,
+      speedY: (Math.random() - 0.5) * 0.2,
+      opacity: 0.05 + Math.random() * 0.1,
+      drift: Math.random() * Math.PI * 2
+    }));
+
+    const draw = () => {
+      ctx.fillStyle = 'rgba(12, 10, 8, 0.04)';
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      for (const p of particles) {
+        p.drift += 0.02;
+        p.x += p.speedX + Math.sin(p.drift) * 0.1;
+        p.y += p.speedY + Math.cos(p.drift) * 0.1;
+
+        if (p.x < 0) p.x = canvas.width;
+        if (p.x > canvas.width) p.x = 0;
+        if (p.y < 0) p.y = canvas.height;
+        if (p.y > canvas.height) p.y = 0;
+
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(140, 200, 120, ${p.opacity})`;
+        ctx.fill();
+      }
+    };
+
+    const interval = setInterval(draw, 45);
+    return () => clearInterval(interval);
+  }, [canvasRef]);
+  return null;
+}
+
 // === REPLACED MIXED EFFECTS WITH CLEAN VARIANTS ===
 
 // Old 41. Katakana Hex (Japanese + Hex codes mixed)
@@ -3591,7 +4666,7 @@ export default function EffectsDemo() {
         </div>
 
         <p className="text-[#a09080] font-mono text-sm mb-8">
-          50 cyberpunk background variations (favorites: 1, 4, 7, 8, 11, 12, 15 + mixes):
+          70 cyberpunk background variations:
         </p>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-4">
@@ -3645,6 +4720,26 @@ export default function EffectsDemo() {
           <EffectDemo title="48. electric field" description="subtle electric lines" Effect={ElectricField} />
           <EffectDemo title="49. plasma" description="organic flowing shapes" Effect={Plasma} />
           <EffectDemo title="50. rain light" description="soft glowing rain" Effect={RainLight} />
+          <EffectDemo title="51. mycelium" description="growing fungal network" Effect={Mycelium} />
+          <EffectDemo title="52. root network" description="spreading roots" Effect={RootNetwork} />
+          <EffectDemo title="53. lichen" description="organic spreading" Effect={LichenGrowth} />
+          <EffectDemo title="54. vine crawl" description="growing vines" Effect={VineCrawl} />
+          <EffectDemo title="55. soft rain" description="slow subtle rain" Effect={SoftRain} />
+          <EffectDemo title="56. deep stars" description="parallax starfield" Effect={DeepStars} />
+          <EffectDemo title="57. tunnel" description="3D perspective tunnel" Effect={PerspectiveTunnel} />
+          <EffectDemo title="58. soft glitch" description="subtle glitch" Effect={SoftGlitch} />
+          <EffectDemo title="59. hologram soft" description="subtle VHS" Effect={HologramSoft} />
+          <EffectDemo title="60. constellation" description="static connected stars" Effect={ConstellationStatic} />
+          <EffectDemo title="61. coral" description="branching coral" Effect={CoralGrowth} />
+          <EffectDemo title="62. moss" description="slow organic spread" Effect={MossSpread} />
+          <EffectDemo title="63. grid horizon" description="perspective floor" Effect={GridHorizon} />
+          <EffectDemo title="64. night sky" description="twinkling stars" Effect={NightSky} />
+          <EffectDemo title="65. fern" description="fractal fern" Effect={FractalFern} />
+          <EffectDemo title="66. gentle pulse" description="soft center glow" Effect={GentlePulse} />
+          <EffectDemo title="67. spore drift" description="floating spores" Effect={SporeDrift} />
+          <EffectDemo title="68. web threads" description="spider web pattern" Effect={WebThreads} />
+          <EffectDemo title="69. hyperspace" description="slow warp effect" Effect={HyperspaceSlow} />
+          <EffectDemo title="70. ambient dust" description="floating particles" Effect={AmbientDust} />
         </div>
       </div>
     </div>
