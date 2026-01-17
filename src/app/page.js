@@ -78,7 +78,7 @@ export default function Home() {
           </div>
         </div>
 
-        <Footer lang={lang} />
+        <Footer lang={lang} showBorder={true} />
         </div>
 
       <style jsx global>{`
