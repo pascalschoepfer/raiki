@@ -17,52 +17,46 @@ export default function GridHorizonBackground() {
     resize();
     window.addEventListener('resize', resize);
 
-    const horizon = canvas.height * 0.35;
     let offset = 0;
 
     const draw = () => {
-      const cx = canvas.width / 2;
+      // Horizon point much lower (50% instead of 30%)
+      const horizon = canvas.height * 0.5;
+      const vanishX = canvas.width / 2;
 
-      // Clear with very subtle fade
-      ctx.fillStyle = 'rgba(16, 12, 8, 0.08)';
+      // Clear canvas
+      ctx.fillStyle = 'rgba(16, 12, 8, 0.15)';
       ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-      // Very subtle grid lines
-      ctx.strokeStyle = 'rgba(112, 192, 96, 0.08)';
+      // Vertical lines converging to horizon - subtle
+      ctx.strokeStyle = 'rgba(112, 192, 96, 0.12)';
       ctx.lineWidth = 1;
 
-      // Converging vertical lines to horizon
-      for (let i = -20; i <= 20; i++) {
-        const x = cx + i * 80;
+      for (let x = -canvas.width; x < canvas.width * 2; x += 60) {
         ctx.beginPath();
         ctx.moveTo(x, canvas.height);
-        ctx.lineTo(cx, horizon);
+        ctx.lineTo(vanishX, horizon);
         ctx.stroke();
       }
 
-      // Horizontal lines with perspective - moving towards viewer
+      // Horizontal lines with perspective - moving
       for (let i = 0; i < 20; i++) {
-        const t = ((i + offset) % 20) / 20;
-        const y = horizon + (canvas.height - horizon) * Math.pow(t, 1.4);
-        const spread = (y - horizon) / (canvas.height - horizon) * canvas.width * 1.2;
+        const t = (i + offset) / 20;
+        const y = horizon + (canvas.height - horizon) * Math.pow(t, 1.5);
+        const spread = t * canvas.width;
 
-        const lineOpacity = 0.03 + t * 0.07;
-        ctx.strokeStyle = `rgba(112, 192, 96, ${lineOpacity})`;
         ctx.beginPath();
-        ctx.moveTo(cx - spread, y);
-        ctx.lineTo(cx + spread, y);
+        ctx.moveTo(vanishX - spread, y);
+        ctx.lineTo(vanishX + spread, y);
+        ctx.strokeStyle = `rgba(112, 192, 96, ${0.04 + t * 0.1})`;
         ctx.stroke();
       }
 
-      // Subtle horizon glow
-      const gradient = ctx.createLinearGradient(0, horizon - 40, 0, horizon + 60);
-      gradient.addColorStop(0, 'rgba(112, 192, 96, 0)');
-      gradient.addColorStop(0.5, 'rgba(112, 192, 96, 0.025)');
-      gradient.addColorStop(1, 'rgba(112, 192, 96, 0)');
-      ctx.fillStyle = gradient;
-      ctx.fillRect(0, horizon - 40, canvas.width, 100);
+      // No horizon glow - keeping it clean
 
       offset += 0.015;
+      if (offset >= 1) offset = 0;
+
       requestAnimationFrame(draw);
     };
 
@@ -77,7 +71,7 @@ export default function GridHorizonBackground() {
     <canvas
       ref={canvasRef}
       className="absolute inset-0 w-full h-full pointer-events-none"
-      style={{ opacity: 0.6 }}
+      style={{ opacity: 0.7 }}
     />
   );
 }
