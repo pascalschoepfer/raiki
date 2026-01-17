@@ -25,11 +25,11 @@ export default function Home() {
             {/* Navigation Buttons */}
             <div className="flex items-center gap-4">
               <div className="flex gap-2 font-mono">
-                <a href="/services" className="text-[#a09080] hover:text-[#e8e0d5] text-xs sm:text-sm tracking-wider transition-colors">services</a>
-                <span className="text-[#4a4035]">|</span>
-                <a href="/about" className="text-[#a09080] hover:text-[#e8e0d5] text-xs sm:text-sm tracking-wider transition-colors">about</a>
-                <span className="text-[#4a4035]">|</span>
-                <a href="/contact" className="text-[#a09080] hover:text-[#e8e0d5] text-xs sm:text-sm tracking-wider transition-colors">contact</a>
+                <a href="/services" className="text-[#a09080] hover:text-[#e8e0d5] text-xs sm:text-sm tracking-wider transition-all opacity-30 hover:opacity-100">services</a>
+                <span className="text-[#4a4035] opacity-30">|</span>
+                <a href="/about" className="text-[#a09080] hover:text-[#e8e0d5] text-xs sm:text-sm tracking-wider transition-all opacity-30 hover:opacity-100">about</a>
+                <span className="text-[#4a4035] opacity-30">|</span>
+                <a href="/contact" className="text-[#a09080] hover:text-[#e8e0d5] text-xs sm:text-sm tracking-wider transition-all opacity-30 hover:opacity-100">contact</a>
               </div>
               <LanguageToggle lang={lang} onToggle={toggleLang} />
             </div>
