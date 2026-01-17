@@ -31,21 +31,23 @@ export default function GridHorizonBackground() {
       ctx.fillRect(0, 0, canvas.width, canvas.height);
 
       // Halo at vanishing point - draw BEFORE grid
-      // Above horizon: full halo
-      const gradient = ctx.createRadialGradient(vanishX, horizon, 0, vanishX, horizon, 200);
+      // Above horizon (upper half of halo): full strength
+      const haloRadius = 200;
+      const gradient = ctx.createRadialGradient(vanishX, horizon, 0, vanishX, horizon, haloRadius);
       gradient.addColorStop(0, 'rgba(112, 192, 96, 0.15)');
       gradient.addColorStop(1, 'rgba(112, 192, 96, 0)');
       ctx.fillStyle = gradient;
       ctx.fillRect(0, 0, canvas.width, horizon);
 
-      // Below horizon: halo fades from 55% to 65%
-      const bottomHalf = canvas.height - horizon;
-      for (let y = horizon; y < canvas.height; y++) {
-        const progress = (y - horizon) / bottomHalf;
+      // Below horizon (lower half of halo): fade from 55% to 65% of halo's own radius
+      const fadeStartY = horizon + haloRadius * 0.55;
+      const fadeEndY = horizon + haloRadius * 0.65;
+
+      for (let y = horizon; y < horizon + haloRadius; y++) {
         let alpha = 1;
-        if (progress > 0.55) {
-          if (progress < 0.65) {
-            alpha = 1 - ((progress - 0.55) / 0.1) * 0.67;
+        if (y > fadeStartY) {
+          if (y < fadeEndY) {
+            alpha = 1 - ((y - fadeStartY) / (fadeEndY - fadeStartY)) * 0.67;
           } else {
             alpha = 0.33;
           }
