@@ -88,16 +88,16 @@ export default function GridHorizonBackground() {
         }
       }
 
-      // Halo at vanishing point - drawn last, clipped to above horizon
+      // Halo at vanishing point - clipped just below horizon where first line starts
       ctx.save();
       ctx.beginPath();
-      ctx.rect(0, 0, canvas.width, horizon);
+      ctx.rect(0, 0, canvas.width, horizon + 5);
       ctx.clip();
       const gradient = ctx.createRadialGradient(vanishX, horizon, 0, vanishX, horizon, 150);
       gradient.addColorStop(0, 'rgba(112, 192, 96, 0.18)');
       gradient.addColorStop(1, 'rgba(112, 192, 96, 0)');
       ctx.fillStyle = gradient;
-      ctx.fillRect(vanishX - 150, horizon - 150, 300, 150);
+      ctx.fillRect(vanishX - 150, horizon - 150, 300, 155);
       ctx.restore();
 
       offset += 0.012;
