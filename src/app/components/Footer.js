@@ -1,13 +1,13 @@
 'use client';
 
 export default function Footer({ lang = 'de', showBorder = false }) {
-  const baseClasses = "text-[#a09080] hover:text-[#e8e0d5] transition-colors";
+  const baseClasses = "text-[#706860] hover:text-[#a0ff90] transition-all duration-200";
   const borderClasses = showBorder
-    ? "px-2 py-1 border-b border-dashed border-[#4a4540]/40 hover:border-[#6a6560]/60"
+    ? "before:content-['['] after:content-[']'] before:text-[#505048] after:text-[#505048] hover:before:text-[#70c060] hover:after:text-[#70c060]"
     : "";
 
   return (
-    <footer className="absolute bottom-4 left-0 right-0 z-10 flex justify-center gap-3 font-mono text-[10px]">
+    <footer className="absolute bottom-4 left-0 right-0 z-10 flex justify-center gap-4 font-mono text-[10px]">
       <a href="/impressum" className={`${baseClasses} ${borderClasses}`}>
         {lang === 'de' ? 'impressum' : 'imprint'}
       </a>
