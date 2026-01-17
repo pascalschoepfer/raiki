@@ -30,15 +30,34 @@ export default function GridHorizonBackground() {
       ctx.fillStyle = 'rgba(16, 12, 8, 0.15)';
       ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-      // Halo at vanishing point - simple radial, fades towards bottom of its lower half
+      // Halo at vanishing point - normal radial
       const haloRadius = 200;
       const gradient = ctx.createRadialGradient(vanishX, horizon, 0, vanishX, horizon, haloRadius);
       gradient.addColorStop(0, 'rgba(112, 192, 96, 0.15)');
-      gradient.addColorStop(0.55, 'rgba(112, 192, 96, 0.08)');
-      gradient.addColorStop(0.65, 'rgba(112, 192, 96, 0.02)');
       gradient.addColorStop(1, 'rgba(112, 192, 96, 0)');
+
+      // Draw upper half of halo (above horizon) - full strength
       ctx.fillStyle = gradient;
-      ctx.fillRect(0, 0, canvas.width, canvas.height);
+      ctx.fillRect(0, horizon - haloRadius, canvas.width, haloRadius);
+
+      // Draw lower half of halo - fades out from 55% to 65%
+      const fadeStart = haloRadius * 0.55; // 110px below horizon
+      const fadeEnd = haloRadius * 0.65;   // 130px below horizon
+
+      for (let y = 0; y < haloRadius; y++) {
+        let alpha = 1;
+        if (y > fadeStart) {
+          if (y < fadeEnd) {
+            alpha = 1 - (y - fadeStart) / (fadeEnd - fadeStart);
+          } else {
+            alpha = 0;
+          }
+        }
+        ctx.globalAlpha = alpha;
+        ctx.fillStyle = gradient;
+        ctx.fillRect(0, horizon + y, canvas.width, 1);
+      }
+      ctx.globalAlpha = 1;
 
       ctx.lineWidth = 1;
 
