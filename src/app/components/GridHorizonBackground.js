@@ -30,6 +30,32 @@ export default function GridHorizonBackground() {
       ctx.fillStyle = 'rgba(16, 12, 8, 0.15)';
       ctx.fillRect(0, 0, canvas.width, canvas.height);
 
+      // Halo at vanishing point - draw BEFORE grid
+      // Above horizon: full halo
+      const gradient = ctx.createRadialGradient(vanishX, horizon, 0, vanishX, horizon, 200);
+      gradient.addColorStop(0, 'rgba(112, 192, 96, 0.15)');
+      gradient.addColorStop(1, 'rgba(112, 192, 96, 0)');
+      ctx.fillStyle = gradient;
+      ctx.fillRect(0, 0, canvas.width, horizon);
+
+      // Below horizon: halo fades from 55% to 65%
+      const bottomHalf = canvas.height - horizon;
+      for (let y = horizon; y < canvas.height; y++) {
+        const progress = (y - horizon) / bottomHalf;
+        let alpha = 1;
+        if (progress > 0.55) {
+          if (progress < 0.65) {
+            alpha = 1 - ((progress - 0.55) / 0.1) * 0.67;
+          } else {
+            alpha = 0.33;
+          }
+        }
+        ctx.globalAlpha = alpha;
+        ctx.fillStyle = gradient;
+        ctx.fillRect(0, y, canvas.width, 1);
+      }
+      ctx.globalAlpha = 1;
+
       ctx.lineWidth = 1;
 
       // Vertical lines - converge to horizon, then fall straight down after cliff
@@ -87,23 +113,6 @@ export default function GridHorizonBackground() {
           }
         }
       }
-
-      // Halo at vanishing point - normal radial gradient
-      const gradient = ctx.createRadialGradient(vanishX, horizon, 0, vanishX, horizon, 200);
-      gradient.addColorStop(0, 'rgba(112, 192, 96, 0.15)');
-      gradient.addColorStop(1, 'rgba(112, 192, 96, 0)');
-      ctx.fillStyle = gradient;
-      ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-      // Fade out halo in bottom half: from 55% to 65% fade to 0.05 opacity equivalent
-      const bottomHalf = canvas.height - horizon;
-      const fadeGradient = ctx.createLinearGradient(0, horizon, 0, horizon + bottomHalf);
-      fadeGradient.addColorStop(0, 'rgba(16, 12, 8, 0)');
-      fadeGradient.addColorStop(0.55, 'rgba(16, 12, 8, 0)');
-      fadeGradient.addColorStop(0.65, 'rgba(16, 12, 8, 0.66)');
-      fadeGradient.addColorStop(1, 'rgba(16, 12, 8, 0.66)');
-      ctx.fillStyle = fadeGradient;
-      ctx.fillRect(0, horizon, canvas.width, bottomHalf);
 
       offset += 0.012;
       if (offset >= 1) offset = 0;
