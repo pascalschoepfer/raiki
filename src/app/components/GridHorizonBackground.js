@@ -88,23 +88,21 @@ export default function GridHorizonBackground() {
         }
       }
 
-      // Halo at vanishing point - clipped to match grid angle (horizon to cliffY at edges)
+      // Halo at vanishing point - only in the sky area above the grid
       ctx.save();
       ctx.beginPath();
-      // Triangle matching the grid perspective - edges go down to cliffY level
+      // Clip to area ABOVE the grid - triangle pointing down to horizon
       ctx.moveTo(0, 0);
       ctx.lineTo(canvas.width, 0);
-      ctx.lineTo(canvas.width, cliffY);
       ctx.lineTo(vanishX, horizon);
-      ctx.lineTo(0, cliffY);
       ctx.closePath();
       ctx.clip();
-      const gradient = ctx.createRadialGradient(vanishX, horizon, 0, vanishX, horizon, 250);
+      const gradient = ctx.createRadialGradient(vanishX, horizon, 0, vanishX, horizon, 200);
       gradient.addColorStop(0, 'rgba(112, 192, 96, 0.2)');
-      gradient.addColorStop(0.4, 'rgba(112, 192, 96, 0.08)');
+      gradient.addColorStop(0.5, 'rgba(112, 192, 96, 0.06)');
       gradient.addColorStop(1, 'rgba(112, 192, 96, 0)');
       ctx.fillStyle = gradient;
-      ctx.fillRect(0, 0, canvas.width, cliffY);
+      ctx.fillRect(0, 0, canvas.width, horizon);
       ctx.restore();
 
       offset += 0.012;
