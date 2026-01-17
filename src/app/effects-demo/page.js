@@ -1042,6 +1042,1983 @@ function SmokeFog({ canvasRef }) {
   return null;
 }
 
+// 21. DNA Helix
+function DNAHelix({ canvasRef }) {
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d');
+    canvas.width = canvas.offsetWidth;
+    canvas.height = canvas.offsetHeight;
+
+    let time = 0;
+    const centerX = canvas.width / 2;
+
+    const draw = () => {
+      ctx.fillStyle = 'rgba(12, 10, 8, 0.1)';
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      for (let y = 0; y < canvas.height; y += 8) {
+        const phase = y * 0.05 + time;
+        const x1 = centerX + Math.sin(phase) * 40;
+        const x2 = centerX + Math.sin(phase + Math.PI) * 40;
+        const z1 = Math.cos(phase);
+        const z2 = Math.cos(phase + Math.PI);
+
+        // Draw connection
+        if (Math.floor(y / 8) % 4 === 0) {
+          ctx.beginPath();
+          ctx.moveTo(x1, y);
+          ctx.lineTo(x2, y);
+          ctx.strokeStyle = 'rgba(112, 192, 96, 0.2)';
+          ctx.stroke();
+        }
+
+        // Draw helix points
+        ctx.beginPath();
+        ctx.arc(x1, y, 3 + z1, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(112, 192, 96, ${0.3 + z1 * 0.3})`;
+        ctx.fill();
+
+        ctx.beginPath();
+        ctx.arc(x2, y, 3 + z2, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(112, 192, 96, ${0.3 + z2 * 0.3})`;
+        ctx.fill();
+      }
+
+      time += 0.05;
+    };
+
+    const interval = setInterval(draw, 30);
+    return () => clearInterval(interval);
+  }, [canvasRef]);
+  return null;
+}
+
+// 22. Radar Scan
+function RadarScan({ canvasRef }) {
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d');
+    canvas.width = canvas.offsetWidth;
+    canvas.height = canvas.offsetHeight;
+
+    let angle = 0;
+    const cx = canvas.width / 2;
+    const cy = canvas.height / 2;
+    const radius = Math.min(canvas.width, canvas.height) * 0.4;
+    const blips = Array(8).fill(0).map(() => ({
+      angle: Math.random() * Math.PI * 2,
+      dist: Math.random() * radius,
+      opacity: 0
+    }));
+
+    const draw = () => {
+      ctx.fillStyle = 'rgba(12, 10, 8, 0.05)';
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      // Draw circles
+      for (let r = radius / 4; r <= radius; r += radius / 4) {
+        ctx.beginPath();
+        ctx.arc(cx, cy, r, 0, Math.PI * 2);
+        ctx.strokeStyle = 'rgba(112, 192, 96, 0.15)';
+        ctx.stroke();
+      }
+
+      // Draw cross
+      ctx.beginPath();
+      ctx.moveTo(cx - radius, cy);
+      ctx.lineTo(cx + radius, cy);
+      ctx.moveTo(cx, cy - radius);
+      ctx.lineTo(cx, cy + radius);
+      ctx.strokeStyle = 'rgba(112, 192, 96, 0.1)';
+      ctx.stroke();
+
+      // Draw sweep
+      const gradient = ctx.createConicalGradient(angle, cx, cy);
+      gradient.addColorStop(0, 'rgba(112, 192, 96, 0.3)');
+      gradient.addColorStop(0.1, 'rgba(112, 192, 96, 0)');
+      gradient.addColorStop(1, 'rgba(112, 192, 96, 0)');
+
+      ctx.beginPath();
+      ctx.moveTo(cx, cy);
+      ctx.arc(cx, cy, radius, angle - 0.5, angle);
+      ctx.closePath();
+      ctx.fillStyle = 'rgba(112, 192, 96, 0.2)';
+      ctx.fill();
+
+      // Draw sweep line
+      ctx.beginPath();
+      ctx.moveTo(cx, cy);
+      ctx.lineTo(cx + Math.cos(angle) * radius, cy + Math.sin(angle) * radius);
+      ctx.strokeStyle = 'rgba(112, 192, 96, 0.6)';
+      ctx.lineWidth = 2;
+      ctx.stroke();
+      ctx.lineWidth = 1;
+
+      // Draw blips
+      for (const blip of blips) {
+        if (Math.abs(angle - blip.angle) < 0.3 || Math.abs(angle - blip.angle + Math.PI * 2) < 0.3) {
+          blip.opacity = 0.8;
+        }
+        if (blip.opacity > 0) {
+          ctx.beginPath();
+          ctx.arc(cx + Math.cos(blip.angle) * blip.dist, cy + Math.sin(blip.angle) * blip.dist, 3, 0, Math.PI * 2);
+          ctx.fillStyle = `rgba(112, 192, 96, ${blip.opacity})`;
+          ctx.fill();
+          blip.opacity *= 0.98;
+        }
+      }
+
+      angle += 0.03;
+      if (angle > Math.PI * 2) angle = 0;
+    };
+
+    const interval = setInterval(draw, 30);
+    return () => clearInterval(interval);
+  }, [canvasRef]);
+  return null;
+}
+
+// 23. Data Stream - horizontal packets
+function DataStream({ canvasRef }) {
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d');
+    canvas.width = canvas.offsetWidth;
+    canvas.height = canvas.offsetHeight;
+
+    const packets = [];
+    const maxPackets = 15;
+
+    const draw = () => {
+      ctx.fillStyle = 'rgba(12, 10, 8, 0.08)';
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      if (packets.length < maxPackets && Math.random() > 0.95) {
+        const y = Math.floor(Math.random() * (canvas.height / 20)) * 20;
+        packets.push({
+          x: -50,
+          y,
+          width: 20 + Math.random() * 80,
+          speed: 2 + Math.random() * 3,
+          opacity: 0.3 + Math.random() * 0.3
+        });
+      }
+
+      for (let i = packets.length - 1; i >= 0; i--) {
+        const p = packets[i];
+
+        // Draw packet
+        ctx.fillStyle = `rgba(112, 192, 96, ${p.opacity})`;
+        ctx.fillRect(p.x, p.y, p.width, 3);
+
+        // Trail
+        const gradient = ctx.createLinearGradient(p.x - 30, p.y, p.x, p.y);
+        gradient.addColorStop(0, 'rgba(112, 192, 96, 0)');
+        gradient.addColorStop(1, `rgba(112, 192, 96, ${p.opacity * 0.5})`);
+        ctx.fillStyle = gradient;
+        ctx.fillRect(p.x - 30, p.y, 30, 3);
+
+        p.x += p.speed;
+        if (p.x > canvas.width + 50) {
+          packets.splice(i, 1);
+        }
+      }
+
+      // Horizontal guide lines
+      ctx.strokeStyle = 'rgba(112, 192, 96, 0.05)';
+      for (let y = 0; y < canvas.height; y += 20) {
+        ctx.beginPath();
+        ctx.moveTo(0, y);
+        ctx.lineTo(canvas.width, y);
+        ctx.stroke();
+      }
+    };
+
+    const interval = setInterval(draw, 30);
+    return () => clearInterval(interval);
+  }, [canvasRef]);
+  return null;
+}
+
+// 24. Pulse Rings
+function PulseRings({ canvasRef }) {
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d');
+    canvas.width = canvas.offsetWidth;
+    canvas.height = canvas.offsetHeight;
+
+    const rings = [];
+    const cx = canvas.width / 2;
+    const cy = canvas.height / 2;
+
+    const draw = () => {
+      ctx.fillStyle = 'rgba(12, 10, 8, 0.1)';
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      // Add new ring
+      if (Math.random() > 0.97) {
+        rings.push({ radius: 5, opacity: 0.6 });
+      }
+
+      // Draw center dot
+      ctx.beginPath();
+      ctx.arc(cx, cy, 4, 0, Math.PI * 2);
+      ctx.fillStyle = 'rgba(112, 192, 96, 0.5)';
+      ctx.fill();
+
+      // Draw rings
+      for (let i = rings.length - 1; i >= 0; i--) {
+        const ring = rings[i];
+
+        ctx.beginPath();
+        ctx.arc(cx, cy, ring.radius, 0, Math.PI * 2);
+        ctx.strokeStyle = `rgba(112, 192, 96, ${ring.opacity})`;
+        ctx.lineWidth = 2;
+        ctx.stroke();
+
+        ring.radius += 1.5;
+        ring.opacity *= 0.98;
+
+        if (ring.opacity < 0.01) {
+          rings.splice(i, 1);
+        }
+      }
+
+      ctx.lineWidth = 1;
+    };
+
+    const interval = setInterval(draw, 30);
+    return () => clearInterval(interval);
+  }, [canvasRef]);
+  return null;
+}
+
+// 25. Fractal Tree
+function FractalTree({ canvasRef }) {
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d');
+    canvas.width = canvas.offsetWidth;
+    canvas.height = canvas.offsetHeight;
+
+    let time = 0;
+
+    const drawBranch = (x, y, length, angle, depth) => {
+      if (depth === 0 || length < 3) return;
+
+      const endX = x + Math.cos(angle) * length;
+      const endY = y + Math.sin(angle) * length;
+
+      ctx.beginPath();
+      ctx.moveTo(x, y);
+      ctx.lineTo(endX, endY);
+      ctx.strokeStyle = `rgba(112, 192, 96, ${0.1 + depth * 0.05})`;
+      ctx.lineWidth = depth * 0.5;
+      ctx.stroke();
+
+      const angleOffset = 0.4 + Math.sin(time + depth) * 0.1;
+      drawBranch(endX, endY, length * 0.7, angle - angleOffset, depth - 1);
+      drawBranch(endX, endY, length * 0.7, angle + angleOffset, depth - 1);
+    };
+
+    const draw = () => {
+      ctx.fillStyle = 'rgba(12, 10, 8, 0.15)';
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      drawBranch(canvas.width / 2, canvas.height, 60, -Math.PI / 2, 8);
+      time += 0.02;
+    };
+
+    const interval = setInterval(draw, 50);
+    return () => clearInterval(interval);
+  }, [canvasRef]);
+  return null;
+}
+
+// 26. Cyber Rain
+function CyberRain({ canvasRef }) {
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d');
+    canvas.width = canvas.offsetWidth;
+    canvas.height = canvas.offsetHeight;
+
+    const drops = Array(80).fill(0).map(() => ({
+      x: Math.random() * canvas.width,
+      y: Math.random() * canvas.height,
+      length: 10 + Math.random() * 20,
+      speed: 4 + Math.random() * 4,
+      opacity: 0.1 + Math.random() * 0.3
+    }));
+
+    const draw = () => {
+      ctx.fillStyle = 'rgba(12, 10, 8, 0.2)';
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      for (const drop of drops) {
+        const gradient = ctx.createLinearGradient(drop.x, drop.y, drop.x, drop.y + drop.length);
+        gradient.addColorStop(0, `rgba(112, 192, 96, ${drop.opacity})`);
+        gradient.addColorStop(1, 'rgba(112, 192, 96, 0)');
+
+        ctx.beginPath();
+        ctx.moveTo(drop.x, drop.y);
+        ctx.lineTo(drop.x, drop.y + drop.length);
+        ctx.strokeStyle = gradient;
+        ctx.lineWidth = 1;
+        ctx.stroke();
+
+        drop.y += drop.speed;
+        if (drop.y > canvas.height) {
+          drop.y = -drop.length;
+          drop.x = Math.random() * canvas.width;
+        }
+      }
+    };
+
+    const interval = setInterval(draw, 30);
+    return () => clearInterval(interval);
+  }, [canvasRef]);
+  return null;
+}
+
+// 27. Lightning
+function Lightning({ canvasRef }) {
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d');
+    canvas.width = canvas.offsetWidth;
+    canvas.height = canvas.offsetHeight;
+
+    const bolts = [];
+
+    const createBolt = (startX, startY, endY) => {
+      const points = [{ x: startX, y: startY }];
+      let y = startY;
+      while (y < endY) {
+        y += 10 + Math.random() * 20;
+        const x = points[points.length - 1].x + (Math.random() - 0.5) * 40;
+        points.push({ x, y });
+      }
+      return { points, opacity: 0.8, age: 0 };
+    };
+
+    const draw = () => {
+      ctx.fillStyle = 'rgba(12, 10, 8, 0.3)';
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      // Random new bolt
+      if (Math.random() > 0.98) {
+        bolts.push(createBolt(
+          Math.random() * canvas.width,
+          0,
+          canvas.height * (0.5 + Math.random() * 0.5)
+        ));
+      }
+
+      for (let i = bolts.length - 1; i >= 0; i--) {
+        const bolt = bolts[i];
+
+        ctx.beginPath();
+        ctx.moveTo(bolt.points[0].x, bolt.points[0].y);
+        for (let j = 1; j < bolt.points.length; j++) {
+          ctx.lineTo(bolt.points[j].x, bolt.points[j].y);
+        }
+        ctx.strokeStyle = `rgba(112, 192, 96, ${bolt.opacity})`;
+        ctx.lineWidth = 2;
+        ctx.stroke();
+
+        // Glow
+        ctx.strokeStyle = `rgba(112, 192, 96, ${bolt.opacity * 0.3})`;
+        ctx.lineWidth = 6;
+        ctx.stroke();
+
+        bolt.opacity *= 0.9;
+        bolt.age++;
+        if (bolt.opacity < 0.01) {
+          bolts.splice(i, 1);
+        }
+      }
+
+      ctx.lineWidth = 1;
+    };
+
+    const interval = setInterval(draw, 30);
+    return () => clearInterval(interval);
+  }, [canvasRef]);
+  return null;
+}
+
+// 28. Hologram
+function Hologram({ canvasRef }) {
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d');
+    canvas.width = canvas.offsetWidth;
+    canvas.height = canvas.offsetHeight;
+
+    let time = 0;
+
+    const draw = () => {
+      ctx.fillStyle = 'rgba(12, 10, 8, 0.15)';
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      // Scanlines
+      for (let y = 0; y < canvas.height; y += 3) {
+        const offset = Math.sin(y * 0.1 + time) * 2;
+        ctx.fillStyle = `rgba(112, 192, 96, ${0.02 + Math.sin(y * 0.05 + time) * 0.01})`;
+        ctx.fillRect(offset, y, canvas.width, 1);
+      }
+
+      // Glitch blocks
+      if (Math.random() > 0.95) {
+        const y = Math.random() * canvas.height;
+        const height = 5 + Math.random() * 15;
+        const offset = (Math.random() - 0.5) * 20;
+        ctx.fillStyle = `rgba(112, 192, 96, ${0.1 + Math.random() * 0.1})`;
+        ctx.fillRect(offset, y, canvas.width, height);
+      }
+
+      // RGB shift effect
+      if (Math.random() > 0.97) {
+        ctx.fillStyle = 'rgba(255, 100, 100, 0.05)';
+        ctx.fillRect(2, 0, canvas.width, canvas.height);
+        ctx.fillStyle = 'rgba(100, 100, 255, 0.05)';
+        ctx.fillRect(-2, 0, canvas.width, canvas.height);
+      }
+
+      time += 0.1;
+    };
+
+    const interval = setInterval(draw, 30);
+    return () => clearInterval(interval);
+  }, [canvasRef]);
+  return null;
+}
+
+// 29. Perspective Grid
+function PerspectiveGrid({ canvasRef }) {
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d');
+    canvas.width = canvas.offsetWidth;
+    canvas.height = canvas.offsetHeight;
+
+    let offset = 0;
+    const horizon = canvas.height * 0.3;
+    const vanishX = canvas.width / 2;
+
+    const draw = () => {
+      ctx.fillStyle = '#0c0a08';
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      ctx.strokeStyle = 'rgba(112, 192, 96, 0.3)';
+      ctx.lineWidth = 1;
+
+      // Vertical lines converging to horizon
+      for (let x = -canvas.width; x < canvas.width * 2; x += 40) {
+        ctx.beginPath();
+        ctx.moveTo(x, canvas.height);
+        ctx.lineTo(vanishX, horizon);
+        ctx.stroke();
+      }
+
+      // Horizontal lines with perspective
+      for (let i = 0; i < 20; i++) {
+        const t = (i + offset) / 20;
+        const y = horizon + (canvas.height - horizon) * Math.pow(t, 1.5);
+        const spread = t * canvas.width;
+
+        ctx.beginPath();
+        ctx.moveTo(vanishX - spread, y);
+        ctx.lineTo(vanishX + spread, y);
+        ctx.strokeStyle = `rgba(112, 192, 96, ${0.1 + t * 0.2})`;
+        ctx.stroke();
+      }
+
+      // Glow at horizon
+      const gradient = ctx.createRadialGradient(vanishX, horizon, 0, vanishX, horizon, 100);
+      gradient.addColorStop(0, 'rgba(112, 192, 96, 0.15)');
+      gradient.addColorStop(1, 'rgba(112, 192, 96, 0)');
+      ctx.fillStyle = gradient;
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      offset += 0.02;
+      if (offset >= 1) offset = 0;
+    };
+
+    const interval = setInterval(draw, 30);
+    return () => clearInterval(interval);
+  }, [canvasRef]);
+  return null;
+}
+
+// 31. Matrix + Neural (Matrix rain with connected nodes)
+function MatrixNeural({ canvasRef }) {
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d');
+    canvas.width = canvas.offsetWidth;
+    canvas.height = canvas.offsetHeight;
+
+    const chars = 'アイウエオ01';
+    const fontSize = 14;
+    const columns = Math.floor(canvas.width / fontSize);
+    const drops = Array(columns).fill(0).map(() => Math.random() * -100);
+
+    const nodes = Array(15).fill(0).map(() => ({
+      x: Math.random() * canvas.width,
+      y: Math.random() * canvas.height,
+      vx: (Math.random() - 0.5) * 0.3,
+      vy: (Math.random() - 0.5) * 0.3
+    }));
+
+    const draw = () => {
+      ctx.fillStyle = 'rgba(12, 10, 8, 0.08)';
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      // Matrix rain
+      ctx.font = `${fontSize}px monospace`;
+      for (let i = 0; i < drops.length; i++) {
+        if (Math.random() > 0.97) {
+          const char = chars[Math.floor(Math.random() * chars.length)];
+          ctx.fillStyle = `rgba(112, 192, 96, ${0.2 + Math.random() * 0.1})`;
+          ctx.fillText(char, i * fontSize, drops[i] * fontSize);
+        }
+        drops[i] += 0.3;
+        if (drops[i] * fontSize > canvas.height && Math.random() > 0.98) {
+          drops[i] = 0;
+        }
+      }
+
+      // Neural connections
+      for (let i = 0; i < nodes.length; i++) {
+        for (let j = i + 1; j < nodes.length; j++) {
+          const dx = nodes[i].x - nodes[j].x;
+          const dy = nodes[i].y - nodes[j].y;
+          const dist = Math.sqrt(dx * dx + dy * dy);
+          if (dist < 120) {
+            ctx.beginPath();
+            ctx.moveTo(nodes[i].x, nodes[i].y);
+            ctx.lineTo(nodes[j].x, nodes[j].y);
+            ctx.strokeStyle = `rgba(112, 192, 96, ${0.15 - dist / 800})`;
+            ctx.stroke();
+          }
+        }
+        ctx.beginPath();
+        ctx.arc(nodes[i].x, nodes[i].y, 2, 0, Math.PI * 2);
+        ctx.fillStyle = 'rgba(112, 192, 96, 0.4)';
+        ctx.fill();
+
+        nodes[i].x += nodes[i].vx;
+        nodes[i].y += nodes[i].vy;
+        if (nodes[i].x < 0 || nodes[i].x > canvas.width) nodes[i].vx *= -1;
+        if (nodes[i].y < 0 || nodes[i].y > canvas.height) nodes[i].vy *= -1;
+      }
+    };
+
+    const interval = setInterval(draw, 40);
+    return () => clearInterval(interval);
+  }, [canvasRef]);
+  return null;
+}
+
+// 32. Glitch Matrix (Matrix with glitch distortion)
+function GlitchMatrix({ canvasRef }) {
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d');
+    canvas.width = canvas.offsetWidth;
+    canvas.height = canvas.offsetHeight;
+
+    const chars = 'アイウエオカキクケコ01';
+    const fontSize = 14;
+    const columns = Math.floor(canvas.width / fontSize);
+    const drops = Array(columns).fill(0).map(() => Math.random() * -50);
+
+    const draw = () => {
+      ctx.fillStyle = 'rgba(12, 10, 8, 0.1)';
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      // Glitch offset
+      const glitchOffset = Math.random() > 0.95 ? (Math.random() - 0.5) * 10 : 0;
+
+      ctx.font = `${fontSize}px monospace`;
+      for (let i = 0; i < drops.length; i++) {
+        const char = chars[Math.floor(Math.random() * chars.length)];
+        const x = i * fontSize + glitchOffset;
+        const y = drops[i] * fontSize;
+
+        ctx.fillStyle = 'rgba(180, 255, 180, 0.8)';
+        ctx.fillText(char, x, y);
+
+        // Trail with glitch
+        for (let t = 1; t < 8; t++) {
+          const trailGlitch = Math.random() > 0.9 ? (Math.random() - 0.5) * 5 : 0;
+          ctx.fillStyle = `rgba(112, 192, 96, ${0.3 - t * 0.04})`;
+          ctx.fillText(chars[Math.floor(Math.random() * chars.length)], x + trailGlitch, y - t * fontSize);
+        }
+
+        drops[i] += 0.5;
+        if (drops[i] * fontSize > canvas.height) drops[i] = Math.random() * -20;
+      }
+
+      // Glitch bars
+      if (Math.random() > 0.92) {
+        const y = Math.random() * canvas.height;
+        ctx.fillStyle = `rgba(112, 192, 96, ${0.1 + Math.random() * 0.1})`;
+        ctx.fillRect(0, y, canvas.width, 2 + Math.random() * 6);
+      }
+
+      // Scanlines
+      for (let y = 0; y < canvas.height; y += 4) {
+        ctx.fillStyle = 'rgba(0, 0, 0, 0.08)';
+        ctx.fillRect(0, y, canvas.width, 1);
+      }
+    };
+
+    const interval = setInterval(draw, 50);
+    return () => clearInterval(interval);
+  }, [canvasRef]);
+  return null;
+}
+
+// 33. Grid Cascade (Wave pattern on cyber grid)
+function GridCascade({ canvasRef }) {
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d');
+    canvas.width = canvas.offsetWidth;
+    canvas.height = canvas.offsetHeight;
+
+    let time = 0;
+    const gridSize = 30;
+
+    const draw = () => {
+      ctx.fillStyle = '#0c0a08';
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      // Grid with wave distortion
+      for (let x = 0; x < canvas.width + gridSize; x += gridSize) {
+        for (let y = 0; y < canvas.height + gridSize; y += gridSize) {
+          const waveX = Math.sin(y * 0.02 + time) * 5;
+          const waveY = Math.sin(x * 0.02 + time * 0.7) * 5;
+          const intensity = (Math.sin(x * 0.01 + y * 0.01 + time * 2) + 1) * 0.1;
+
+          ctx.strokeStyle = `rgba(112, 192, 96, ${0.1 + intensity})`;
+          ctx.beginPath();
+          ctx.moveTo(x + waveX, y + waveY);
+          ctx.lineTo(x + gridSize + waveX, y + waveY);
+          ctx.stroke();
+
+          ctx.beginPath();
+          ctx.moveTo(x + waveX, y + waveY);
+          ctx.lineTo(x + waveX, y + gridSize + waveY);
+          ctx.stroke();
+        }
+      }
+
+      // Moving wave highlight
+      const waveY = (Math.sin(time * 0.5) + 1) * canvas.height / 2;
+      ctx.strokeStyle = 'rgba(112, 192, 96, 0.4)';
+      ctx.lineWidth = 2;
+      ctx.beginPath();
+      ctx.moveTo(0, waveY);
+      for (let x = 0; x < canvas.width; x += 5) {
+        ctx.lineTo(x, waveY + Math.sin(x * 0.03 + time * 2) * 15);
+      }
+      ctx.stroke();
+      ctx.lineWidth = 1;
+
+      time += 0.03;
+    };
+
+    const interval = setInterval(draw, 30);
+    return () => clearInterval(interval);
+  }, [canvasRef]);
+  return null;
+}
+
+// 34. Neural Glitch (Glitchy neural network)
+function NeuralGlitch({ canvasRef }) {
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d');
+    canvas.width = canvas.offsetWidth;
+    canvas.height = canvas.offsetHeight;
+
+    const nodes = Array(25).fill(0).map(() => ({
+      x: Math.random() * canvas.width,
+      y: Math.random() * canvas.height,
+      vx: (Math.random() - 0.5) * 0.8,
+      vy: (Math.random() - 0.5) * 0.8,
+      glitchTimer: 0
+    }));
+
+    const draw = () => {
+      ctx.fillStyle = 'rgba(12, 10, 8, 0.15)';
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      // Glitch effect
+      if (Math.random() > 0.9) {
+        const sliceY = Math.random() * canvas.height;
+        const sliceH = 5 + Math.random() * 20;
+        const shift = (Math.random() - 0.5) * 30;
+        const imageData = ctx.getImageData(0, sliceY, canvas.width, sliceH);
+        ctx.putImageData(imageData, shift, sliceY);
+      }
+
+      // Connections with glitch
+      for (let i = 0; i < nodes.length; i++) {
+        for (let j = i + 1; j < nodes.length; j++) {
+          const dx = nodes[i].x - nodes[j].x;
+          const dy = nodes[i].y - nodes[j].y;
+          const dist = Math.sqrt(dx * dx + dy * dy);
+          if (dist < 100) {
+            ctx.beginPath();
+            const glitchX = Math.random() > 0.95 ? (Math.random() - 0.5) * 10 : 0;
+            ctx.moveTo(nodes[i].x + glitchX, nodes[i].y);
+            ctx.lineTo(nodes[j].x - glitchX, nodes[j].y);
+            ctx.strokeStyle = `rgba(112, 192, 96, ${0.4 - dist / 300})`;
+            ctx.lineWidth = Math.random() > 0.98 ? 3 : 1;
+            ctx.stroke();
+          }
+        }
+      }
+
+      // Nodes with glitch
+      for (const node of nodes) {
+        const glitch = Math.random() > 0.97;
+        const size = glitch ? 5 + Math.random() * 5 : 3;
+
+        ctx.beginPath();
+        ctx.arc(node.x + (glitch ? (Math.random() - 0.5) * 10 : 0), node.y, size, 0, Math.PI * 2);
+        ctx.fillStyle = glitch ? 'rgba(200, 255, 200, 0.9)' : 'rgba(112, 192, 96, 0.6)';
+        ctx.fill();
+
+        node.x += node.vx;
+        node.y += node.vy;
+        if (node.x < 0 || node.x > canvas.width) node.vx *= -1;
+        if (node.y < 0 || node.y > canvas.height) node.vy *= -1;
+      }
+
+      ctx.lineWidth = 1;
+    };
+
+    const interval = setInterval(draw, 30);
+    return () => clearInterval(interval);
+  }, [canvasRef]);
+  return null;
+}
+
+// 35. Grid Matrix (Matrix rain on cyber grid)
+function GridMatrix({ canvasRef }) {
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d');
+    canvas.width = canvas.offsetWidth;
+    canvas.height = canvas.offsetHeight;
+
+    const chars = 'アイウ01';
+    const gridSize = 40;
+    const drops = [];
+
+    // Create drops at grid intersections
+    for (let x = gridSize; x < canvas.width; x += gridSize) {
+      drops.push({ x, y: Math.random() * -200, speed: 1 + Math.random() });
+    }
+
+    let pulseY = 0;
+
+    const draw = () => {
+      ctx.fillStyle = 'rgba(12, 10, 8, 0.1)';
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      // Draw grid
+      ctx.strokeStyle = 'rgba(112, 192, 96, 0.08)';
+      for (let x = 0; x < canvas.width; x += gridSize) {
+        ctx.beginPath();
+        ctx.moveTo(x, 0);
+        ctx.lineTo(x, canvas.height);
+        ctx.stroke();
+      }
+      for (let y = 0; y < canvas.height; y += gridSize) {
+        ctx.beginPath();
+        ctx.moveTo(0, y);
+        ctx.lineTo(canvas.width, y);
+        ctx.stroke();
+      }
+
+      // Pulse line
+      ctx.strokeStyle = 'rgba(112, 192, 96, 0.3)';
+      ctx.lineWidth = 2;
+      ctx.beginPath();
+      ctx.moveTo(0, pulseY);
+      ctx.lineTo(canvas.width, pulseY);
+      ctx.stroke();
+      ctx.lineWidth = 1;
+      pulseY += 2;
+      if (pulseY > canvas.height) pulseY = 0;
+
+      // Matrix drops along grid lines
+      ctx.font = '12px monospace';
+      for (const drop of drops) {
+        const char = chars[Math.floor(Math.random() * chars.length)];
+
+        // Bright head
+        ctx.fillStyle = 'rgba(180, 255, 180, 0.9)';
+        ctx.fillText(char, drop.x - 6, drop.y);
+
+        // Trail
+        for (let t = 1; t < 15; t++) {
+          ctx.fillStyle = `rgba(112, 192, 96, ${0.3 - t * 0.02})`;
+          ctx.fillText(chars[Math.floor(Math.random() * chars.length)], drop.x - 6, drop.y - t * 12);
+        }
+
+        drop.y += drop.speed * 2;
+        if (drop.y > canvas.height + 200) {
+          drop.y = Math.random() * -100;
+        }
+      }
+    };
+
+    const interval = setInterval(draw, 40);
+    return () => clearInterval(interval);
+  }, [canvasRef]);
+  return null;
+}
+
+// 36. Cascade Neural (Wavy connected nodes)
+function CascadeNeural({ canvasRef }) {
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d');
+    canvas.width = canvas.offsetWidth;
+    canvas.height = canvas.offsetHeight;
+
+    let time = 0;
+    const nodes = Array(20).fill(0).map((_, i) => ({
+      baseX: (i % 5) * (canvas.width / 4) + canvas.width / 8,
+      baseY: Math.floor(i / 5) * (canvas.height / 3) + canvas.height / 6,
+      phase: Math.random() * Math.PI * 2
+    }));
+
+    const draw = () => {
+      ctx.fillStyle = 'rgba(12, 10, 8, 0.1)';
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      // Calculate wave positions
+      const positions = nodes.map(n => ({
+        x: n.baseX + Math.sin(time + n.phase) * 30,
+        y: n.baseY + Math.sin(time * 0.7 + n.phase) * 20
+      }));
+
+      // Draw connections
+      for (let i = 0; i < positions.length; i++) {
+        for (let j = i + 1; j < positions.length; j++) {
+          const dx = positions[i].x - positions[j].x;
+          const dy = positions[i].y - positions[j].y;
+          const dist = Math.sqrt(dx * dx + dy * dy);
+          if (dist < 150) {
+            ctx.beginPath();
+            ctx.moveTo(positions[i].x, positions[i].y);
+            ctx.lineTo(positions[j].x, positions[j].y);
+            ctx.strokeStyle = `rgba(112, 192, 96, ${0.3 - dist / 500})`;
+            ctx.stroke();
+          }
+        }
+      }
+
+      // Draw nodes with pulse
+      for (let i = 0; i < positions.length; i++) {
+        const pulse = Math.sin(time * 2 + nodes[i].phase) * 0.3 + 0.7;
+        ctx.beginPath();
+        ctx.arc(positions[i].x, positions[i].y, 4 * pulse, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(112, 192, 96, ${0.4 + pulse * 0.3})`;
+        ctx.fill();
+      }
+
+      time += 0.03;
+    };
+
+    const interval = setInterval(draw, 30);
+    return () => clearInterval(interval);
+  }, [canvasRef]);
+  return null;
+}
+
+// 37. Triple Fusion (Matrix + Grid + Glitch)
+function TripleFusion({ canvasRef }) {
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d');
+    canvas.width = canvas.offsetWidth;
+    canvas.height = canvas.offsetHeight;
+
+    const chars = 'アイウエオ01';
+    const gridSize = 50;
+    const drops = Array(8).fill(0).map(() => ({
+      x: Math.floor(Math.random() * (canvas.width / gridSize)) * gridSize,
+      y: Math.random() * -100
+    }));
+    let scanY = 0;
+
+    const draw = () => {
+      ctx.fillStyle = 'rgba(12, 10, 8, 0.12)';
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      // Grid
+      ctx.strokeStyle = 'rgba(112, 192, 96, 0.06)';
+      for (let x = 0; x < canvas.width; x += gridSize) {
+        ctx.beginPath();
+        ctx.moveTo(x, 0);
+        ctx.lineTo(x, canvas.height);
+        ctx.stroke();
+      }
+      for (let y = 0; y < canvas.height; y += gridSize) {
+        ctx.beginPath();
+        ctx.moveTo(0, y);
+        ctx.lineTo(canvas.width, y);
+        ctx.stroke();
+      }
+
+      // Matrix streams on grid
+      ctx.font = '14px monospace';
+      for (const drop of drops) {
+        for (let t = 0; t < 10; t++) {
+          const glitchX = Math.random() > 0.95 ? (Math.random() - 0.5) * 8 : 0;
+          ctx.fillStyle = t === 0 ? 'rgba(180, 255, 180, 0.9)' : `rgba(112, 192, 96, ${0.4 - t * 0.04})`;
+          ctx.fillText(chars[Math.floor(Math.random() * chars.length)], drop.x + glitchX, drop.y - t * 14);
+        }
+        drop.y += 3;
+        if (drop.y > canvas.height + 150) {
+          drop.y = -100;
+          drop.x = Math.floor(Math.random() * (canvas.width / gridSize)) * gridSize;
+        }
+      }
+
+      // Glitch scanline
+      ctx.fillStyle = 'rgba(112, 192, 96, 0.15)';
+      ctx.fillRect(0, scanY, canvas.width, 3);
+      scanY += 4;
+      if (scanY > canvas.height) scanY = 0;
+
+      // Random glitch bars
+      if (Math.random() > 0.93) {
+        const y = Math.random() * canvas.height;
+        ctx.fillStyle = `rgba(112, 192, 96, 0.08)`;
+        ctx.fillRect(Math.random() * 20 - 10, y, canvas.width, 2 + Math.random() * 8);
+      }
+
+      // Scanlines
+      for (let y = 0; y < canvas.height; y += 3) {
+        ctx.fillStyle = 'rgba(0, 0, 0, 0.05)';
+        ctx.fillRect(0, y, canvas.width, 1);
+      }
+    };
+
+    const interval = setInterval(draw, 40);
+    return () => clearInterval(interval);
+  }, [canvasRef]);
+  return null;
+}
+
+// 38. Classic Dense (Denser version of classic matrix)
+function ClassicDense({ canvasRef }) {
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d');
+    canvas.width = canvas.offsetWidth;
+    canvas.height = canvas.offsetHeight;
+
+    const chars = 'アイウエオカキクケコサシスセソタチツテトナニヌネノ0123456789';
+    const fontSize = 12;
+    const columns = Math.floor(canvas.width / fontSize);
+    const drops = Array(columns).fill(0).map(() => Math.random() * canvas.height / fontSize);
+
+    const draw = () => {
+      ctx.fillStyle = 'rgba(12, 10, 8, 0.04)';
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+      ctx.font = `${fontSize}px monospace`;
+
+      for (let i = 0; i < drops.length; i++) {
+        const char = chars[Math.floor(Math.random() * chars.length)];
+        const x = i * fontSize;
+        const y = drops[i] * fontSize;
+
+        // Head glow
+        ctx.shadowColor = '#70c060';
+        ctx.shadowBlur = 10;
+        ctx.fillStyle = 'rgba(200, 255, 200, 0.95)';
+        ctx.fillText(char, x, y);
+        ctx.shadowBlur = 0;
+
+        // Dense trail
+        for (let t = 1; t < 25; t++) {
+          const trailY = y - t * fontSize;
+          if (trailY > 0) {
+            ctx.fillStyle = `rgba(112, 192, 96, ${0.5 - t * 0.02})`;
+            ctx.fillText(chars[Math.floor(Math.random() * chars.length)], x, trailY);
+          }
+        }
+
+        drops[i] += 0.4 + Math.random() * 0.2;
+        if (drops[i] * fontSize > canvas.height + 300) {
+          drops[i] = 0;
+        }
+      }
+    };
+
+    const interval = setInterval(draw, 45);
+    return () => clearInterval(interval);
+  }, [canvasRef]);
+  return null;
+}
+
+// 39. Cascade Intense (Stronger wave effect)
+function CascadeIntense({ canvasRef }) {
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d');
+    canvas.width = canvas.offsetWidth;
+    canvas.height = canvas.offsetHeight;
+
+    const chars = 'アイウエオカキク01';
+    const fontSize = 14;
+    const columns = Math.floor(canvas.width / fontSize);
+    let time = 0;
+
+    const draw = () => {
+      ctx.fillStyle = 'rgba(12, 10, 8, 0.08)';
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+      ctx.font = `${fontSize}px monospace`;
+
+      // Multiple waves
+      for (let wave = 0; wave < 3; wave++) {
+        const waveOffset = wave * 80;
+        const waveSpeed = 1 + wave * 0.3;
+
+        for (let i = 0; i < columns; i++) {
+          const waveY = Math.sin(i * 0.15 + time * 0.05 * waveSpeed) * 40 +
+                        Math.sin(i * 0.08 + time * 0.03) * 30;
+          const y = ((time * waveSpeed + waveOffset + waveY) % (canvas.height + 100)) - 50;
+
+          const char = chars[Math.floor(Math.random() * chars.length)];
+          const brightness = 0.2 + (1 - wave * 0.3) * 0.3;
+          ctx.fillStyle = `rgba(112, 192, 96, ${brightness})`;
+          ctx.fillText(char, i * fontSize, y);
+        }
+      }
+
+      time++;
+    };
+
+    const interval = setInterval(draw, 40);
+    return () => clearInterval(interval);
+  }, [canvasRef]);
+  return null;
+}
+
+// 40. Neural Pulse (Neural with pulsing connections)
+function NeuralPulse({ canvasRef }) {
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d');
+    canvas.width = canvas.offsetWidth;
+    canvas.height = canvas.offsetHeight;
+
+    let time = 0;
+    const nodes = Array(20).fill(0).map(() => ({
+      x: Math.random() * canvas.width,
+      y: Math.random() * canvas.height,
+      vx: (Math.random() - 0.5) * 0.4,
+      vy: (Math.random() - 0.5) * 0.4
+    }));
+
+    const pulses = [];
+
+    const draw = () => {
+      ctx.fillStyle = 'rgba(12, 10, 8, 0.1)';
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      // Occasionally send pulse
+      if (Math.random() > 0.97 && pulses.length < 5) {
+        const startNode = Math.floor(Math.random() * nodes.length);
+        pulses.push({ from: startNode, progress: 0 });
+      }
+
+      // Draw connections
+      for (let i = 0; i < nodes.length; i++) {
+        for (let j = i + 1; j < nodes.length; j++) {
+          const dx = nodes[i].x - nodes[j].x;
+          const dy = nodes[i].y - nodes[j].y;
+          const dist = Math.sqrt(dx * dx + dy * dy);
+          if (dist < 120) {
+            ctx.beginPath();
+            ctx.moveTo(nodes[i].x, nodes[i].y);
+            ctx.lineTo(nodes[j].x, nodes[j].y);
+            ctx.strokeStyle = `rgba(112, 192, 96, ${0.15 - dist / 800})`;
+            ctx.stroke();
+          }
+        }
+      }
+
+      // Draw and update pulses
+      for (let p = pulses.length - 1; p >= 0; p--) {
+        const pulse = pulses[p];
+        const fromNode = nodes[pulse.from];
+
+        // Find nearby nodes and draw pulse
+        for (let i = 0; i < nodes.length; i++) {
+          if (i === pulse.from) continue;
+          const dx = fromNode.x - nodes[i].x;
+          const dy = fromNode.y - nodes[i].y;
+          const dist = Math.sqrt(dx * dx + dy * dy);
+          if (dist < 120) {
+            const px = fromNode.x - dx * pulse.progress;
+            const py = fromNode.y - dy * pulse.progress;
+
+            ctx.beginPath();
+            ctx.arc(px, py, 3, 0, Math.PI * 2);
+            ctx.fillStyle = 'rgba(180, 255, 180, 0.8)';
+            ctx.fill();
+          }
+        }
+
+        pulse.progress += 0.05;
+        if (pulse.progress > 1) pulses.splice(p, 1);
+      }
+
+      // Draw nodes
+      for (const node of nodes) {
+        ctx.beginPath();
+        ctx.arc(node.x, node.y, 3, 0, Math.PI * 2);
+        ctx.fillStyle = 'rgba(112, 192, 96, 0.5)';
+        ctx.fill();
+
+        node.x += node.vx;
+        node.y += node.vy;
+        if (node.x < 0 || node.x > canvas.width) node.vx *= -1;
+        if (node.y < 0 || node.y > canvas.height) node.vy *= -1;
+      }
+
+      time += 0.02;
+    };
+
+    const interval = setInterval(draw, 30);
+    return () => clearInterval(interval);
+  }, [canvasRef]);
+  return null;
+}
+
+// 30. Vortex
+function Vortex({ canvasRef }) {
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d');
+    canvas.width = canvas.offsetWidth;
+    canvas.height = canvas.offsetHeight;
+
+    let time = 0;
+    const cx = canvas.width / 2;
+    const cy = canvas.height / 2;
+
+    const particles = Array(60).fill(0).map(() => ({
+      angle: Math.random() * Math.PI * 2,
+      radius: 20 + Math.random() * 80,
+      speed: 0.02 + Math.random() * 0.02,
+      size: 1 + Math.random() * 2
+    }));
+
+    const draw = () => {
+      ctx.fillStyle = 'rgba(12, 10, 8, 0.1)';
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      // Draw spiral arms
+      for (let arm = 0; arm < 3; arm++) {
+        ctx.beginPath();
+        const armOffset = (arm * Math.PI * 2) / 3 + time;
+        for (let r = 10; r < 120; r += 2) {
+          const angle = armOffset + r * 0.05;
+          const x = cx + Math.cos(angle) * r;
+          const y = cy + Math.sin(angle) * r;
+          if (r === 10) ctx.moveTo(x, y);
+          else ctx.lineTo(x, y);
+        }
+        ctx.strokeStyle = `rgba(112, 192, 96, ${0.1})`;
+        ctx.stroke();
+      }
+
+      // Draw particles
+      for (const p of particles) {
+        p.angle += p.speed;
+        p.radius -= 0.1;
+        if (p.radius < 5) {
+          p.radius = 80 + Math.random() * 40;
+          p.angle = Math.random() * Math.PI * 2;
+        }
+
+        const x = cx + Math.cos(p.angle + time) * p.radius;
+        const y = cy + Math.sin(p.angle + time) * p.radius;
+
+        ctx.beginPath();
+        ctx.arc(x, y, p.size, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(112, 192, 96, ${0.2 + (1 - p.radius / 120) * 0.4})`;
+        ctx.fill();
+      }
+
+      // Center glow
+      const gradient = ctx.createRadialGradient(cx, cy, 0, cx, cy, 30);
+      gradient.addColorStop(0, 'rgba(112, 192, 96, 0.3)');
+      gradient.addColorStop(1, 'rgba(112, 192, 96, 0)');
+      ctx.fillStyle = gradient;
+      ctx.beginPath();
+      ctx.arc(cx, cy, 30, 0, Math.PI * 2);
+      ctx.fill();
+
+      time += 0.02;
+    };
+
+    const interval = setInterval(draw, 30);
+    return () => clearInterval(interval);
+  }, [canvasRef]);
+  return null;
+}
+
+// 41. Katakana Hex (Japanese + Hex codes mixed)
+function KatakanaHex({ canvasRef }) {
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d');
+    canvas.width = canvas.offsetWidth;
+    canvas.height = canvas.offsetHeight;
+
+    const katakana = 'アイウエオカキクケコサシスセソ';
+    const streams = [];
+    const maxStreams = 10;
+
+    const draw = () => {
+      ctx.fillStyle = 'rgba(12, 10, 8, 0.05)';
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      if (streams.length < maxStreams && Math.random() > 0.96) {
+        const isHex = Math.random() > 0.5;
+        streams.push({
+          x: Math.random() * canvas.width,
+          y: -20,
+          speed: 0.8 + Math.random() * 0.6,
+          isHex,
+          trail: []
+        });
+      }
+
+      ctx.font = '12px monospace';
+      for (let i = streams.length - 1; i >= 0; i--) {
+        const s = streams[i];
+
+        if (Math.random() > 0.6) {
+          const text = s.isHex
+            ? Math.floor(Math.random() * 256).toString(16).toUpperCase().padStart(2, '0')
+            : katakana[Math.floor(Math.random() * katakana.length)];
+          s.trail.push({ y: s.y, text, opacity: 0.7 });
+        }
+
+        for (let j = s.trail.length - 1; j >= 0; j--) {
+          const t = s.trail[j];
+          const color = s.isHex ? `rgba(96, 200, 112, ${t.opacity})` : `rgba(112, 192, 96, ${t.opacity})`;
+          ctx.fillStyle = color;
+          ctx.fillText(t.text, s.x, t.y);
+          t.opacity *= 0.97;
+          if (t.opacity < 0.02) s.trail.splice(j, 1);
+        }
+
+        s.y += s.speed;
+        if (s.y > canvas.height + 50 && s.trail.length === 0) {
+          streams.splice(i, 1);
+        }
+      }
+    };
+
+    const interval = setInterval(draw, 35);
+    return () => clearInterval(interval);
+  }, [canvasRef]);
+  return null;
+}
+
+// 42. Neural Grid (Neural network on cyber grid)
+function NeuralGrid({ canvasRef }) {
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d');
+    canvas.width = canvas.offsetWidth;
+    canvas.height = canvas.offsetHeight;
+
+    const gridSize = 35;
+    let pulse = 0;
+
+    const nodes = Array(25).fill(0).map(() => ({
+      x: Math.random() * canvas.width,
+      y: Math.random() * canvas.height,
+      vx: (Math.random() - 0.5) * 0.3,
+      vy: (Math.random() - 0.5) * 0.3
+    }));
+
+    const draw = () => {
+      ctx.fillStyle = 'rgba(12, 10, 8, 0.12)';
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      // Pulsing grid
+      const gridOpacity = 0.08 + Math.sin(pulse) * 0.04;
+      ctx.strokeStyle = `rgba(112, 192, 96, ${gridOpacity})`;
+      ctx.lineWidth = 1;
+      for (let x = 0; x < canvas.width; x += gridSize) {
+        ctx.beginPath();
+        ctx.moveTo(x, 0);
+        ctx.lineTo(x, canvas.height);
+        ctx.stroke();
+      }
+      for (let y = 0; y < canvas.height; y += gridSize) {
+        ctx.beginPath();
+        ctx.moveTo(0, y);
+        ctx.lineTo(canvas.width, y);
+        ctx.stroke();
+      }
+
+      // Neural connections
+      for (let i = 0; i < nodes.length; i++) {
+        for (let j = i + 1; j < nodes.length; j++) {
+          const dx = nodes[i].x - nodes[j].x;
+          const dy = nodes[i].y - nodes[j].y;
+          const dist = Math.sqrt(dx * dx + dy * dy);
+          if (dist < 90) {
+            ctx.beginPath();
+            ctx.moveTo(nodes[i].x, nodes[i].y);
+            ctx.lineTo(nodes[j].x, nodes[j].y);
+            ctx.strokeStyle = `rgba(112, 192, 96, ${0.25 - dist / 360})`;
+            ctx.stroke();
+          }
+        }
+      }
+
+      // Nodes
+      for (const node of nodes) {
+        ctx.beginPath();
+        ctx.arc(node.x, node.y, 3, 0, Math.PI * 2);
+        ctx.fillStyle = 'rgba(140, 220, 120, 0.7)';
+        ctx.fill();
+
+        node.x += node.vx;
+        node.y += node.vy;
+        if (node.x < 0 || node.x > canvas.width) node.vx *= -1;
+        if (node.y < 0 || node.y > canvas.height) node.vy *= -1;
+      }
+
+      pulse += 0.03;
+    };
+
+    const interval = setInterval(draw, 30);
+    return () => clearInterval(interval);
+  }, [canvasRef]);
+  return null;
+}
+
+// 43. Cascade Glitch (Wave pattern with glitch distortion)
+function CascadeGlitch({ canvasRef }) {
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d');
+    canvas.width = canvas.offsetWidth;
+    canvas.height = canvas.offsetHeight;
+
+    const chars = 'アイウエオ01カキク';
+    const fontSize = 12;
+    const columns = Math.floor(canvas.width / fontSize);
+    let time = 0;
+    let glitchIntensity = 0;
+
+    const draw = () => {
+      ctx.fillStyle = 'rgba(12, 10, 8, 0.08)';
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+      ctx.font = `${fontSize}px monospace`;
+
+      // Random glitch intensity spikes
+      if (Math.random() > 0.95) glitchIntensity = 0.3 + Math.random() * 0.5;
+      glitchIntensity *= 0.95;
+
+      for (let i = 0; i < columns; i++) {
+        const waveOffset = Math.sin(i * 0.2 + time * 0.05) * 50;
+        let y = ((time * 2 + waveOffset) % (canvas.height + 100)) - 50;
+
+        // Apply glitch offset
+        const glitchX = glitchIntensity > 0.1 && Math.random() > 0.8
+          ? (Math.random() - 0.5) * 20 * glitchIntensity
+          : 0;
+
+        if (Math.random() > 0.92) {
+          const char = chars[Math.floor(Math.random() * chars.length)];
+          ctx.fillStyle = `rgba(112, 192, 96, ${0.3 + Math.random() * 0.25})`;
+          ctx.fillText(char, i * fontSize + glitchX, y);
+        }
+      }
+
+      // Glitch bars
+      if (glitchIntensity > 0.15) {
+        for (let g = 0; g < 3; g++) {
+          const y = Math.random() * canvas.height;
+          ctx.fillStyle = `rgba(112, 192, 96, ${glitchIntensity * 0.3})`;
+          ctx.fillRect(0, y, canvas.width, 2 + Math.random() * 6);
+        }
+      }
+
+      // Scanlines
+      for (let y = 0; y < canvas.height; y += 4) {
+        ctx.fillStyle = 'rgba(0, 0, 0, 0.08)';
+        ctx.fillRect(0, y, canvas.width, 1);
+      }
+
+      time++;
+    };
+
+    const interval = setInterval(draw, 45);
+    return () => clearInterval(interval);
+  }, [canvasRef]);
+  return null;
+}
+
+// 44. Hex Neural (Hexadecimal streams with neural connections)
+function HexNeural({ canvasRef }) {
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d');
+    canvas.width = canvas.offsetWidth;
+    canvas.height = canvas.offsetHeight;
+
+    const hexStreams = [];
+    const maxStreams = 8;
+    const nodes = Array(15).fill(0).map(() => ({
+      x: Math.random() * canvas.width,
+      y: Math.random() * canvas.height,
+      vx: (Math.random() - 0.5) * 0.2,
+      vy: (Math.random() - 0.5) * 0.2
+    }));
+
+    const draw = () => {
+      ctx.fillStyle = 'rgba(12, 10, 8, 0.06)';
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      // Neural connections in background
+      for (let i = 0; i < nodes.length; i++) {
+        for (let j = i + 1; j < nodes.length; j++) {
+          const dx = nodes[i].x - nodes[j].x;
+          const dy = nodes[i].y - nodes[j].y;
+          const dist = Math.sqrt(dx * dx + dy * dy);
+          if (dist < 100) {
+            ctx.beginPath();
+            ctx.moveTo(nodes[i].x, nodes[i].y);
+            ctx.lineTo(nodes[j].x, nodes[j].y);
+            ctx.strokeStyle = `rgba(112, 192, 96, ${0.1 - dist / 1000})`;
+            ctx.stroke();
+          }
+        }
+        nodes[i].x += nodes[i].vx;
+        nodes[i].y += nodes[i].vy;
+        if (nodes[i].x < 0 || nodes[i].x > canvas.width) nodes[i].vx *= -1;
+        if (nodes[i].y < 0 || nodes[i].y > canvas.height) nodes[i].vy *= -1;
+      }
+
+      // Hex streams
+      if (hexStreams.length < maxStreams && Math.random() > 0.97) {
+        hexStreams.push({
+          x: Math.random() * (canvas.width - 30),
+          y: -15,
+          speed: 0.6 + Math.random() * 0.4,
+          values: []
+        });
+      }
+
+      ctx.font = '10px monospace';
+      for (let i = hexStreams.length - 1; i >= 0; i--) {
+        const s = hexStreams[i];
+
+        if (Math.random() > 0.7 && s.y < canvas.height) {
+          const hex = Math.floor(Math.random() * 65536).toString(16).toUpperCase().padStart(4, '0');
+          s.values.push({ y: s.y, text: hex, opacity: 0.6 });
+        }
+
+        for (let j = s.values.length - 1; j >= 0; j--) {
+          const v = s.values[j];
+          ctx.fillStyle = `rgba(96, 210, 96, ${v.opacity})`;
+          ctx.fillText(v.text, s.x, v.y);
+          v.opacity *= 0.97;
+          if (v.opacity < 0.02) s.values.splice(j, 1);
+        }
+
+        s.y += s.speed;
+        if (s.y > canvas.height + 50 && s.values.length === 0) {
+          hexStreams.splice(i, 1);
+        }
+      }
+    };
+
+    const interval = setInterval(draw, 35);
+    return () => clearInterval(interval);
+  }, [canvasRef]);
+  return null;
+}
+
+// 45. Grid Glitch Intense (Cyber grid with heavy glitch)
+function GridGlitchIntense({ canvasRef }) {
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d');
+    canvas.width = canvas.offsetWidth;
+    canvas.height = canvas.offsetHeight;
+
+    const gridSize = 30;
+    let offset = 0;
+    let glitchFrame = 0;
+
+    const draw = () => {
+      ctx.fillStyle = 'rgba(12, 10, 8, 0.2)';
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      const isGlitching = Math.random() > 0.85;
+      if (isGlitching) glitchFrame = 5 + Math.floor(Math.random() * 10);
+
+      // Distorted grid
+      ctx.strokeStyle = `rgba(112, 192, 96, ${0.15 + (glitchFrame > 0 ? 0.1 : 0)})`;
+      ctx.lineWidth = 1;
+
+      for (let x = 0; x < canvas.width; x += gridSize) {
+        const distort = glitchFrame > 0 ? (Math.random() - 0.5) * 15 : 0;
+        ctx.beginPath();
+        ctx.moveTo(x + distort, 0);
+        ctx.lineTo(x + distort, canvas.height);
+        ctx.stroke();
+      }
+
+      for (let y = 0; y < canvas.height; y += gridSize) {
+        const distort = glitchFrame > 0 ? (Math.random() - 0.5) * 10 : 0;
+        ctx.beginPath();
+        ctx.moveTo(0, y + distort);
+        ctx.lineTo(canvas.width, y + distort);
+        ctx.stroke();
+      }
+
+      // Moving pulse
+      ctx.strokeStyle = 'rgba(140, 230, 120, 0.5)';
+      ctx.lineWidth = 2;
+      const pulseY = (offset % canvas.height);
+      ctx.beginPath();
+      ctx.moveTo(0, pulseY);
+      ctx.lineTo(canvas.width, pulseY);
+      ctx.stroke();
+
+      // Glitch blocks
+      if (glitchFrame > 0) {
+        for (let g = 0; g < 5; g++) {
+          const gx = Math.random() * canvas.width;
+          const gy = Math.random() * canvas.height;
+          const gw = 20 + Math.random() * 60;
+          const gh = 5 + Math.random() * 20;
+          ctx.fillStyle = `rgba(112, 192, 96, ${0.1 + Math.random() * 0.15})`;
+          ctx.fillRect(gx, gy, gw, gh);
+        }
+        glitchFrame--;
+      }
+
+      // Scanlines
+      for (let y = 0; y < canvas.height; y += 3) {
+        ctx.fillStyle = 'rgba(0, 0, 0, 0.1)';
+        ctx.fillRect(0, y, canvas.width, 1);
+      }
+
+      offset += 2;
+    };
+
+    const interval = setInterval(draw, 40);
+    return () => clearInterval(interval);
+  }, [canvasRef]);
+  return null;
+}
+
+// 46. Katakana Cascade (Japanese chars with wave motion)
+function KatakanaCascade({ canvasRef }) {
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d');
+    canvas.width = canvas.offsetWidth;
+    canvas.height = canvas.offsetHeight;
+
+    const chars = 'アイウエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホマミムメモヤユヨラリルレロワヲンガギグゲゴ';
+    const fontSize = 14;
+    const columns = Math.floor(canvas.width / fontSize);
+    let time = 0;
+
+    const streams = Array(columns).fill(0).map((_, i) => ({
+      col: i,
+      phase: Math.random() * Math.PI * 2,
+      speed: 0.8 + Math.random() * 0.4,
+      active: Math.random() > 0.6
+    }));
+
+    const draw = () => {
+      ctx.fillStyle = 'rgba(12, 10, 8, 0.05)';
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+      ctx.font = `${fontSize}px monospace`;
+
+      for (const stream of streams) {
+        if (!stream.active) {
+          if (Math.random() > 0.995) stream.active = true;
+          continue;
+        }
+
+        const waveY = Math.sin(stream.col * 0.15 + time * 0.04) * 60 +
+                     Math.sin(stream.col * 0.08 + time * 0.02) * 30;
+        const baseY = ((time * stream.speed * 2 + stream.phase * 50 + waveY) % (canvas.height + 150)) - 75;
+
+        for (let t = 0; t < 12; t++) {
+          const y = baseY - t * fontSize;
+          if (y > -fontSize && y < canvas.height + fontSize) {
+            const char = chars[Math.floor(Math.random() * chars.length)];
+            const opacity = t === 0 ? 0.85 : 0.5 - t * 0.04;
+            ctx.fillStyle = t === 0 ? 'rgba(180, 255, 180, 0.9)' : `rgba(112, 192, 96, ${Math.max(opacity, 0.05)})`;
+            ctx.fillText(char, stream.col * fontSize, y);
+          }
+        }
+      }
+
+      time++;
+    };
+
+    const interval = setInterval(draw, 45);
+    return () => clearInterval(interval);
+  }, [canvasRef]);
+  return null;
+}
+
+// 47. Neural Cascade (Nodes that flow like waves)
+function NeuralCascade({ canvasRef }) {
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d');
+    canvas.width = canvas.offsetWidth;
+    canvas.height = canvas.offsetHeight;
+
+    let time = 0;
+    const nodes = Array(40).fill(0).map(() => ({
+      baseX: Math.random() * canvas.width,
+      baseY: Math.random() * canvas.height,
+      phase: Math.random() * Math.PI * 2,
+      amplitude: 20 + Math.random() * 30
+    }));
+
+    const draw = () => {
+      ctx.fillStyle = 'rgba(12, 10, 8, 0.1)';
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      // Calculate current positions with wave motion
+      const currentNodes = nodes.map(n => ({
+        x: n.baseX + Math.sin(time * 0.03 + n.phase) * n.amplitude * 0.5,
+        y: n.baseY + Math.sin(time * 0.02 + n.phase * 1.5) * n.amplitude
+      }));
+
+      // Draw connections
+      for (let i = 0; i < currentNodes.length; i++) {
+        for (let j = i + 1; j < currentNodes.length; j++) {
+          const dx = currentNodes[i].x - currentNodes[j].x;
+          const dy = currentNodes[i].y - currentNodes[j].y;
+          const dist = Math.sqrt(dx * dx + dy * dy);
+          if (dist < 80) {
+            ctx.beginPath();
+            ctx.moveTo(currentNodes[i].x, currentNodes[i].y);
+            ctx.lineTo(currentNodes[j].x, currentNodes[j].y);
+            ctx.strokeStyle = `rgba(112, 192, 96, ${0.25 - dist / 320})`;
+            ctx.stroke();
+          }
+        }
+      }
+
+      // Draw nodes with glow
+      for (const node of currentNodes) {
+        ctx.beginPath();
+        ctx.arc(node.x, node.y, 2.5, 0, Math.PI * 2);
+        ctx.fillStyle = 'rgba(150, 230, 130, 0.7)';
+        ctx.fill();
+      }
+
+      time++;
+    };
+
+    const interval = setInterval(draw, 30);
+    return () => clearInterval(interval);
+  }, [canvasRef]);
+  return null;
+}
+
+// 48. Classic Hex Mix (Matrix rain mixed with hex codes)
+function ClassicHexMix({ canvasRef }) {
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d');
+    canvas.width = canvas.offsetWidth;
+    canvas.height = canvas.offsetHeight;
+
+    const katakana = 'アイウエオカキクケコサシスセソタチツテト';
+    const fontSize = 14;
+    const columns = Math.floor(canvas.width / fontSize);
+    const drops = Array(columns).fill(0).map(() => ({
+      y: Math.random() * -100,
+      isHex: Math.random() > 0.7,
+      speed: 0.3 + Math.random() * 0.2
+    }));
+
+    const draw = () => {
+      ctx.fillStyle = 'rgba(12, 10, 8, 0.05)';
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      for (let i = 0; i < drops.length; i++) {
+        if (Math.random() > 0.97) {
+          const x = i * fontSize;
+          const y = drops[i].y * fontSize;
+
+          ctx.font = drops[i].isHex ? '10px monospace' : `${fontSize}px monospace`;
+
+          if (drops[i].isHex) {
+            const hex = Math.floor(Math.random() * 256).toString(16).toUpperCase().padStart(2, '0');
+            ctx.fillStyle = 'rgba(96, 220, 96, 0.8)';
+            ctx.fillText(hex, x, y);
+          } else {
+            const char = katakana[Math.floor(Math.random() * katakana.length)];
+            ctx.fillStyle = 'rgba(180, 255, 180, 0.9)';
+            ctx.fillText(char, x, y);
+          }
+
+          // Trail
+          for (let t = 1; t < 15; t++) {
+            const trailY = y - t * fontSize;
+            if (trailY > 0) {
+              if (drops[i].isHex) {
+                const hex = Math.floor(Math.random() * 256).toString(16).toUpperCase().padStart(2, '0');
+                ctx.fillStyle = `rgba(96, 200, 96, ${0.35 - t * 0.02})`;
+                ctx.fillText(hex, x, trailY);
+              } else {
+                const trailChar = katakana[Math.floor(Math.random() * katakana.length)];
+                ctx.fillStyle = `rgba(112, 192, 96, ${0.4 - t * 0.025})`;
+                ctx.fillText(trailChar, x, trailY);
+              }
+            }
+          }
+        }
+
+        drops[i].y += drops[i].speed;
+        if (drops[i].y * fontSize > canvas.height && Math.random() > 0.97) {
+          drops[i].y = 0;
+          drops[i].isHex = Math.random() > 0.7;
+        }
+      }
+    };
+
+    const interval = setInterval(draw, 50);
+    return () => clearInterval(interval);
+  }, [canvasRef]);
+  return null;
+}
+
+// 49. Grid Neural Glitch (Triple combo: grid + neural + glitch)
+function GridNeuralGlitch({ canvasRef }) {
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d');
+    canvas.width = canvas.offsetWidth;
+    canvas.height = canvas.offsetHeight;
+
+    const gridSize = 40;
+    let glitchTimer = 0;
+    const nodes = Array(18).fill(0).map(() => ({
+      x: Math.random() * canvas.width,
+      y: Math.random() * canvas.height,
+      vx: (Math.random() - 0.5) * 0.4,
+      vy: (Math.random() - 0.5) * 0.4
+    }));
+
+    const draw = () => {
+      ctx.fillStyle = 'rgba(12, 10, 8, 0.15)';
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      const isGlitching = glitchTimer > 0 || Math.random() > 0.92;
+      if (isGlitching && glitchTimer === 0) glitchTimer = 8 + Math.floor(Math.random() * 12);
+
+      // Glitchy grid
+      const gridDistort = glitchTimer > 0 ? (Math.random() - 0.5) * 8 : 0;
+      ctx.strokeStyle = `rgba(112, 192, 96, ${0.1 + (glitchTimer > 0 ? 0.05 : 0)})`;
+      for (let x = 0; x < canvas.width; x += gridSize) {
+        ctx.beginPath();
+        ctx.moveTo(x + gridDistort, 0);
+        ctx.lineTo(x - gridDistort, canvas.height);
+        ctx.stroke();
+      }
+      for (let y = 0; y < canvas.height; y += gridSize) {
+        ctx.beginPath();
+        ctx.moveTo(0, y + gridDistort);
+        ctx.lineTo(canvas.width, y - gridDistort);
+        ctx.stroke();
+      }
+
+      // Neural connections
+      for (let i = 0; i < nodes.length; i++) {
+        for (let j = i + 1; j < nodes.length; j++) {
+          const dx = nodes[i].x - nodes[j].x;
+          const dy = nodes[i].y - nodes[j].y;
+          const dist = Math.sqrt(dx * dx + dy * dy);
+          if (dist < 100) {
+            const glitchOffset = glitchTimer > 0 ? (Math.random() - 0.5) * 5 : 0;
+            ctx.beginPath();
+            ctx.moveTo(nodes[i].x + glitchOffset, nodes[i].y);
+            ctx.lineTo(nodes[j].x - glitchOffset, nodes[j].y);
+            ctx.strokeStyle = `rgba(112, 192, 96, ${0.2 - dist / 500})`;
+            ctx.stroke();
+          }
+        }
+      }
+
+      // Nodes
+      for (const node of nodes) {
+        ctx.beginPath();
+        ctx.arc(node.x, node.y, 3, 0, Math.PI * 2);
+        ctx.fillStyle = 'rgba(140, 230, 120, 0.6)';
+        ctx.fill();
+        node.x += node.vx;
+        node.y += node.vy;
+        if (node.x < 0 || node.x > canvas.width) node.vx *= -1;
+        if (node.y < 0 || node.y > canvas.height) node.vy *= -1;
+      }
+
+      // Glitch effects
+      if (glitchTimer > 0) {
+        for (let g = 0; g < 3; g++) {
+          ctx.fillStyle = `rgba(112, 192, 96, ${0.08 + Math.random() * 0.1})`;
+          ctx.fillRect(Math.random() * canvas.width * 0.5, Math.random() * canvas.height,
+                       30 + Math.random() * 80, 2 + Math.random() * 8);
+        }
+        glitchTimer--;
+      }
+
+      // Scanlines
+      for (let y = 0; y < canvas.height; y += 3) {
+        ctx.fillStyle = 'rgba(0, 0, 0, 0.06)';
+        ctx.fillRect(0, y, canvas.width, 1);
+      }
+    };
+
+    const interval = setInterval(draw, 35);
+    return () => clearInterval(interval);
+  }, [canvasRef]);
+  return null;
+}
+
+// 50. Cyber Katakana (Japanese on Tron-style grid)
+function CyberKatakana({ canvasRef }) {
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d');
+    canvas.width = canvas.offsetWidth;
+    canvas.height = canvas.offsetHeight;
+
+    const chars = 'アイウエオカキクケコサシスセソタチツテトナニヌネノ';
+    const gridSize = 45;
+    let pulseY = 0;
+    const streams = Array(Math.floor(canvas.width / gridSize)).fill(0).map((_, i) => ({
+      x: i * gridSize + gridSize / 2,
+      y: Math.random() * -200,
+      speed: 1.5 + Math.random() * 0.8,
+      length: 6 + Math.floor(Math.random() * 8)
+    }));
+
+    const draw = () => {
+      ctx.fillStyle = 'rgba(12, 10, 8, 0.1)';
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      // Grid
+      ctx.strokeStyle = 'rgba(112, 192, 96, 0.12)';
+      ctx.lineWidth = 1;
+      for (let x = 0; x < canvas.width; x += gridSize) {
+        ctx.beginPath();
+        ctx.moveTo(x, 0);
+        ctx.lineTo(x, canvas.height);
+        ctx.stroke();
+      }
+      for (let y = 0; y < canvas.height; y += gridSize) {
+        ctx.beginPath();
+        ctx.moveTo(0, y);
+        ctx.lineTo(canvas.width, y);
+        ctx.stroke();
+      }
+
+      // Pulse line
+      ctx.strokeStyle = 'rgba(112, 192, 96, 0.4)';
+      ctx.lineWidth = 2;
+      ctx.beginPath();
+      ctx.moveTo(0, pulseY);
+      ctx.lineTo(canvas.width, pulseY);
+      ctx.stroke();
+      pulseY = (pulseY + 1.5) % canvas.height;
+
+      // Katakana streams on grid lines
+      ctx.font = '14px monospace';
+      for (const stream of streams) {
+        for (let t = 0; t < stream.length; t++) {
+          const y = stream.y - t * 18;
+          if (y > -18 && y < canvas.height + 18) {
+            const char = chars[Math.floor(Math.random() * chars.length)];
+            ctx.fillStyle = t === 0 ? 'rgba(200, 255, 200, 0.9)' : `rgba(112, 192, 96, ${0.5 - t * 0.06})`;
+            ctx.fillText(char, stream.x - 7, y);
+          }
+        }
+        stream.y += stream.speed;
+        if (stream.y > canvas.height + stream.length * 18) {
+          stream.y = -stream.length * 18;
+        }
+      }
+    };
+
+    const interval = setInterval(draw, 40);
+    return () => clearInterval(interval);
+  }, [canvasRef]);
+  return null;
+}
+
 // Demo Section Component
 function EffectDemo({ title, description, Effect }) {
   const canvasRef = useRef(null);
@@ -1073,10 +3050,10 @@ export default function EffectsDemo() {
         </div>
 
         <p className="text-[#a09080] font-mono text-sm mb-8">
-          20 cyberpunk background variations:
+          50 cyberpunk background variations (favorites: 1, 4, 7, 8, 11, 12, 15 + mixes):
         </p>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-4">
           <EffectDemo title="1. classic" description="traditional matrix rain" Effect={MatrixClassic} />
           <EffectDemo title="2. sparse" description="minimal streams" Effect={MatrixSparse} />
           <EffectDemo title="3. glow" description="with bloom effect" Effect={MatrixGlow} />
@@ -1097,6 +3074,36 @@ export default function EffectsDemo() {
           <EffectDemo title="18. starfield" description="hyperspace travel" Effect={Starfield} />
           <EffectDemo title="19. hex grid" description="honeycomb pattern" Effect={HexGrid} />
           <EffectDemo title="20. smoke" description="rising fog" Effect={SmokeFog} />
+          <EffectDemo title="21. dna helix" description="rotating double helix" Effect={DNAHelix} />
+          <EffectDemo title="22. radar" description="sweeping scan" Effect={RadarScan} />
+          <EffectDemo title="23. data stream" description="horizontal packets" Effect={DataStream} />
+          <EffectDemo title="24. pulse" description="expanding rings" Effect={PulseRings} />
+          <EffectDemo title="25. fractal" description="animated tree" Effect={FractalTree} />
+          <EffectDemo title="26. cyber rain" description="neon rain drops" Effect={CyberRain} />
+          <EffectDemo title="27. lightning" description="electric bolts" Effect={Lightning} />
+          <EffectDemo title="28. hologram" description="vhs distortion" Effect={Hologram} />
+          <EffectDemo title="29. perspective" description="3d grid floor" Effect={PerspectiveGrid} />
+          <EffectDemo title="30. vortex" description="spiral tunnel" Effect={Vortex} />
+          <EffectDemo title="31. matrix+neural" description="rain with nodes" Effect={MatrixNeural} />
+          <EffectDemo title="32. glitch matrix" description="distorted rain" Effect={GlitchMatrix} />
+          <EffectDemo title="33. grid cascade" description="wavy grid" Effect={GridCascade} />
+          <EffectDemo title="34. neural glitch" description="glitchy network" Effect={NeuralGlitch} />
+          <EffectDemo title="35. grid matrix" description="rain on grid" Effect={GridMatrix} />
+          <EffectDemo title="36. cascade neural" description="wavy nodes" Effect={CascadeNeural} />
+          <EffectDemo title="37. triple fusion" description="matrix+grid+glitch" Effect={TripleFusion} />
+          <EffectDemo title="38. classic dense" description="intense matrix" Effect={ClassicDense} />
+          <EffectDemo title="39. cascade intense" description="multi-wave" Effect={CascadeIntense} />
+          <EffectDemo title="40. neural pulse" description="pulsing network" Effect={NeuralPulse} />
+          <EffectDemo title="41. katakana hex" description="japanese + hex mix" Effect={KatakanaHex} />
+          <EffectDemo title="42. neural grid" description="nodes on cyber grid" Effect={NeuralGrid} />
+          <EffectDemo title="43. cascade glitch" description="wavy glitch rain" Effect={CascadeGlitch} />
+          <EffectDemo title="44. hex neural" description="hex streams + nodes" Effect={HexNeural} />
+          <EffectDemo title="45. grid glitch" description="distorted cyber grid" Effect={GridGlitchIntense} />
+          <EffectDemo title="46. katakana wave" description="japanese cascade" Effect={KatakanaCascade} />
+          <EffectDemo title="47. neural cascade" description="flowing nodes" Effect={NeuralCascade} />
+          <EffectDemo title="48. classic hex" description="matrix + hex rain" Effect={ClassicHexMix} />
+          <EffectDemo title="49. triple glitch" description="grid+neural+glitch" Effect={GridNeuralGlitch} />
+          <EffectDemo title="50. cyber katakana" description="japanese on tron grid" Effect={CyberKatakana} />
         </div>
       </div>
     </div>
