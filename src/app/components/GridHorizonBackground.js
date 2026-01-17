@@ -30,6 +30,13 @@ export default function GridHorizonBackground() {
       ctx.fillStyle = 'rgba(16, 12, 8, 0.15)';
       ctx.fillRect(0, 0, canvas.width, canvas.height);
 
+      // Halo at vanishing point - drawn first (behind grid)
+      const gradient = ctx.createRadialGradient(vanishX, horizon, 0, vanishX, horizon, 150);
+      gradient.addColorStop(0, 'rgba(112, 192, 96, 0.15)');
+      gradient.addColorStop(1, 'rgba(112, 192, 96, 0)');
+      ctx.fillStyle = gradient;
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+
       ctx.lineWidth = 1;
 
       // Vertical lines - converge to horizon, then fall straight down after cliff
@@ -87,18 +94,6 @@ export default function GridHorizonBackground() {
           }
         }
       }
-
-      // Halo at vanishing point - only above the grid/animation (with some overlap)
-      ctx.save();
-      ctx.beginPath();
-      ctx.rect(0, 0, canvas.width, horizon + 30);
-      ctx.clip();
-      const gradient = ctx.createRadialGradient(vanishX, horizon, 0, vanishX, horizon, 150);
-      gradient.addColorStop(0, 'rgba(112, 192, 96, 0.15)');
-      gradient.addColorStop(1, 'rgba(112, 192, 96, 0)');
-      ctx.fillStyle = gradient;
-      ctx.fillRect(0, 0, canvas.width, canvas.height);
-      ctx.restore();
 
       offset += 0.012;
       if (offset >= 1) offset = 0;
