@@ -88,10 +88,10 @@ export default function GridHorizonBackground() {
         }
       }
 
-      // Halo at vanishing point - only above the grid/animation
+      // Halo at vanishing point - only above the grid/animation (with some overlap)
       ctx.save();
       ctx.beginPath();
-      ctx.rect(0, 0, canvas.width, horizon);
+      ctx.rect(0, 0, canvas.width, horizon + 30);
       ctx.clip();
       const gradient = ctx.createRadialGradient(vanishX, horizon, 0, vanishX, horizon, 150);
       gradient.addColorStop(0, 'rgba(112, 192, 96, 0.15)');
