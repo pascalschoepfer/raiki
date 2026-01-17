@@ -18,13 +18,13 @@ export default function GridHorizonBackground() {
     window.addEventListener('resize', resize);
 
     let offset = 0;
-    const cliffPosition = 0.5; // Cliff at halfway - further back
+    const cliffPosition = 0.65; // Cliff closer to viewer
 
     const draw = () => {
       const horizon = canvas.height * 0.5;
       const vanishX = canvas.width / 2;
       const cliffY = horizon + (canvas.height - horizon) * cliffPosition;
-      const cliffSpread = cliffPosition * canvas.width * 1.5;
+      const cliffSpread = canvas.width * 2; // Full width coverage
 
       // Clear canvas
       ctx.fillStyle = 'rgba(16, 12, 8, 0.15)';
@@ -33,8 +33,9 @@ export default function GridHorizonBackground() {
       ctx.lineWidth = 1;
 
       // Vertical lines - converge to horizon, then fall straight down after cliff
-      for (let i = 0; i < 40; i++) {
-        const ratio = (i - 20) / 20; // -1 to 1
+      const numLines = 60;
+      for (let i = 0; i < numLines; i++) {
+        const ratio = (i - numLines / 2) / (numLines / 2); // -1 to 1
         const xAtCliff = vanishX + ratio * cliffSpread;
 
         ctx.strokeStyle = 'rgba(112, 192, 96, 0.12)';
@@ -53,14 +54,16 @@ export default function GridHorizonBackground() {
       }
 
       // Horizontal lines with perspective - flowing towards viewer then falling
-      for (let i = 0; i < 30; i++) {
-        const t = (i + offset) / 30;
-        const y = horizon + (canvas.height - horizon) * Math.pow(t, 1.5);
-        const spread = t * canvas.width * 1.5;
+      const numHorizontalLines = 40;
+      for (let i = 0; i < numHorizontalLines; i++) {
+        const t = (i + offset) / numHorizontalLines;
         const lineOpacity = 0.04 + t * 0.12;
 
         if (t < cliffPosition) {
-          // Normal horizontal lines above cliff
+          // Normal horizontal lines above cliff - use perspective
+          const y = horizon + (cliffY - horizon) * (t / cliffPosition);
+          const spread = (t / cliffPosition) * cliffSpread;
+
           ctx.beginPath();
           ctx.moveTo(vanishX - spread, y);
           ctx.lineTo(vanishX + spread, y);
@@ -69,7 +72,7 @@ export default function GridHorizonBackground() {
         } else {
           // Lines that have passed the cliff - fall downward
           const fallProgress = (t - cliffPosition) / (1 - cliffPosition);
-          const fallDistance = Math.pow(fallProgress, 1.5) * 200;
+          const fallDistance = fallProgress * (canvas.height - cliffY + 50);
           const fallingY = cliffY + fallDistance;
 
           // Lines fall and fade out
