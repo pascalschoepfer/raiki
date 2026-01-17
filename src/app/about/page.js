@@ -72,7 +72,7 @@ export default function About() {
         </header>
 
         {/* Page Title - reduced top margin on mobile */}
-        <div className="absolute left-0 right-0 z-10 px-6 top-[10.8vh] sm:top-[13.5vh] flex items-center justify-center">
+        <div className="absolute left-0 right-0 z-10 px-6 top-[7vh] sm:top-[13.5vh] flex items-center justify-center">
           <div className="flex justify-center">
             <MatrixText
               text={t.title}
@@ -82,7 +82,7 @@ export default function About() {
         </div>
 
         {/* About Content - starts right after title on mobile */}
-        <div className="absolute z-10 px-4 sm:px-6 top-[22vh] min-[400px]:top-[13vh] bottom-[15vh] left-0 right-0 sm:inset-0 flex items-center justify-center sm:pt-16 md:pt-8">
+        <div className="absolute z-10 px-4 sm:px-6 top-[15vh] min-[400px]:top-[13vh] bottom-[15vh] left-0 right-0 sm:inset-0 flex items-center justify-center sm:pt-16 md:pt-8">
           <div className="max-w-4xl sm:max-w-5xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-2 min-[400px]:gap-3 sm:gap-6 md:gap-8 w-[80%] sm:w-full max-h-none sm:max-h-none overflow-y-auto sm:overflow-visible">
 
             {/* Experience */}
