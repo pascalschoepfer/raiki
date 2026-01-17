@@ -2306,7 +2306,548 @@ function Vortex({ canvasRef }) {
   return null;
 }
 
-// 41. Katakana Hex (Japanese + Hex codes mixed)
+// 41. Starfield Slow (Gentle drifting stars)
+function StarfieldSlow({ canvasRef }) {
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d');
+    canvas.width = canvas.offsetWidth;
+    canvas.height = canvas.offsetHeight;
+
+    const stars = Array(80).fill(0).map(() => ({
+      x: Math.random() * canvas.width,
+      y: Math.random() * canvas.height,
+      size: 0.5 + Math.random() * 1.5,
+      twinkle: Math.random() * Math.PI * 2,
+      speed: 0.1 + Math.random() * 0.2
+    }));
+
+    const draw = () => {
+      ctx.fillStyle = 'rgba(12, 10, 8, 0.08)';
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      for (const star of stars) {
+        star.twinkle += 0.03;
+        const opacity = 0.3 + Math.sin(star.twinkle) * 0.25;
+
+        ctx.beginPath();
+        ctx.arc(star.x, star.y, star.size, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(140, 210, 130, ${opacity})`;
+        ctx.fill();
+
+        star.y += star.speed;
+        if (star.y > canvas.height + star.size) {
+          star.y = -star.size;
+          star.x = Math.random() * canvas.width;
+        }
+      }
+    };
+
+    const interval = setInterval(draw, 40);
+    return () => clearInterval(interval);
+  }, [canvasRef]);
+  return null;
+}
+
+// 42. Constellation Drift (Slowly moving connected stars)
+function ConstellationDrift({ canvasRef }) {
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d');
+    canvas.width = canvas.offsetWidth;
+    canvas.height = canvas.offsetHeight;
+
+    const stars = Array(25).fill(0).map(() => ({
+      x: Math.random() * canvas.width,
+      y: Math.random() * canvas.height,
+      vx: (Math.random() - 0.5) * 0.15,
+      vy: (Math.random() - 0.5) * 0.15,
+      size: 1 + Math.random() * 1.5,
+      pulse: Math.random() * Math.PI * 2
+    }));
+
+    const draw = () => {
+      ctx.fillStyle = 'rgba(12, 10, 8, 0.06)';
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      // Draw faint connections
+      for (let i = 0; i < stars.length; i++) {
+        for (let j = i + 1; j < stars.length; j++) {
+          const dx = stars[i].x - stars[j].x;
+          const dy = stars[i].y - stars[j].y;
+          const dist = Math.sqrt(dx * dx + dy * dy);
+          if (dist < 120) {
+            ctx.beginPath();
+            ctx.moveTo(stars[i].x, stars[i].y);
+            ctx.lineTo(stars[j].x, stars[j].y);
+            ctx.strokeStyle = `rgba(112, 192, 96, ${0.08 - dist / 1500})`;
+            ctx.stroke();
+          }
+        }
+      }
+
+      // Draw stars
+      for (const star of stars) {
+        star.pulse += 0.02;
+        const glow = 0.4 + Math.sin(star.pulse) * 0.2;
+
+        ctx.beginPath();
+        ctx.arc(star.x, star.y, star.size, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(150, 220, 140, ${glow})`;
+        ctx.fill();
+
+        star.x += star.vx;
+        star.y += star.vy;
+        if (star.x < 0 || star.x > canvas.width) star.vx *= -1;
+        if (star.y < 0 || star.y > canvas.height) star.vy *= -1;
+      }
+    };
+
+    const interval = setInterval(draw, 40);
+    return () => clearInterval(interval);
+  }, [canvasRef]);
+  return null;
+}
+
+// 43. Nebula (Soft glowing clouds)
+function Nebula({ canvasRef }) {
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d');
+    canvas.width = canvas.offsetWidth;
+    canvas.height = canvas.offsetHeight;
+
+    const clouds = Array(8).fill(0).map(() => ({
+      x: Math.random() * canvas.width,
+      y: Math.random() * canvas.height,
+      size: 40 + Math.random() * 60,
+      vx: (Math.random() - 0.5) * 0.2,
+      vy: (Math.random() - 0.5) * 0.2,
+      opacity: 0.02 + Math.random() * 0.03
+    }));
+
+    const draw = () => {
+      ctx.fillStyle = 'rgba(12, 10, 8, 0.03)';
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      for (const cloud of clouds) {
+        const gradient = ctx.createRadialGradient(cloud.x, cloud.y, 0, cloud.x, cloud.y, cloud.size);
+        gradient.addColorStop(0, `rgba(112, 192, 96, ${cloud.opacity})`);
+        gradient.addColorStop(0.5, `rgba(90, 170, 80, ${cloud.opacity * 0.5})`);
+        gradient.addColorStop(1, 'rgba(112, 192, 96, 0)');
+
+        ctx.fillStyle = gradient;
+        ctx.beginPath();
+        ctx.arc(cloud.x, cloud.y, cloud.size, 0, Math.PI * 2);
+        ctx.fill();
+
+        cloud.x += cloud.vx;
+        cloud.y += cloud.vy;
+        if (cloud.x < -cloud.size) cloud.x = canvas.width + cloud.size;
+        if (cloud.x > canvas.width + cloud.size) cloud.x = -cloud.size;
+        if (cloud.y < -cloud.size) cloud.y = canvas.height + cloud.size;
+        if (cloud.y > canvas.height + cloud.size) cloud.y = -cloud.size;
+      }
+    };
+
+    const interval = setInterval(draw, 40);
+    return () => clearInterval(interval);
+  }, [canvasRef]);
+  return null;
+}
+
+// 44. Aurora (Northern lights effect)
+function Aurora({ canvasRef }) {
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d');
+    canvas.width = canvas.offsetWidth;
+    canvas.height = canvas.offsetHeight;
+
+    let time = 0;
+
+    const draw = () => {
+      ctx.fillStyle = 'rgba(12, 10, 8, 0.1)';
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      for (let i = 0; i < 5; i++) {
+        ctx.beginPath();
+        ctx.moveTo(0, canvas.height * 0.3 + i * 15);
+
+        for (let x = 0; x <= canvas.width; x += 5) {
+          const y = canvas.height * 0.3 + i * 15 +
+            Math.sin(x * 0.01 + time + i) * 30 +
+            Math.sin(x * 0.02 + time * 0.7) * 20;
+          ctx.lineTo(x, y);
+        }
+
+        ctx.lineTo(canvas.width, canvas.height);
+        ctx.lineTo(0, canvas.height);
+        ctx.closePath();
+
+        const gradient = ctx.createLinearGradient(0, canvas.height * 0.3, 0, canvas.height);
+        gradient.addColorStop(0, `rgba(112, 192, 96, ${0.03 - i * 0.005})`);
+        gradient.addColorStop(1, 'rgba(112, 192, 96, 0)');
+        ctx.fillStyle = gradient;
+        ctx.fill();
+      }
+
+      time += 0.02;
+    };
+
+    const interval = setInterval(draw, 40);
+    return () => clearInterval(interval);
+  }, [canvasRef]);
+  return null;
+}
+
+// 45. Fireflies (Random floating lights)
+function Fireflies({ canvasRef }) {
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d');
+    canvas.width = canvas.offsetWidth;
+    canvas.height = canvas.offsetHeight;
+
+    const flies = Array(20).fill(0).map(() => ({
+      x: Math.random() * canvas.width,
+      y: Math.random() * canvas.height,
+      targetX: Math.random() * canvas.width,
+      targetY: Math.random() * canvas.height,
+      size: 1.5 + Math.random() * 1.5,
+      glow: Math.random() * Math.PI * 2,
+      glowSpeed: 0.03 + Math.random() * 0.03
+    }));
+
+    const draw = () => {
+      ctx.fillStyle = 'rgba(12, 10, 8, 0.08)';
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      for (const fly of flies) {
+        // Move towards target
+        fly.x += (fly.targetX - fly.x) * 0.01;
+        fly.y += (fly.targetY - fly.y) * 0.01;
+
+        // New target when close
+        if (Math.abs(fly.x - fly.targetX) < 10 && Math.abs(fly.y - fly.targetY) < 10) {
+          fly.targetX = Math.random() * canvas.width;
+          fly.targetY = Math.random() * canvas.height;
+        }
+
+        fly.glow += fly.glowSpeed;
+        const opacity = 0.2 + Math.sin(fly.glow) * 0.3;
+        if (opacity > 0.1) {
+          // Glow
+          const gradient = ctx.createRadialGradient(fly.x, fly.y, 0, fly.x, fly.y, fly.size * 4);
+          gradient.addColorStop(0, `rgba(150, 230, 120, ${opacity * 0.3})`);
+          gradient.addColorStop(1, 'rgba(150, 230, 120, 0)');
+          ctx.fillStyle = gradient;
+          ctx.beginPath();
+          ctx.arc(fly.x, fly.y, fly.size * 4, 0, Math.PI * 2);
+          ctx.fill();
+
+          // Core
+          ctx.beginPath();
+          ctx.arc(fly.x, fly.y, fly.size, 0, Math.PI * 2);
+          ctx.fillStyle = `rgba(180, 255, 160, ${opacity})`;
+          ctx.fill();
+        }
+      }
+    };
+
+    const interval = setInterval(draw, 35);
+    return () => clearInterval(interval);
+  }, [canvasRef]);
+  return null;
+}
+
+// 46. Grid Pulse (Cyber grid with gentle pulse)
+function GridPulse({ canvasRef }) {
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d');
+    canvas.width = canvas.offsetWidth;
+    canvas.height = canvas.offsetHeight;
+
+    const gridSize = 35;
+    let time = 0;
+
+    const draw = () => {
+      ctx.fillStyle = '#0c0a08';
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      const pulse = Math.sin(time) * 0.5 + 0.5;
+
+      ctx.strokeStyle = `rgba(112, 192, 96, ${0.08 + pulse * 0.06})`;
+      ctx.lineWidth = 1;
+
+      for (let x = 0; x < canvas.width; x += gridSize) {
+        ctx.beginPath();
+        ctx.moveTo(x, 0);
+        ctx.lineTo(x, canvas.height);
+        ctx.stroke();
+      }
+
+      for (let y = 0; y < canvas.height; y += gridSize) {
+        ctx.beginPath();
+        ctx.moveTo(0, y);
+        ctx.lineTo(canvas.width, y);
+        ctx.stroke();
+      }
+
+      // Highlight intersections
+      for (let x = 0; x < canvas.width; x += gridSize) {
+        for (let y = 0; y < canvas.height; y += gridSize) {
+          const dist = Math.sqrt(Math.pow(x - canvas.width/2, 2) + Math.pow(y - canvas.height/2, 2));
+          const localPulse = Math.sin(time - dist * 0.02) * 0.5 + 0.5;
+          if (localPulse > 0.7) {
+            ctx.beginPath();
+            ctx.arc(x, y, 2, 0, Math.PI * 2);
+            ctx.fillStyle = `rgba(140, 220, 120, ${localPulse * 0.4})`;
+            ctx.fill();
+          }
+        }
+      }
+
+      time += 0.05;
+    };
+
+    const interval = setInterval(draw, 35);
+    return () => clearInterval(interval);
+  }, [canvasRef]);
+  return null;
+}
+
+// 47. Shooting Stars
+function ShootingStars({ canvasRef }) {
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d');
+    canvas.width = canvas.offsetWidth;
+    canvas.height = canvas.offsetHeight;
+
+    const stars = Array(60).fill(0).map(() => ({
+      x: Math.random() * canvas.width,
+      y: Math.random() * canvas.height,
+      size: 0.5 + Math.random() * 1,
+      twinkle: Math.random() * Math.PI * 2
+    }));
+
+    const shooters = [];
+
+    const draw = () => {
+      ctx.fillStyle = 'rgba(12, 10, 8, 0.15)';
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      // Background stars
+      for (const star of stars) {
+        star.twinkle += 0.02;
+        const opacity = 0.2 + Math.sin(star.twinkle) * 0.15;
+        ctx.beginPath();
+        ctx.arc(star.x, star.y, star.size, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(140, 210, 130, ${opacity})`;
+        ctx.fill();
+      }
+
+      // Shooting stars
+      if (Math.random() > 0.98 && shooters.length < 3) {
+        shooters.push({
+          x: Math.random() * canvas.width,
+          y: 0,
+          speed: 5 + Math.random() * 5,
+          length: 30 + Math.random() * 40,
+          opacity: 0.8
+        });
+      }
+
+      for (let i = shooters.length - 1; i >= 0; i--) {
+        const s = shooters[i];
+
+        const gradient = ctx.createLinearGradient(
+          s.x, s.y,
+          s.x - s.length * 0.5, s.y - s.length
+        );
+        gradient.addColorStop(0, `rgba(180, 255, 160, ${s.opacity})`);
+        gradient.addColorStop(1, 'rgba(112, 192, 96, 0)');
+
+        ctx.beginPath();
+        ctx.moveTo(s.x, s.y);
+        ctx.lineTo(s.x - s.length * 0.5, s.y - s.length);
+        ctx.strokeStyle = gradient;
+        ctx.lineWidth = 2;
+        ctx.stroke();
+
+        s.x += s.speed * 0.5;
+        s.y += s.speed;
+        s.opacity *= 0.98;
+
+        if (s.y > canvas.height || s.opacity < 0.05) {
+          shooters.splice(i, 1);
+        }
+      }
+    };
+
+    const interval = setInterval(draw, 35);
+    return () => clearInterval(interval);
+  }, [canvasRef]);
+  return null;
+}
+
+// 48. Electric Field (Subtle electric lines)
+function ElectricField({ canvasRef }) {
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d');
+    canvas.width = canvas.offsetWidth;
+    canvas.height = canvas.offsetHeight;
+
+    const lines = [];
+
+    const draw = () => {
+      ctx.fillStyle = 'rgba(12, 10, 8, 0.15)';
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      // Create new line
+      if (Math.random() > 0.95 && lines.length < 5) {
+        const isHorizontal = Math.random() > 0.5;
+        lines.push({
+          x: isHorizontal ? 0 : Math.random() * canvas.width,
+          y: isHorizontal ? Math.random() * canvas.height : 0,
+          isHorizontal,
+          progress: 0,
+          speed: 3 + Math.random() * 3,
+          opacity: 0.4 + Math.random() * 0.3
+        });
+      }
+
+      for (let i = lines.length - 1; i >= 0; i--) {
+        const line = lines[i];
+
+        ctx.beginPath();
+        if (line.isHorizontal) {
+          ctx.moveTo(0, line.y);
+          ctx.lineTo(line.progress, line.y + (Math.random() - 0.5) * 3);
+        } else {
+          ctx.moveTo(line.x, 0);
+          ctx.lineTo(line.x + (Math.random() - 0.5) * 3, line.progress);
+        }
+        ctx.strokeStyle = `rgba(112, 192, 96, ${line.opacity})`;
+        ctx.lineWidth = 1;
+        ctx.stroke();
+
+        line.progress += line.speed;
+        line.opacity *= 0.995;
+
+        const max = line.isHorizontal ? canvas.width : canvas.height;
+        if (line.progress > max || line.opacity < 0.05) {
+          lines.splice(i, 1);
+        }
+      }
+    };
+
+    const interval = setInterval(draw, 30);
+    return () => clearInterval(interval);
+  }, [canvasRef]);
+  return null;
+}
+
+// 49. Plasma (Organic flowing shapes)
+function Plasma({ canvasRef }) {
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d');
+    canvas.width = canvas.offsetWidth;
+    canvas.height = canvas.offsetHeight;
+
+    let time = 0;
+
+    const draw = () => {
+      ctx.fillStyle = 'rgba(12, 10, 8, 0.1)';
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      for (let i = 0; i < 3; i++) {
+        const cx = canvas.width / 2 + Math.sin(time * 0.5 + i * 2) * 50;
+        const cy = canvas.height / 2 + Math.cos(time * 0.4 + i * 2) * 40;
+        const size = 40 + Math.sin(time + i) * 20;
+
+        const gradient = ctx.createRadialGradient(cx, cy, 0, cx, cy, size);
+        gradient.addColorStop(0, `rgba(112, 192, 96, ${0.06 - i * 0.015})`);
+        gradient.addColorStop(1, 'rgba(112, 192, 96, 0)');
+
+        ctx.fillStyle = gradient;
+        ctx.beginPath();
+        ctx.arc(cx, cy, size, 0, Math.PI * 2);
+        ctx.fill();
+      }
+
+      time += 0.03;
+    };
+
+    const interval = setInterval(draw, 40);
+    return () => clearInterval(interval);
+  }, [canvasRef]);
+  return null;
+}
+
+// 50. Rain Light (Soft glowing rain)
+function RainLight({ canvasRef }) {
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d');
+    canvas.width = canvas.offsetWidth;
+    canvas.height = canvas.offsetHeight;
+
+    const drops = Array(40).fill(0).map(() => ({
+      x: Math.random() * canvas.width,
+      y: Math.random() * canvas.height,
+      length: 15 + Math.random() * 25,
+      speed: 2 + Math.random() * 3,
+      opacity: 0.1 + Math.random() * 0.2
+    }));
+
+    const draw = () => {
+      ctx.fillStyle = 'rgba(12, 10, 8, 0.12)';
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      for (const drop of drops) {
+        const gradient = ctx.createLinearGradient(drop.x, drop.y, drop.x, drop.y + drop.length);
+        gradient.addColorStop(0, `rgba(140, 220, 120, ${drop.opacity})`);
+        gradient.addColorStop(1, 'rgba(112, 192, 96, 0)');
+
+        ctx.beginPath();
+        ctx.moveTo(drop.x, drop.y);
+        ctx.lineTo(drop.x, drop.y + drop.length);
+        ctx.strokeStyle = gradient;
+        ctx.lineWidth = 1.5;
+        ctx.stroke();
+
+        drop.y += drop.speed;
+        if (drop.y > canvas.height) {
+          drop.y = -drop.length;
+          drop.x = Math.random() * canvas.width;
+        }
+      }
+    };
+
+    const interval = setInterval(draw, 35);
+    return () => clearInterval(interval);
+  }, [canvasRef]);
+  return null;
+}
+
+// === REPLACED MIXED EFFECTS WITH CLEAN VARIANTS ===
+
+// Old 41. Katakana Hex (Japanese + Hex codes mixed)
 function KatakanaHex({ canvasRef }) {
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -3094,16 +3635,16 @@ export default function EffectsDemo() {
           <EffectDemo title="38. classic dense" description="intense matrix" Effect={ClassicDense} />
           <EffectDemo title="39. cascade intense" description="multi-wave" Effect={CascadeIntense} />
           <EffectDemo title="40. neural pulse" description="pulsing network" Effect={NeuralPulse} />
-          <EffectDemo title="41. katakana hex" description="japanese + hex mix" Effect={KatakanaHex} />
-          <EffectDemo title="42. neural grid" description="nodes on cyber grid" Effect={NeuralGrid} />
-          <EffectDemo title="43. cascade glitch" description="wavy glitch rain" Effect={CascadeGlitch} />
-          <EffectDemo title="44. hex neural" description="hex streams + nodes" Effect={HexNeural} />
-          <EffectDemo title="45. grid glitch" description="distorted cyber grid" Effect={GridGlitchIntense} />
-          <EffectDemo title="46. katakana wave" description="japanese cascade" Effect={KatakanaCascade} />
-          <EffectDemo title="47. neural cascade" description="flowing nodes" Effect={NeuralCascade} />
-          <EffectDemo title="48. classic hex" description="matrix + hex rain" Effect={ClassicHexMix} />
-          <EffectDemo title="49. triple glitch" description="grid+neural+glitch" Effect={GridNeuralGlitch} />
-          <EffectDemo title="50. cyber katakana" description="japanese on tron grid" Effect={CyberKatakana} />
+          <EffectDemo title="41. starfield slow" description="gentle drifting stars" Effect={StarfieldSlow} />
+          <EffectDemo title="42. constellation" description="connected drifting stars" Effect={ConstellationDrift} />
+          <EffectDemo title="43. nebula" description="soft glowing clouds" Effect={Nebula} />
+          <EffectDemo title="44. aurora" description="northern lights" Effect={Aurora} />
+          <EffectDemo title="45. fireflies" description="floating lights" Effect={Fireflies} />
+          <EffectDemo title="46. grid pulse" description="pulsing cyber grid" Effect={GridPulse} />
+          <EffectDemo title="47. shooting stars" description="starfield with streaks" Effect={ShootingStars} />
+          <EffectDemo title="48. electric field" description="subtle electric lines" Effect={ElectricField} />
+          <EffectDemo title="49. plasma" description="organic flowing shapes" Effect={Plasma} />
+          <EffectDemo title="50. rain light" description="soft glowing rain" Effect={RainLight} />
         </div>
       </div>
     </div>
