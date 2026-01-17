@@ -88,22 +88,13 @@ export default function GridHorizonBackground() {
         }
       }
 
-      // Halo at vanishing point - only in the sky area above the grid
-      ctx.save();
-      ctx.beginPath();
-      // Clip to area ABOVE the grid - triangle pointing down to horizon
-      ctx.moveTo(0, 0);
-      ctx.lineTo(canvas.width, 0);
-      ctx.lineTo(vanishX, horizon);
-      ctx.closePath();
-      ctx.clip();
+      // Halo at vanishing point - simple radial gradient
       const gradient = ctx.createRadialGradient(vanishX, horizon, 0, vanishX, horizon, 200);
-      gradient.addColorStop(0, 'rgba(112, 192, 96, 0.2)');
-      gradient.addColorStop(0.5, 'rgba(112, 192, 96, 0.06)');
+      gradient.addColorStop(0, 'rgba(112, 192, 96, 0.15)');
+      gradient.addColorStop(0.5, 'rgba(112, 192, 96, 0.05)');
       gradient.addColorStop(1, 'rgba(112, 192, 96, 0)');
       ctx.fillStyle = gradient;
-      ctx.fillRect(0, 0, canvas.width, horizon);
-      ctx.restore();
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
 
       offset += 0.012;
       if (offset >= 1) offset = 0;
