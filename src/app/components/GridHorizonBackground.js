@@ -20,7 +20,7 @@ export default function GridHorizonBackground() {
     let offset = 0;
 
     const draw = () => {
-      // Horizon point much lower (50% instead of 30%)
+      // Horizon point at 50%
       const horizon = canvas.height * 0.5;
       const vanishX = canvas.width / 2;
 
@@ -28,31 +28,36 @@ export default function GridHorizonBackground() {
       ctx.fillStyle = 'rgba(16, 12, 8, 0.15)';
       ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-      // Vertical lines converging to horizon - subtle
+      // Vertical lines converging to horizon - wider spacing, more lines
       ctx.strokeStyle = 'rgba(112, 192, 96, 0.12)';
       ctx.lineWidth = 1;
 
-      for (let x = -canvas.width; x < canvas.width * 2; x += 60) {
+      for (let x = -canvas.width * 2; x < canvas.width * 3; x += 40) {
         ctx.beginPath();
         ctx.moveTo(x, canvas.height);
         ctx.lineTo(vanishX, horizon);
         ctx.stroke();
       }
 
-      // Horizontal lines with perspective - moving
+      // Horizontal lines with perspective - moving, wider spread
       for (let i = 0; i < 20; i++) {
         const t = (i + offset) / 20;
         const y = horizon + (canvas.height - horizon) * Math.pow(t, 1.5);
-        const spread = t * canvas.width;
+        const spread = t * canvas.width * 1.5; // 1.5x wider
 
         ctx.beginPath();
         ctx.moveTo(vanishX - spread, y);
         ctx.lineTo(vanishX + spread, y);
-        ctx.strokeStyle = `rgba(112, 192, 96, ${0.04 + t * 0.1})`;
+        ctx.strokeStyle = `rgba(112, 192, 96, ${0.04 + t * 0.12})`;
         ctx.stroke();
       }
 
-      // No horizon glow - keeping it clean
+      // Halo/glow at horizon vanishing point
+      const gradient = ctx.createRadialGradient(vanishX, horizon, 0, vanishX, horizon, 120);
+      gradient.addColorStop(0, 'rgba(112, 192, 96, 0.12)');
+      gradient.addColorStop(1, 'rgba(112, 192, 96, 0)');
+      ctx.fillStyle = gradient;
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
 
       offset += 0.015;
       if (offset >= 1) offset = 0;
@@ -71,7 +76,7 @@ export default function GridHorizonBackground() {
     <canvas
       ref={canvasRef}
       className="absolute inset-0 w-full h-full pointer-events-none"
-      style={{ opacity: 0.7 }}
+      style={{ opacity: 0.5 }}
     />
   );
 }
