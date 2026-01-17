@@ -271,7 +271,7 @@ export default function Contact() {
         </header>
 
         {/* Title - same height as other pages */}
-        <div className="absolute left-0 right-0 z-10 px-6 top-[7vh] sm:top-[13.5vh] flex items-center justify-center">
+        <div className="absolute left-0 right-0 z-10 px-6 top-[10.8vh] sm:top-[13.5vh] flex items-center justify-center">
           <MatrixText
             text={t.title}
             className="text-4xl md:text-5xl font-mono font-bold text-[#d0c8b8] tracking-wider"
@@ -279,7 +279,7 @@ export default function Contact() {
         </div>
 
         {/* Form Content */}
-        <div className="absolute inset-0 flex flex-col justify-center items-center z-10 px-6 pt-16">
+        <div className="absolute inset-0 flex flex-col justify-center items-center z-10 px-6 pt-8 sm:pt-16">
           <div className="max-w-md mx-auto w-full text-center space-y-6">
 
             {/* Compact Form */}
