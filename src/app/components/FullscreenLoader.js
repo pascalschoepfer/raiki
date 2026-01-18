@@ -1,29 +1,17 @@
 'use client';
 
 import { useState, useEffect, useRef } from 'react';
+import { useRouter } from 'next/navigation';
 
 export default function FullscreenLoader() {
   const [isLoading, setIsLoading] = useState(false);
-  const [isFadingOut, setIsFadingOut] = useState(false);
   const [isMounted, setIsMounted] = useState(false);
   const [opacity, setOpacity] = useState(0);
   const canvasRef = useRef(null);
+  const router = useRouter();
 
   useEffect(() => {
     setIsMounted(true);
-
-    // Check if we just navigated (show fade out)
-    if (sessionStorage.getItem('starfield-nav')) {
-      sessionStorage.removeItem('starfield-nav');
-      setIsFadingOut(true);
-      setOpacity(1);
-
-      // Start fade out after stars show briefly
-      setTimeout(() => setOpacity(0), 1000);
-
-      // Hide completely
-      setTimeout(() => setIsFadingOut(false), 1500);
-    }
   }, []);
 
   // Show loader when navigation links are clicked
@@ -33,6 +21,11 @@ export default function FullscreenLoader() {
     const handleLinkClick = (e) => {
       const target = e.target.closest('a');
       if (target && target.href && target.href.includes(window.location.origin)) {
+        const url = new URL(target.href);
+
+        // Skip if same page
+        if (url.pathname === window.location.pathname) return;
+
         e.preventDefault();
         setIsLoading(true);
         setOpacity(0);
@@ -40,21 +33,28 @@ export default function FullscreenLoader() {
         // Fade in
         setTimeout(() => setOpacity(1), 50);
 
-        // Navigate while visible, set flag for fade out on new page
+        // Navigate while visible (client-side, no page reload)
         setTimeout(() => {
-          sessionStorage.setItem('starfield-nav', '1');
-          window.location.href = target.href;
-        }, 1200);
+          router.push(url.pathname);
+        }, 700);
+
+        // Start fade out
+        setTimeout(() => setOpacity(0), 1700);
+
+        // Hide loader
+        setTimeout(() => {
+          setIsLoading(false);
+        }, 2200);
       }
     };
 
     document.addEventListener('click', handleLinkClick);
     return () => document.removeEventListener('click', handleLinkClick);
-  }, [isMounted]);
+  }, [isMounted, router]);
 
   // Starfield animation
   useEffect(() => {
-    if ((!isLoading && !isFadingOut) || !isMounted) return;
+    if (!isLoading || !isMounted) return;
 
     const canvas = canvasRef.current;
     if (!canvas) return;
@@ -117,9 +117,9 @@ export default function FullscreenLoader() {
     return () => {
       if (animationId) cancelAnimationFrame(animationId);
     };
-  }, [isLoading, isFadingOut, isMounted]);
+  }, [isLoading, isMounted]);
 
-  if (!isMounted || (!isLoading && !isFadingOut)) return null;
+  if (!isMounted || !isLoading) return null;
 
   return (
     <div
