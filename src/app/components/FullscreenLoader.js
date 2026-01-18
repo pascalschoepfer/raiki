@@ -23,7 +23,7 @@ export default function FullscreenLoader() {
 
         setTimeout(() => {
           window.location.href = target.href;
-        }, 1000);
+        }, 2000);
       }
     };
 
@@ -58,7 +58,7 @@ export default function FullscreenLoader() {
       const cy = canvas.height / 2;
 
       for (const star of stars) {
-        star.z -= 8;
+        star.z -= 4;
         if (star.z <= 0) {
           star.x = Math.random() * canvas.width - cx;
           star.y = Math.random() * canvas.height - cy;
@@ -71,7 +71,7 @@ export default function FullscreenLoader() {
         const opacity = (1 - star.z / canvas.width) * 0.9;
 
         // Draw star trail
-        const prevZ = star.z + 8;
+        const prevZ = star.z + 4;
         const prevSx = (star.x / prevZ) * 300 + cx;
         const prevSy = (star.y / prevZ) * 300 + cy;
 
