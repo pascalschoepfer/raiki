@@ -10,9 +10,7 @@ const content = {
     title: 'impressum',
     section1Title: 'Angaben gemäss Art. 3 UWG',
     section2Title: 'Handelsregister',
-    section3Title: 'Vertretungsberechtigte Person',
-    section4Title: 'Kontakt',
-    role: 'Geschäftsführer',
+    section3Title: 'Kontakt',
     contactLink: 'Kontaktformular',
     linkText: 'Datenschutzerklärung'
   },
@@ -20,9 +18,7 @@ const content = {
     title: 'imprint',
     section1Title: 'Company Information',
     section2Title: 'Commercial Register',
-    section3Title: 'Authorized Representative',
-    section4Title: 'Contact',
-    role: 'Managing Director',
+    section3Title: 'Contact',
     contactLink: 'Contact Form',
     linkText: 'Privacy Policy'
   }
@@ -87,15 +83,8 @@ export default function Impressum() {
                 </div>
               </section>
 
-              <section className="mb-6">
-                <h2 className="text-lg font-bold text-[#e8e0d5] mb-3 font-mono">{t.section3Title}</h2>
-                <div className="text-[#c0b8a8] space-y-1 text-sm">
-                  <p>Pascal Schöpfer, {t.role}</p>
-                </div>
-              </section>
-
               <section>
-                <h2 className="text-lg font-bold text-[#e8e0d5] mb-3 font-mono">{t.section4Title}</h2>
+                <h2 className="text-lg font-bold text-[#e8e0d5] mb-3 font-mono">{t.section3Title}</h2>
                 <div className="text-[#c0b8a8] space-y-1 text-sm">
                   <a href="/contact" className="text-[#70c060] hover:text-[#90e080] transition-colors">
                     → {t.contactLink}
