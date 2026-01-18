@@ -26,13 +26,10 @@ export default function FullscreenLoader() {
         // Start fade in after tiny delay (for browser to register initial state)
         setTimeout(() => setFadePhase('visible'), 50);
 
-        // Start fade out 400ms before navigation
-        setTimeout(() => setFadePhase('out'), 1800);
-
-        // Navigate
+        // Navigate while starfield is visible (after fade in complete)
         setTimeout(() => {
           window.location.href = target.href;
-        }, 2200);
+        }, 800);
       }
     };
 
