@@ -21,9 +21,9 @@ export default function GridHorizonBackground() {
     const cliffPosition = 0.65; // Cliff closer to viewer
 
     const draw = () => {
-      // On mobile (< 640px), push horizon 20% lower
+      // On mobile (< 640px), push horizon 30% lower
       const isMobile = canvas.width < 640;
-      const horizon = canvas.height * (isMobile ? 0.7 : 0.5);
+      const horizon = canvas.height * (isMobile ? 0.8 : 0.5);
       const vanishX = canvas.width / 2;
       const cliffY = horizon + (canvas.height - horizon) * cliffPosition;
       const cliffSpread = canvas.width * 2; // Full width coverage
