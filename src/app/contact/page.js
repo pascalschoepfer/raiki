@@ -248,7 +248,7 @@ export default function Contact() {
   };
 
   return (
-    <div className="h-screen overflow-hidden bg-gradient-to-br from-[#100c08] via-[#1a1510] to-[#251c15]">
+    <div className="h-[100dvh] overflow-hidden bg-gradient-to-br from-[#100c08] via-[#1a1510] to-[#251c15]">
         <div className="relative overflow-hidden h-full">
 
         {/* Header with Navigation */}
