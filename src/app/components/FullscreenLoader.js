@@ -5,6 +5,7 @@ import { useState, useEffect, useRef } from 'react';
 export default function FullscreenLoader() {
   const [isLoading, setIsLoading] = useState(false);
   const [isMounted, setIsMounted] = useState(false);
+  const [fadePhase, setFadePhase] = useState('in'); // 'in' | 'visible' | 'out'
   const canvasRef = useRef(null);
 
   useEffect(() => {
@@ -20,10 +21,18 @@ export default function FullscreenLoader() {
       if (target && target.href && target.href.includes(window.location.origin)) {
         e.preventDefault();
         setIsLoading(true);
+        setFadePhase('in');
 
+        // Start fade in after tiny delay (for browser to register initial state)
+        setTimeout(() => setFadePhase('visible'), 50);
+
+        // Start fade out 400ms before navigation
+        setTimeout(() => setFadePhase('out'), 1800);
+
+        // Navigate
         setTimeout(() => {
           window.location.href = target.href;
-        }, 2000);
+        }, 2200);
       }
     };
 
@@ -101,7 +110,13 @@ export default function FullscreenLoader() {
   if (!isMounted || !isLoading) return null;
 
   return (
-    <div className="fixed inset-0 bg-black z-[99999] flex items-center justify-center">
+    <div
+      className="fixed inset-0 bg-black z-[99999] flex items-center justify-center transition-opacity duration-400"
+      style={{
+        opacity: fadePhase === 'in' ? 0 : fadePhase === 'out' ? 0 : 1,
+        transition: 'opacity 400ms ease-in-out'
+      }}
+    >
       <canvas
         ref={canvasRef}
         className="absolute inset-0 w-full h-full"
