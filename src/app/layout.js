@@ -14,12 +14,43 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata = {
-  title: "raiki",
+  title: {
+    default: "raiki",
+    template: "%s | raiki",
+  },
   description: "cybersecurity - digital experiences - web3 services",
+  keywords: ["cybersecurity", "web3", "blockchain", "crypto", "digital services", "switzerland"],
+  authors: [{ name: "Raiki GmbH" }],
+  creator: "Raiki GmbH",
+  metadataBase: new URL("https://raiki.vercel.app"),
   icons: {
     icon: '/favicon.svg',
     shortcut: '/favicon.svg',
     apple: '/apple-touch-icon.png',
+  },
+  openGraph: {
+    type: "website",
+    locale: "en_US",
+    url: "https://raiki.vercel.app",
+    siteName: "raiki",
+    title: "raiki",
+    description: "cybersecurity - digital experiences - web3 services",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "raiki",
+    description: "cybersecurity - digital experiences - web3 services",
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-video-preview": -1,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+    },
   },
 };
 
