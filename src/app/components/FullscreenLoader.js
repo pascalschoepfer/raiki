@@ -1,24 +1,14 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 
 export default function FullscreenLoader() {
   const [isLoading, setIsLoading] = useState(false);
   const [isMounted, setIsMounted] = useState(false);
-  const [binaryChars, setBinaryChars] = useState([]);
+  const canvasRef = useRef(null);
 
-  // Only mount the component, don't show loader initially
   useEffect(() => {
     setIsMounted(true);
-    
-    // Generate Japanese character pattern
-    const japaneseChars = ['ア', 'イ', 'ウ', 'エ', 'オ', 'カ', 'キ', 'ク', 'ケ', 'コ', 'サ', 'シ', 'ス', 'セ', 'ソ', 'タ', 'チ', 'ツ', 'テ', 'ト'];
-    const pattern = Array(20).fill().map((_, i) => ({
-      char: japaneseChars[Math.floor(Math.random() * japaneseChars.length)],
-      left: i * 5,
-      delay: i * 0.1
-    }));
-    setBinaryChars(pattern);
   }, []);
 
   // Show loader when navigation links are clicked
@@ -28,10 +18,9 @@ export default function FullscreenLoader() {
     const handleLinkClick = (e) => {
       const target = e.target.closest('a');
       if (target && target.href && target.href.includes(window.location.origin)) {
-        e.preventDefault(); // Prevent immediate navigation
+        e.preventDefault();
         setIsLoading(true);
-        
-        // Navigate after loader duration
+
         setTimeout(() => {
           window.location.href = target.href;
         }, 1000);
@@ -42,43 +31,84 @@ export default function FullscreenLoader() {
     return () => document.removeEventListener('click', handleLinkClick);
   }, [isMounted]);
 
-  // Animate binary characters
+  // Starfield animation
   useEffect(() => {
     if (!isLoading || !isMounted) return;
 
-    const interval = setInterval(() => {
-      const japaneseChars = ['ア', 'イ', 'ウ', 'エ', 'オ', 'カ', 'キ', 'ク', 'ケ', 'コ', 'サ', 'シ', 'ス', 'セ', 'ソ', 'タ', 'チ', 'ツ', 'テ', 'ト'];
-      setBinaryChars(prev => prev.map(item => ({
-        ...item,
-        char: japaneseChars[Math.floor(Math.random() * japaneseChars.length)]
-      })));
-    }, 200);
+    const canvas = canvasRef.current;
+    if (!canvas) return;
 
-    return () => clearInterval(interval);
+    const ctx = canvas.getContext('2d');
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+
+    const stars = Array(150).fill(0).map(() => ({
+      x: Math.random() * canvas.width - canvas.width / 2,
+      y: Math.random() * canvas.height - canvas.height / 2,
+      z: Math.random() * canvas.width
+    }));
+
+    let animationId;
+
+    const draw = () => {
+      ctx.fillStyle = 'rgba(0, 0, 0, 0.15)';
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      const cx = canvas.width / 2;
+      const cy = canvas.height / 2;
+
+      for (const star of stars) {
+        star.z -= 8;
+        if (star.z <= 0) {
+          star.x = Math.random() * canvas.width - cx;
+          star.y = Math.random() * canvas.height - cy;
+          star.z = canvas.width;
+        }
+
+        const sx = (star.x / star.z) * 300 + cx;
+        const sy = (star.y / star.z) * 300 + cy;
+        const size = (1 - star.z / canvas.width) * 4;
+        const opacity = (1 - star.z / canvas.width) * 0.9;
+
+        // Draw star trail
+        const prevZ = star.z + 8;
+        const prevSx = (star.x / prevZ) * 300 + cx;
+        const prevSy = (star.y / prevZ) * 300 + cy;
+
+        ctx.beginPath();
+        ctx.moveTo(prevSx, prevSy);
+        ctx.lineTo(sx, sy);
+        ctx.strokeStyle = `rgba(112, 192, 96, ${opacity * 0.5})`;
+        ctx.lineWidth = size * 0.5;
+        ctx.stroke();
+
+        ctx.beginPath();
+        ctx.arc(sx, sy, size, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(112, 192, 96, ${opacity})`;
+        ctx.fill();
+      }
+
+      animationId = requestAnimationFrame(draw);
+    };
+
+    draw();
+
+    return () => {
+      if (animationId) cancelAnimationFrame(animationId);
+    };
   }, [isLoading, isMounted]);
 
-  // Don't render anything on server side
   if (!isMounted || !isLoading) return null;
 
   return (
     <div className="fixed inset-0 bg-black z-[99999] flex items-center justify-center">
-      <div className="flex flex-col items-center justify-center h-48 relative overflow-hidden">
-        <div className="absolute inset-0 opacity-40">
-          {binaryChars.map((item, i) => (
-            <div key={i} 
-                 className="absolute top-0 text-[#c0b8a8] font-mono text-lg animate-pulse"
-                 style={{ 
-                   left: `${item.left}%`,
-                   animationDelay: `${item.delay}s`
-                 }}>
-              {item.char}
-            </div>
-          ))}
-        </div>
-        <div className="relative z-10 bg-black/60 px-6 py-3 border border-gray-500">
-          <div className="text-[#e8e0d5] font-mono text-lg tracking-wider">
-            <span className="animate-pulse">DECRYPTING DATA...</span>
-          </div>
+      <canvas
+        ref={canvasRef}
+        className="absolute inset-0 w-full h-full"
+      />
+      <div className="relative z-10 bg-black/60 px-6 py-3 border border-[#70c060]/30">
+        <div className="text-[#e8e0d5] font-mono text-lg tracking-wider">
+          <span className="animate-pulse">WARPING...</span>
         </div>
       </div>
     </div>
