@@ -72,7 +72,7 @@ export default function About() {
         </header>
 
         {/* Page Title - reduced top margin on mobile */}
-        <div className="absolute left-0 right-0 z-10 px-6 top-[4vh] sm:top-[13.5vh] flex items-center justify-center">
+        <div className="absolute left-0 right-0 z-10 px-6 top-[5vh] sm:top-[13.5vh] flex items-center justify-center">
           <div className="flex justify-center">
             <MatrixText
               text={t.title}
